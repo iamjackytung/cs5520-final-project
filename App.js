@@ -1,8 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Button, lightColors, createTheme, ThemeProvider, Avatar } from '@rneui/themed';
 import Home from './screens/Home';
 import MyMentors from './screens/MyMentors';
@@ -25,26 +25,27 @@ import MyMentors from './screens/MyMentors';
 //   },
 // });
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <SafeAreaProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
         <NavigationContainer>
-          <Stack.Navigator
-            // screenOptions={{
+          <Drawer.Navigator
+            screenOptions={{
+              headerShown: false,
             //   headerStyle: { backgroundColor: "green" },
             //   headerTintColor: "white",
             //   headerTitleStyle: { fontSize: 30 },
-            // }}
+            }}
           >
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="MyMentors" component={MyMentors} />
-          </Stack.Navigator>
+          <Drawer.Screen name="Home" component={Home} />
+          <Drawer.Screen name="MyMentors" component={MyMentors} />
+          </Drawer.Navigator>
         </NavigationContainer>
-      </SafeAreaProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 
