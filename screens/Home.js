@@ -3,7 +3,6 @@ import React from 'react';
 import { Button } from '@rneui/themed';
 import { StatusBar } from 'expo-status-bar';
 import { Header } from '../components/Header';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Home({ navigation }) {
 

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Button, lightColors, createTheme, ThemeProvider, Avatar } from '@rneui/themed';
 import Home from './screens/Home';
 import MyMentors from './screens/MyMentors';
@@ -25,14 +26,15 @@ import MyMentors from './screens/MyMentors';
 //   },
 // });
 
-const Drawer = createDrawerNavigator();
+// const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
         <NavigationContainer>
-          <Drawer.Navigator
+          <Tab.Navigator
             screenOptions={{
               headerShown: false,
             //   headerStyle: { backgroundColor: "green" },
@@ -40,9 +42,9 @@ export default function App() {
             //   headerTitleStyle: { fontSize: 30 },
             }}
           >
-          <Drawer.Screen name="Home" component={Home} />
-          <Drawer.Screen name="MyMentors" component={MyMentors} />
-          </Drawer.Navigator>
+          <Tab.Screen name="Home" component={Home} />
+          <Tab.Screen name="MyMentors" component={MyMentors} />
+          </Tab.Navigator>
         </NavigationContainer>
       </ThemeProvider>
     </SafeAreaProvider>
