@@ -13,6 +13,9 @@ import {
 } from "@rneui/themed";
 import Home from "./screens/Home";
 import MyMentors from "./screens/MyMentors";
+// import SignUp from "./screens/SignUp";
+import SignUpInfo from "./screens/SignUpInfo";
+import SignUp from "./screens/SignUp";
 
 // const theme = createTheme({
 //   // Colors
@@ -37,6 +40,9 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
+    // <View>
+    //   <SignUpInfo></SignUpInfo>
+    // </View>
     <SafeAreaProvider>
       <ThemeProvider>
         <NavigationContainer>
@@ -46,9 +52,14 @@ export default function App() {
               //   headerStyle: { backgroundColor: "green" },
               //   headerTintColor: "white",
               //   headerTitleStyle: { fontSize: 30 },
+              //   headerStyle: { backgroundColor: "green" },
+              //   headerTintColor: "white",
+              //   headerTitleStyle: { fontSize: 30 },
             }}
           >
+            <Tab.Screen name="Sign Up" component={SignUp} />
             <Tab.Screen name="Home" component={Home} />
+            <Tab.Screen name="SignUp Info" component={SignUpInfo} />
             <Tab.Screen name="MyMentors" component={MyMentors} />
           </Tab.Navigator>
         </NavigationContainer>
