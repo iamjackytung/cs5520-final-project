@@ -1,0 +1,74 @@
+{
+  "users": [
+    {
+      "userId": "oygfdoasfg0823t81ghesedwd",
+      "firstName": "Jacky",
+      "lastName": "Tung",
+      "email": "jacky@jacky.com",
+      "field": "Software Engineering",
+      "profilePictureUrl": "https://pbs.twimg.com/media/ExlpJBEWUAMMt8A?format=jpg&name=small" 
+    },
+    {
+      "userId": "afupsiohfpuashf8072uh",
+      "firstName": "Guao",
+      "lastName": "Wei",
+      "email": "guao@guao.com",
+      "field": "Artificial intelligence",
+      "profilePictureUrl": "https://i.gzn.jp/img/2019/02/17/this-person-does-not-exist/img-snap08930.jpg"
+    },
+    {
+      "userId": "g07yrebt19zgtr1763",
+      "firstName": "Victor",
+      "lastName": "Wilm",
+      "email": "victor@victor.com",
+      "field": "Machine Learning",
+      "profilePictureUrl": "https://pbs.twimg.com/media/E9GEAoDXIA0VSkQ?format=jpg&name=small"
+    }
+  ],
+  "mentors": [
+    {
+      "userId": "oygfdoasfg0823t81ghesedwd",
+      "mentorId": "r7yrh278df087egfgs"    
+    },
+    {
+      "userId": "afupsiohfpuashf8072uh",
+      "mentorId": "8072g08d7gs80gd2129u"
+    }
+  ],
+  "mentees": [
+    {
+      "userId": "oygfdoasfg0823t81ghesedwd",
+      "menteeId": "fas87dhr87hg048ge8ga8d"
+    },
+    {
+      "userId": "afupsiohfpuashf8072uh",
+      "menteeId": "fagh0d8s7fgta796sgft7192fgeg"
+    },
+    {
+      "userId": "g07yrebt19zgtr1763",
+      "menteeId": "fhasf7asyhd08f7h2o1"
+    }
+  ],
+  "mentorships": [
+    {
+      "mentorId": "r7yrh278df087egfgs",
+      "menteeId": "fhasf7asyhd08f7h2o1",
+      "active": "true"
+    },
+    {
+      "mentorId": "8072g08d7gs80gd2129u",
+      "menteeId": "fhasf7asyhd08f7h2o1",
+      "active": "false"
+    },
+    {
+      "mentorId": "r7yrh278df087egfgs",
+      "menteeId": "fagh0d8s7fgta796sgft7192fgeg",
+      "active": "true"
+    },
+    {
+      "mentorId": "8072g08d7gs80gd2129u",
+      "menteeId": "fas87dhr87hg048ge8ga8d",
+      "active": "true"
+    }
+  ]
+}
