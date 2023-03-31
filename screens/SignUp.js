@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Header } from "../components/Header";
 import {
   Alert,
   StyleSheet,
@@ -71,7 +72,7 @@ export const UserTypeItem = (props) => {
   );
 };
 
-const SignUp = () => {
+const SignUp = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [isEmailValid, setEmailValid] = useState(true);
@@ -113,6 +114,7 @@ const SignUp = () => {
         //////////////////////////////////////////////////////////////////
         console.log("user id is " + user.uid);
         console.log("User account created & signed in!");
+        navigation.navigate("SignUp Info");
       })
       .catch((err) => {
         if (err.code === "auth/email-already-in-use")
@@ -132,6 +134,7 @@ const SignUp = () => {
         const user = userCredential.user;
         ////////////////////////////////////////////////////////////////////////
         console.log("user id currently " + user.uid);
+        navigation.navigate("MyMentors");
       })
       .catch((err) => {
         if (err.code === "auth/user-not-found") Alert.alert("User not Found");
@@ -188,132 +191,101 @@ const SignUp = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <ImageBackground source={BG_IMAGE} style={styles.bgImage}>
-        <View>
-          <View style={styles.titleContainer}>
-            <View>
-              <Text style={styles.titleText}>Welcome to</Text>
+    <>
+      {/* <Header view="Home" title="My mentors" /> */}
+      <View style={styles.container}>
+        <ImageBackground source={BG_IMAGE} style={styles.bgImage}>
+          <View>
+            <View style={styles.titleContainer}>
+              <View>
+                <Text style={styles.titleText}>Welcome to</Text>
+              </View>
+              <View style={{ marginLeft: 10 }}>
+                <Text style={styles.titleText}>NEUCareer!</Text>
+              </View>
             </View>
-            <View style={{ marginLeft: 10 }}>
-              <Text style={styles.titleText}>NEUCareer!</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Button
+                disabled={isLoading}
+                type="clear"
+                activeOpacity={0.7}
+                onPress={() => selectCategory(0)}
+                containerStyle={{ flex: 1 }}
+                titleStyle={[
+                  styles.categoryText,
+                  isLoginPage && styles.selectedCategoryText,
+                ]}
+                title="Login"
+              />
+              <Button
+                disabled={isLoading}
+                type="clear"
+                activeOpacity={0.7}
+                onPress={() => selectCategory(1)}
+                containerStyle={{ flex: 1 }}
+                titleStyle={[
+                  styles.categoryText,
+                  isSignUpPage && styles.selectedCategoryText,
+                ]}
+                title="Sign up"
+              />
             </View>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Button
-              disabled={isLoading}
-              type="clear"
-              activeOpacity={0.7}
-              onPress={() => selectCategory(0)}
-              containerStyle={{ flex: 1 }}
-              titleStyle={[
-                styles.categoryText,
-                isLoginPage && styles.selectedCategoryText,
-              ]}
-              title="Login"
-            />
-            <Button
-              disabled={isLoading}
-              type="clear"
-              activeOpacity={0.7}
-              onPress={() => selectCategory(1)}
-              containerStyle={{ flex: 1 }}
-              titleStyle={[
-                styles.categoryText,
-                isSignUpPage && styles.selectedCategoryText,
-              ]}
-              title="Sign up"
-            />
-          </View>
-          <View style={styles.rowSelector}>
-            <TabSelector selected={isLoginPage} />
-            <TabSelector selected={isSignUpPage} />
-          </View>
-          <View style={styles.formContainer}>
-            {isSignUpPage && (
-              <>
-                <Text>Please click which option best describes you</Text>
-                <Text>{}</Text>
-                <View style={styles.userTypesContainer}>
-                  <UserTypeItem
-                    label="Mentor"
-                    labelColor="blue"
-                    image={USER_MENTOR}
-                    onPress={() => selectedTypeHandler("parent")}
-                    selected={selectedType === "parent"}
+            <View style={styles.rowSelector}>
+              <TabSelector selected={isLoginPage} />
+              <TabSelector selected={isSignUpPage} />
+            </View>
+            <View style={styles.formContainer}>
+              {isSignUpPage && (
+                <>
+                  <Text>Please click which option best describes you</Text>
+                  <Text>{}</Text>
+                  <View style={styles.userTypesContainer}>
+                    <UserTypeItem
+                      label="Mentor"
+                      labelColor="blue"
+                      image={USER_MENTOR}
+                      onPress={() => selectedTypeHandler("parent")}
+                      selected={selectedType === "parent"}
+                    />
+                    <UserTypeItem
+                      label="Mentee"
+                      labelColor="blue"
+                      image={USER_MENTEE}
+                      onPress={() => selectedTypeHandler("child")}
+                      selected={selectedType === "child"}
+                    />
+                  </View>
+                </>
+              )}
+              <Input
+                leftIcon={
+                  <Icon
+                    name="envelope-o"
+                    type="font-awesome"
+                    color="rgba(0, 0, 0, 0.38)"
+                    size={25}
+                    style={{ backgroundColor: "transparent" }}
                   />
-                  <UserTypeItem
-                    label="Mentee"
-                    labelColor="blue"
-                    image={USER_MENTEE}
-                    onPress={() => selectedTypeHandler("child")}
-                    selected={selectedType === "child"}
-                  />
-                </View>
-              </>
-            )}
-            <Input
-              leftIcon={
-                <Icon
-                  name="envelope-o"
-                  type="font-awesome"
-                  color="rgba(0, 0, 0, 0.38)"
-                  size={25}
-                  style={{ backgroundColor: "transparent" }}
-                />
-              }
-              value={email}
-              keyboardAppearance="light"
-              autoFocus={false}
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="email-address"
-              returnKeyType="next"
-              inputStyle={{ marginLeft: 10, color: "grey" }}
-              placeholder={"Email"}
-              containerStyle={{
-                borderBottomColor: "rgba(0, 0, 0, 0.38)",
-              }}
-              ref={emailInput}
-              onSubmitEditing={() => passwordInput.current.focus()}
-              onChangeText={(text) => setEmail(text)}
-              errorMessage={
-                isEmailValid ? "" : "Please enter a valid email address"
-              }
-            />
-            <Input
-              leftIcon={
-                <Icon
-                  name="lock"
-                  type="simple-line-icon"
-                  color="rgba(0, 0, 0, 0.38)"
-                  size={25}
-                  style={{ backgroundColor: "transparent" }}
-                />
-              }
-              value={password}
-              keyboardAppearance="light"
-              autoCapitalize="none"
-              autoCorrect={false}
-              secureTextEntry={true}
-              returnKeyType={isSignUpPage ? "next" : "done"}
-              blurOnSubmit={true}
-              containerStyle={{
-                marginTop: 16,
-                borderBottomColor: "rgba(0, 0, 0, 0.38)",
-              }}
-              inputStyle={{ marginLeft: 10, color: "grey" }}
-              placeholder={"Password"}
-              ref={passwordInput}
-              onSubmitEditing={() => {
-                isSignUpPage ? confirmationInput.current.focus() : login();
-              }}
-              onChangeText={(text) => setPassword(text)}
-              errorMessage={
-                isPasswordValid ? "" : "Please enter at least 8 characters"
-              }
-            />
-            {isSignUpPage && (
+                }
+                value={email}
+                keyboardAppearance="light"
+                autoFocus={false}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                returnKeyType="next"
+                inputStyle={{ marginLeft: 10, color: "grey" }}
+                placeholder={"Email"}
+                containerStyle={{
+                  borderBottomColor: "rgba(0, 0, 0, 0.38)",
+                }}
+                ref={emailInput}
+                onSubmitEditing={() => passwordInput.current.focus()}
+                onChangeText={(text) => setEmail(text)}
+                errorMessage={
+                  isEmailValid ? "" : "Please enter a valid email address"
+                }
+              />
               <Input
                 leftIcon={
                   <Icon
@@ -324,50 +296,86 @@ const SignUp = () => {
                     style={{ backgroundColor: "transparent" }}
                   />
                 }
-                value={confirmPassword}
-                secureTextEntry={true}
+                value={password}
                 keyboardAppearance="light"
                 autoCapitalize="none"
                 autoCorrect={false}
-                keyboardType="default"
-                returnKeyType={"done"}
+                secureTextEntry={true}
+                returnKeyType={isSignUpPage ? "next" : "done"}
                 blurOnSubmit={true}
                 containerStyle={{
                   marginTop: 16,
                   borderBottomColor: "rgba(0, 0, 0, 0.38)",
                 }}
                 inputStyle={{ marginLeft: 10, color: "grey" }}
-                placeholder={"Confirm password"}
-                ref={confirmationInput}
-                onSubmitEditing={signUp}
-                onChangeText={(text) => setConfirmPassword(text)}
+                placeholder={"Password"}
+                ref={passwordInput}
+                onSubmitEditing={() => {
+                  isSignUpPage ? confirmationInput.current.focus() : login();
+                }}
+                onChangeText={(text) => setPassword(text)}
                 errorMessage={
-                  isConfirmPasswordValid ? "" : "Please enter the same password"
+                  isPasswordValid ? "" : "Please enter at least 8 characters"
                 }
               />
-            )}
-            <Button
-              buttonStyle={styles.loginButton}
-              containerStyle={{ marginTop: 32, flex: 0 }}
-              activeOpacity={0.8}
-              title={isLoginPage ? "LOGIN" : "SIGN UP"}
-              onPress={isLoginPage ? login : signUp}
-              titleStyle={styles.loginTextButton}
-              loading={isLoading}
-              disabled={isLoading}
-            />
+              {isSignUpPage && (
+                <Input
+                  leftIcon={
+                    <Icon
+                      name="lock"
+                      type="simple-line-icon"
+                      color="rgba(0, 0, 0, 0.38)"
+                      size={25}
+                      style={{ backgroundColor: "transparent" }}
+                    />
+                  }
+                  value={confirmPassword}
+                  secureTextEntry={true}
+                  keyboardAppearance="light"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="default"
+                  returnKeyType={"done"}
+                  blurOnSubmit={true}
+                  containerStyle={{
+                    marginTop: 16,
+                    borderBottomColor: "rgba(0, 0, 0, 0.38)",
+                  }}
+                  inputStyle={{ marginLeft: 10, color: "grey" }}
+                  placeholder={"Confirm password"}
+                  ref={confirmationInput}
+                  onSubmitEditing={signUp}
+                  onChangeText={(text) => setConfirmPassword(text)}
+                  errorMessage={
+                    isConfirmPasswordValid
+                      ? ""
+                      : "Please enter the same password"
+                  }
+                />
+              )}
+              <Button
+                buttonStyle={styles.loginButton}
+                containerStyle={{ marginTop: 32, flex: 0 }}
+                activeOpacity={0.8}
+                title={isLoginPage ? "LOGIN" : "SIGN UP"}
+                onPress={isLoginPage ? login : signUp}
+                titleStyle={styles.loginTextButton}
+                loading={isLoading}
+                disabled={isLoading}
+              />
+            </View>
+            <View style={styles.helpContainer}>
+              <Button
+                title={"Need help ?"}
+                titleStyle={{ color: "white" }}
+                buttonStyle={{ backgroundColor: "transparent" }}
+                onPress={() => Alert.alert("🤔", "Forgot Password Route")}
+              />
+            </View>
           </View>
-          <View style={styles.helpContainer}>
-            <Button
-              title={"Need help ?"}
-              titleStyle={{ color: "white" }}
-              buttonStyle={{ backgroundColor: "transparent" }}
-              onPress={() => Alert.alert("🤔", "Forgot Password Route")}
-            />
-          </View>
-        </View>
-      </ImageBackground>
-    </View>
+        </ImageBackground>
+      </View>
+    </>
   );
 };
 
@@ -412,7 +420,7 @@ const styles = StyleSheet.create({
     width: 200,
   },
   titleContainer: {
-    height: 150,
+    height: 100,
     backgroundColor: "transparent",
     justifyContent: "center",
   },
@@ -486,7 +494,7 @@ const styles = StyleSheet.create({
   userTypeLabel: {
     color: "yellow",
     // fontFamily: "UbuntuBold",
-    fontSize: 11,
+    fontSize: 12,
   },
 });
 
