@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -7,11 +7,11 @@ import {
   StyleProp,
   TextStyle,
   ViewStyle,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { Header as HeaderRNE, HeaderProps, Icon, Avatar } from '@rneui/themed';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { Header as HeaderRNE, HeaderProps, Icon, Avatar } from "@rneui/themed";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Header = (props) => {
   const navigation = useNavigation();
@@ -35,9 +35,9 @@ const Header = (props) => {
       // }}
       leftComponent={
         <Avatar
-          size={'small'}
+          size={"small"}
           rounded
-          source={{url: 'https://randomuser.me/api/portraits/men/36.jpg'}}
+          source={{ url: "https://randomuser.me/api/portraits/men/36.jpg" }}
         />
       }
       leftContainerStyle={styles.headerLeft}
@@ -52,7 +52,7 @@ const Header = (props) => {
           >
             <Icon type="antdesign" name="rocket1" color="white" />
           </TouchableOpacity>
-          </>
+        </>
       }
       rightContainerStyle={styles.headerRight}
       centerComponent={{ text: props.title, style: styles.heading }}
@@ -70,34 +70,34 @@ const SubHeader = ({ title, containerStyle, textStyle }) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#397af8',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#397af8",
     marginBottom: 20,
-    width: '100%',
+    width: "100%",
     paddingVertical: 15,
   },
   heading: {
-    color: 'white',
+    color: "white",
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   headerRight: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     // marginTop: 5,
   },
   headerLeft: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignContent: "center",
     marginLeft: 5,
   },
   subheaderText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
