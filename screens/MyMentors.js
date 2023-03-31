@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { ListItem, Avatar, Button, Icon } from "@rneui/themed";
 
+// fake data
 const data = require("../fakedb.json");
 
 const MentorScreen = () => {
