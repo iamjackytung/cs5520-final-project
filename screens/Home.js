@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MyMentors from "./MyMentors";
+import MyMentorsScreen from "./MyMentorsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -9,11 +9,11 @@ export default function Home({ navigation }) {
   return (
     <>
       <Tab.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Tab.Screen name="MyMentors" component={MyMentors} />
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Tab.Screen name="MyMentors" component={MyMentorsScreen} />
       </Tab.Navigator>
     </>
   );

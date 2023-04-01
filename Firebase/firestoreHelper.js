@@ -1,5 +1,5 @@
-import { collection, setDoc, doc } from "firebase/firestore";
-import { firestore } from "./firebase-setup";
+import { collection, setDoc, getDoc, doc } from "firebase/firestore";
+import { auth, firestore } from "./firebase-setup";
 export async function writeToDB(userData) {
   console.log(userData);
   try {
