@@ -50,7 +50,7 @@ export const UserTypeItem = (props) => {
   );
 };
 
-const SignUpInfo = () => {
+const SignUpInfo = ({ navigation }) => {
   ////////////////////////////////////////////////////////////////////////////////////
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -108,8 +108,8 @@ const SignUpInfo = () => {
     isMentee: isMentee,
     isMentor: isMentor,
     profilePictureUrl: profilePictureUrl,
-    mentees: {},
-    mentors: {},
+    mentees: ["0BdnUcO91XYNPsx09WktUNSpmDI2", "Azlqq5wRAhaeLy5Vp5ZKdBrfRRB2"],
+    mentors: ["0BdnUcO91XYNPsx09WktUNSpmDI2", "Azlqq5wRAhaeLy5Vp5ZKdBrfRRB2"],
   };
 
   const selectedTypeHandler = (value) => {
@@ -242,7 +242,7 @@ const SignUpInfo = () => {
                 marginHorizontal: 50,
                 marginVertical: 10,
               }}
-              onPress={() => writeToDB(userData)}
+              onPress={() => { writeToDB(userData); navigation.navigate("Home"); }}
             />
           </View>
         </ScrollView>

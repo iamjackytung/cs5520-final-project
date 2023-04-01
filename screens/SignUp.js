@@ -111,7 +111,7 @@ const SignUp = ({ navigation }) => {
         //////////////////////////////////////////////////////////////////
         // console.log("user id is " + user.uid);
         // console.log("User account created & signed in!");
-        navigation.navigate("SignUp Info");
+        navigation.navigate("SignUpInfo");
       })
       .catch((err) => {
         if (err.code === "auth/email-already-in-use")

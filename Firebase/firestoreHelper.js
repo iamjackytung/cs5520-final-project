@@ -7,7 +7,7 @@ export async function writeToDB(userData) {
     // await addDoc(collection(...signUpData, uid)
     console.log(userData.uid);
     const newDoc = await setDoc(doc(firestore, "users", userData.uid), {
-      userData,
+      ...userData,
     });
   } catch (err) {
     console.log(err);
