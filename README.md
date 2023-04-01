@@ -24,6 +24,16 @@ Guoao:
 - Built Home page, header and navigators
 - Helped bug fixing and Android testing
 
+Screenshots:
+
+<img src="./screenshots/db.png" width="80%">
+<img src="./screenshots/auth.png" width="80%">
+<img src="./screenshots/login.png" width="30%">
+<img src="./screenshots/signup.png" width="30%">
+<img src="./screenshots/signup_info.png" width="30%">
+<img src="./screenshots/my_mentors_list.png" width="30%">
+<img src="./screenshots/my_mentors_grid.png" width="30%">
+
 ### Next steps
 
 Jacky:
