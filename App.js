@@ -2,8 +2,7 @@ import "react-native-gesture-handler";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   Button,
   lightColors,
@@ -12,8 +11,6 @@ import {
   Avatar,
 } from "@rneui/themed";
 import Home from "./screens/Home";
-import MyMentors from "./screens/MyMentors";
-// import SignUp from "./screens/SignUp";
 import SignUpInfo from "./screens/SignUpInfo";
 import SignUp from "./screens/SignUp";
 
@@ -35,8 +32,8 @@ import SignUp from "./screens/SignUp";
 //   },
 // });
 
-// const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
 
 export default function App() {
   return (
@@ -46,19 +43,15 @@ export default function App() {
     <SafeAreaProvider>
       <ThemeProvider>
         <NavigationContainer>
-          <Tab.Navigator
-            screenOptions={{
-              headerShown: false,
-              //   headerStyle: { backgroundColor: "green" },
-              //   headerTintColor: "white",
-              //   headerTitleStyle: { fontSize: 30 },
-            }}
-          >
-            <Tab.Screen name="Sign Up" component={SignUp} />
-            <Tab.Screen name="Home" component={Home} />
-            <Tab.Screen name="SignUp Info" component={SignUpInfo} />
-            <Tab.Screen name="MyMentors" component={MyMentors} />
-          </Tab.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: false,
+          }}>
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
+        </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>
     </SafeAreaProvider>
