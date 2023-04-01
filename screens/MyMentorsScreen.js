@@ -74,6 +74,7 @@ const MyMentorsScreen = () => {
         renderItem={viewStyle === "list" ? renderList : renderGridItem}
         keyExtractor={(item) => item.userId}
         numColumns={viewStyle === "list" ? 1 : 2}
+        key={viewStyle}
       />
     </View>
   );
