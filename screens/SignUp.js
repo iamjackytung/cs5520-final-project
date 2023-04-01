@@ -5,7 +5,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   ImageBackground,
   Dimensions,
   LayoutAnimation,
@@ -16,8 +15,6 @@ import {
 import { Input, Button, Icon, InputProps } from "@rneui/themed";
 import {
   createUserWithEmailAndPassword,
-  setPersistence,
-  browserSessionPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../Firebase/firebase-setup";
@@ -25,8 +22,8 @@ import { auth } from "../Firebase/firebase-setup";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const BG_IMAGE = require("../assets/loginSignUpBackground.jpg");
-const USER_MENTOR = require("../assets/mentor.png");
-const USER_MENTEE = require("../assets/mentee.png");
+// const USER_MENTOR = require("../assets/mentor.png");
+// const USER_MENTEE = require("../assets/mentee.png");
 
 // if (Platform.OS === 'android') {
 //   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -42,38 +39,30 @@ const TabSelector = ({ selected }) => {
   );
 };
 
-// type UserTypeItemType = {
-//   image: ImageSourcePropType,
-//   label?: string,
-//   labelColor?: string,
-//   selected?: boolean,
-//   onPress?: () => void,
+// export const UserTypeItem = (props) => {
+//   const { image, label, labelColor, selected, ...attributes } = props;
+//   return (
+//     <TouchableOpacity {...attributes}>
+//       <View
+//         style={[
+//           styles.userTypeItemContainer,
+//           selected && styles.userTypeItemContainerSelected,
+//         ]}
+//       >
+//         <Text style={[styles.userTypeLabel, { color: labelColor }]}>
+//           {label}
+//         </Text>
+//         <Image
+//           source={image}
+//           style={[
+//             styles.userTypeMugshot,
+//             selected && styles.userTypeMugshotSelected,
+//           ]}
+//         />
+//       </View>
+//     </TouchableOpacity>
+//   );
 // };
-
-export const UserTypeItem = (props) => {
-  const { image, label, labelColor, selected, ...attributes } = props;
-  return (
-    <TouchableOpacity {...attributes}>
-      <View
-        style={[
-          styles.userTypeItemContainer,
-          selected && styles.userTypeItemContainerSelected,
-        ]}
-      >
-        <Text style={[styles.userTypeLabel, { color: labelColor }]}>
-          {label}
-        </Text>
-        <Image
-          source={image}
-          style={[
-            styles.userTypeMugshot,
-            selected && styles.userTypeMugshotSelected,
-          ]}
-        />
-      </View>
-    </TouchableOpacity>
-  );
-};
 
 const SignUp = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
@@ -120,8 +109,8 @@ const SignUp = ({ navigation }) => {
         Alert.alert("Successfully created account");
         const user = userCredential.user;
         //////////////////////////////////////////////////////////////////
-        console.log("user id is " + user.uid);
-        console.log("User account created & signed in!");
+        // console.log("user id is " + user.uid);
+        // console.log("User account created & signed in!");
         navigation.navigate("SignUp Info");
       })
       .catch((err) => {
@@ -141,7 +130,7 @@ const SignUp = ({ navigation }) => {
         Alert.alert("Successfully Logged In");
         const user = userCredential.user;
         ////////////////////////////////////////////////////////////////////////
-        console.log("user id currently " + user.uid);
+        // console.log("user id currently " + user.uid);
         navigation.navigate("Home");
       })
       .catch((err) => {
@@ -247,7 +236,7 @@ const SignUp = ({ navigation }) => {
               <TabSelector selected={isSignUpPage} />
             </View>
             <View style={styles.formContainer}>
-              {isSignUpPage && (
+              {/* {isSignUpPage && (
                 <>
                   <Text>Please click which option best describes you</Text>
                   <Text>{}</Text>
@@ -268,7 +257,7 @@ const SignUp = ({ navigation }) => {
                     />
                   </View>
                 </>
-              )}
+              )} */}
               <Input
                 leftIcon={
                   <Icon
@@ -480,25 +469,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  userTypesContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: SCREEN_WIDTH,
-    alignItems: "center",
-  },
-  userTypeItemContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    opacity: 0.5,
-  },
-  userTypeItemContainerSelected: {
-    opacity: 1,
-  },
-  userTypeMugshot: {
-    margin: 4,
-    height: 70,
-    width: 70,
-  },
+  // userTypesContainer: {
+  //   flexDirection: "row",
+  //   justifyContent: "space-around",
+  //   width: SCREEN_WIDTH,
+  //   alignItems: "center",
+  // },
+  // userTypeItemContainer: {
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   opacity: 0.5,
+  // },
+  // userTypeItemContainerSelected: {
+  //   opacity: 1,
+  // },
+  // userTypeMugshot: {
+  //   margin: 4,
+  //   height: 70,
+  //   width: 70,
+  // },
   userTypeMugshotSelected: {
     height: 100,
     width: 100,
