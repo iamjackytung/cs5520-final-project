@@ -11,6 +11,7 @@ import {
   LayoutAnimation,
   UIManager,
   TouchableOpacity,
+  Platform
 } from "react-native";
 import { Input, Button, Icon, InputProps } from "@rneui/themed";
 import {
@@ -27,9 +28,11 @@ const BG_IMAGE = require("../assets/loginSignUpBackground.jpg");
 const USER_MENTOR = require("../assets/mentor.png");
 const USER_MENTEE = require("../assets/mentee.png");
 
-// Enable LayoutAnimation on Android
-UIManager.setLayoutAnimatironEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
+// if (Platform.OS === 'android') {
+//   if (UIManager.setLayoutAnimationEnabledExperimental) {
+//     UIManager.setLayoutAnimationEnabledExperimental(true);
+//   }
+// }
 
 const TabSelector = ({ selected }) => {
   return (
@@ -90,13 +93,18 @@ const SignUp = ({ navigation }) => {
   const isSignUpPage = selectedCategory === 1;
 
   const selectCategory = (selectedCategoryIndex) => {
-    LayoutAnimation.easeInEaseOut();
+    // Animation leads to crash on Android
+    if (Platform.OS === 'ios') { 
+      LayoutAnimation.easeInEaseOut(); 
+    }
     setLoading(false);
     setSelectedCategory(selectedCategoryIndex);
   };
 
   const selectedTypeHandler = (value) => {
-    LayoutAnimation.easeInEaseOut();
+    if (Platform.OS === 'ios') { 
+      LayoutAnimation.easeInEaseOut(); 
+    }
     setSelectedType(value);
   };
 
@@ -134,7 +142,7 @@ const SignUp = ({ navigation }) => {
         const user = userCredential.user;
         ////////////////////////////////////////////////////////////////////////
         console.log("user id currently " + user.uid);
-        navigation.navigate("MyMentors");
+        navigation.navigate("Home");
       })
       .catch((err) => {
         if (err.code === "auth/user-not-found") Alert.alert("User not Found");
@@ -154,7 +162,9 @@ const SignUp = ({ navigation }) => {
       const isPasswordValidFlag =
         password.length >= 8 || passwordInput.current.shake();
 
-      LayoutAnimation.easeInEaseOut();
+      if (Platform.OS === 'ios') { 
+        LayoutAnimation.easeInEaseOut(); 
+      }
       setLoading(false);
       setEmailValid(isEmailValidFlag);
       setPasswordValid(isPasswordValidFlag);
@@ -173,7 +183,9 @@ const SignUp = ({ navigation }) => {
       const isConfirmPasswordValidFlag =
         password === confirmPassword || confirmationInput.current.shake();
 
-      LayoutAnimation.easeInEaseOut();
+      if (Platform.OS === 'ios') { 
+        LayoutAnimation.easeInEaseOut(); 
+      }
       setLoading(false);
       setEmailValid(validateEmail(email) || emailInput.current.shake());
       setPasswordValid(password.length >= 8 || passwordInput.current.shake());
