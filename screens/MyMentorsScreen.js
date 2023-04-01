@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
-    paddingTop: 20,
+    paddingTop: 50,
     paddingBottom: 10,
   },
   searchInput: {
     flex: 1,
-    height: 40,
+    height: 50,
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   switchButton: {
-    padding: 5,
+    padding: 10,
   },
 
   gridItem: {
