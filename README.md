@@ -29,6 +29,7 @@ Guoao:
 Jacky:
 
 - Setup permissions for photo and camera access
+- FaceID unlock
 - Build user profile page
 
 Victor:
@@ -38,5 +39,6 @@ Victor:
 
 Guoao
 
-- Setup mentorship function
+- Setup mentorship, schedule meeting between mentors and mentees
+- Get user location
 - Invoke Google Map API
