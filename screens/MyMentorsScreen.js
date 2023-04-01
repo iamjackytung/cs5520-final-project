@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { getMyMentors } from "../Firebase/firestoreHelper";
 import { ListItem, Avatar, Button, Icon } from "@rneui/themed";
+import { Header } from "../components/Header";
 
 const MyMentorsScreen = () => {
   const [searchText, setSearchText] = useState("");
@@ -53,6 +54,7 @@ const MyMentorsScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Header title="My Mentors" />
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
