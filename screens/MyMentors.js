@@ -1,37 +1,120 @@
-import { StyleSheet, View } from 'react-native';
-import React from 'react';
-import { Header } from '../components/Header';
-import { Button } from "@rneui/themed";
-import { Text } from '@rneui/themed';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import { getMyMentors } from "../Firebase/firestoreHelper";
+import { ListItem, Avatar, Button, Icon } from "@rneui/themed";
 
+const MyMentorsScreen = () => {
+  const [searchText, setSearchText] = useState("");
+  const [viewStyle, setViewStyle] = useState("list");
+  const [myMentors, setMyMentors] = useState([]);
 
-export default function MyMentors() {
+  useEffect(() => {
+    async function fetchMyMentors() {
+      const mentors = await getMyMentors();
+      setMyMentors(mentors);
+    }
+
+    fetchMyMentors();
+  }, []);
+
+  const filteredUsers = myMentors.filter((mentor) =>
+    `${mentor.firstName} ${mentor.lastName}`
+      .toLowerCase()
+      .includes(searchText.toLowerCase())
+  );
+
+  const renderList = ({ item }) => (
+    <TouchableOpacity key={item.userId}>
+      <ListItem bottomDivider>
+        <Avatar source={{ uri: item.profilePictureUrl }} />
+        <ListItem.Content>
+          <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
+          <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
+        </ListItem.Content>
+      </ListItem>
+    </TouchableOpacity>
+  );
+
+  const renderGridItem = ({ item }) => (
+    <TouchableOpacity key={item.userId} style={styles.gridItem}>
+      <Avatar size="large" source={{ uri: item.profilePictureUrl }} />
+      <ListItem.Content>
+        <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
+        <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
+      </ListItem.Content>
+    </TouchableOpacity>
+  );
+
   return (
-    <>
-      <Header view="Home" title="My mentors" />  
-      {/* <StatusBar style="auto" /> */}
-      <View style={styles.container}>
-        <Text h4={true}>You don't have any mentor yet!</Text>
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          onChangeText={setSearchText}
+          value={searchText}
+          placeholder="Search"
+        />
         <Button
-          style={styles.findMentorsButton}
-          title="Find Mentors"
-          onPress={() => {
-            navigation.navigate("MyMentors");
-          }}
+          containerStyle={styles.switchButton}
+          onPress={() => setViewStyle(viewStyle === "list" ? "grid" : "list")}
+          icon={
+            <Icon name={viewStyle === "list" ? "view-module" : "view-list"} />
+          }
+          type="clear"
         />
       </View>
-    </>
-  )
-}
+      <FlatList
+        data={filteredUsers}
+        renderItem={viewStyle === "list" ? renderList : renderGridItem}
+        keyExtractor={(item) => item.userId}
+        numColumns={viewStyle === "list" ? 1 : 2}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
   },
-  findMentorsButton: {
-    marginVertical: 10
-  }
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingTop: 50,
+    paddingBottom: 10,
+  },
+  searchInput: {
+    flex: 1,
+    height: 50,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    marginRight: 10,
+  },
+  switchButton: {
+    padding: 10,
+  },
+
+  gridItem: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+  },
 });
+
+export default MyMentorsScreen;
