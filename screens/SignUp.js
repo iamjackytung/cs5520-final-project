@@ -134,7 +134,7 @@ const SignUp = ({ navigation }) => {
         const user = userCredential.user;
         ////////////////////////////////////////////////////////////////////////
         console.log("user id currently " + user.uid);
-        navigation.navigate("MyMentors");
+        navigation.navigate("Home");
       })
       .catch((err) => {
         if (err.code === "auth/user-not-found") Alert.alert("User not Found");
