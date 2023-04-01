@@ -36,9 +36,12 @@ Victor:
 
 - Build empty home page
 - Search mentor/mentee functions
+- My mentees page
+- Undo/delete/deactivate mentorship
 
 Guoao
 
 - Setup mentorship, schedule meeting between mentors and mentees
+- Accept connection
 - Get user location
 - Invoke Google Map API
