@@ -34,6 +34,22 @@ Screenshots:
 <img src="./screenshots/my_mentors_list.png" width="30%">
 <img src="./screenshots/my_mentors_grid.png" width="30%">
 
+### Requirements
+
+You should have React Native components created to represent the functionality you will be building, and the overall structure of your app should be in place.
+- We have React Native components that are created for our sign-up/sign-in page. Our react component is also create for when the user inserts their information when they sign up.
+- Our My Mentors list page is created. Creating the My Mentees page should be really quick since it is a duplicate of the same page.
+- Calendar page and Profile page is not yet set up, but will be completed in the next iteration.
+- Overall users can insert their information into the signup page, and we are able to push our information into firestorm.
+- Book Meetings page needs to be done.
+- Overall, we will need to also setup logout to end persistence.
+
+* Navigation
+    * Your app should have at least 2 navigators 
+        * Our app includes a bottom and top navigator once users signup/login
+* The basis of CRUD operations to Firestore should be established and working.
+    * The basis of CRUD operations work as we are able to set up our initial collection for users. Our other CRUD operations will work given that this works too.
+
 ### Next steps
 
 Jacky:
