@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -7,25 +7,50 @@ import {
   StyleProp,
   TextStyle,
   ViewStyle,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { Header as HeaderRNE, HeaderProps, Icon, Avatar } from '@rneui/themed';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { Header as HeaderRNE, HeaderProps, Icon, Avatar } from "@rneui/themed";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { auth, db } from "../Firebase/firebase-setup";
+// import { collection } from "firebase/firestore";
+// import { onValue, ref } from "firebase/database";
+import { doc, getDoc } from "firebase/firestore";
+import { useState } from "react";
+import { renderNode } from "@rneui/base";
 
 const Header = (props) => {
+  const [photo, onChangePhoto] = useState(null);
+
   const navigation = useNavigation();
+  const getPhoto = async () => {
+    let docRef = doc(db, "users", auth.currentUser.uid);
+    let docSnap = await getDoc(docRef);
+    onChangePhoto(docSnap.get("profilePictureUrl"));
+  };
+  getPhoto();
 
   const docsNavigate = () => {
     // Linking.openURL(
     //   `https://reactnativeelements.com/docs/components/${props.view}`
     // );
   };
+  const leftAvatar = () => {
+    if (photo == null) {
+      return (
+        <Avatar
+          size={"small"}
+          rounded
+          source={require("../assets/emptyAvatar.png")}
+        />
+      );
+    }
+    return <Avatar size={"small"} rounded source={{ uri: photo }} />;
+  };
 
   const playgroundNavigate = () => {
     // Linking.openURL(`https://react-native-elements.js.org/#/${props.view}`);
   };
-
   return (
     <HeaderRNE
       // leftComponent={{
@@ -33,13 +58,7 @@ const Header = (props) => {
       //   color: '#fff',
       //   onPress: navigation.openDrawer,
       // }}
-      leftComponent={
-        <Avatar
-          size={'small'}
-          rounded
-          source={{url: 'https://randomuser.me/api/portraits/men/36.jpg'}}
-        />
-      }
+      leftComponent={leftAvatar()}
       leftContainerStyle={styles.headerLeft}
       rightComponent={
         <>
@@ -52,7 +71,7 @@ const Header = (props) => {
           >
             <Icon type="antdesign" name="rocket1" color="white" />
           </TouchableOpacity>
-          </>
+        </>
       }
       rightContainerStyle={styles.headerRight}
       centerComponent={{ text: props.title, style: styles.heading }}
@@ -70,34 +89,34 @@ const SubHeader = ({ title, containerStyle, textStyle }) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#397af8',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#397af8",
     marginBottom: 20,
-    width: '100%',
+    width: "100%",
     paddingVertical: 15,
   },
   heading: {
-    color: 'white',
+    color: "white",
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   headerRight: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     // marginTop: 5,
   },
   headerLeft: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignContent: "center",
     marginLeft: 5,
   },
   subheaderText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

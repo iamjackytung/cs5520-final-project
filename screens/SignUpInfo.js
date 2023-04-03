@@ -1,9 +1,3 @@
-import { useEffect } from "react";
-import { Platform } from "react-native";
-import * as Permissions from "expo-permissions";
-import * as ImagePicker from "expo-image-picker";
-import { Alert } from "react-native";
-
 import {
   View,
   StyleSheet,
@@ -19,6 +13,7 @@ import { Input, Icon, Button, Overlay } from "@rneui/themed";
 import { auth } from "../Firebase/firebase-setup";
 import React, { useState } from "react";
 import { writeToDB } from "../Firebase/firestoreHelper";
+import * as ImagePicker from "expo-image-picker";
 
 const USER_MENTOR = require("../assets/mentor.png");
 const USER_MENTEE = require("../assets/mentee.png");
@@ -51,7 +46,6 @@ export const UserTypeItem = (props) => {
 };
 
 const SignUpInfo = ({ navigation }) => {
-  ////////////////////////////////////////////////////////////////////////////////////
   const pickImage = async () => {
     let mediaPermStatus = await ImagePicker.getMediaLibraryPermissionsAsync();
     // console.log(mediaPermStatus);
@@ -66,7 +60,6 @@ const SignUpInfo = ({ navigation }) => {
     } else
       mediaPermStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
   };
-  ////////////////////////////////////////////////////////
   const takePicture = async () => {
     let cameraPermStatus = await ImagePicker.getCameraPermissionsAsync();
     if (cameraPermStatus.granted) {
@@ -79,16 +72,14 @@ const SignUpInfo = ({ navigation }) => {
     } else cameraPermStatus = await ImagePicker.requestCameraPermissionsAsync();
   };
 
-  ////////////////////////////////////////////////////////
   const [image, setImage] = useState(null);
-
   const [firstName, onChangeFirstName] = React.useState(null);
   const [lastName, onChangeLastName] = React.useState(null);
   // const [text, onChangeTag] = React.useState(null);
   const [jobTitle, onChangeJobTitle] = React.useState(null);
   const [isMentee, onChangeIsMentee] = React.useState(false);
   const [isMentor, onChangeIsMentor] = React.useState(false);
-  const [profilePictureUrl, onChangeprofilePictureUrl] = React.useState(null);
+  const [profilePictureUrl, onChangeprofilePictureUrl] = useState(null);
   const [selectedType, setSelectedType] = useState("");
   const [visible, setVisible] = useState(false);
 

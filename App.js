@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Button,
   lightColors,
@@ -34,7 +34,6 @@ import SignUp from "./screens/SignUp";
 
 const Stack = createNativeStackNavigator();
 
-
 export default function App() {
   return (
     // <View>
@@ -43,15 +42,16 @@ export default function App() {
     <SafeAreaProvider>
       <ThemeProvider>
         <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            gestureEnabled: false,
-          }}>
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
-        </Stack.Navigator>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              gestureEnabled: false,
+            }}
+          >
+            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
+          </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>
     </SafeAreaProvider>
