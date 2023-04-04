@@ -17,7 +17,6 @@ import { auth, db } from "../Firebase/firebase-setup";
 // import { onValue, ref } from "firebase/database";
 import { doc, getDoc } from "firebase/firestore";
 import { useState } from "react";
-import { renderNode } from "@rneui/base";
 
 const Header = (props) => {
   const [photo, onChangePhoto] = useState(null);
