@@ -82,14 +82,6 @@ const SignUpInfo = ({ navigation }) => {
   const [profilePictureUrl, onChangeprofilePictureUrl] = useState(null);
   const [selectedType, setSelectedType] = useState("");
   const [visible, setVisible] = useState(false);
-  const [city, OnCityChange] = useState(null);
-  const [state, OnStateChange] = useState(null);
-  const [country, OnCountryChange] = useState(null);
-  const [avatarBackground, OnAvatarBackgroundChange] = useState(null);
-  const [telMobile, OnTelMobileChange] = useState(null);
-  const [telWork, OnTelWorkChange] = useState(null);
-  const [emailPersonal, OnEmailPersonalChange] = useState(null);
-  const [emailWork, OnEmailWorkChange] = useState(null);
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -105,18 +97,6 @@ const SignUpInfo = ({ navigation }) => {
     profilePictureUrl: profilePictureUrl,
     mentees: ["0BdnUcO91XYNPsx09WktUNSpmDI2", "Azlqq5wRAhaeLy5Vp5ZKdBrfRRB2"],
     mentors: ["0BdnUcO91XYNPsx09WktUNSpmDI2", "Azlqq5wRAhaeLy5Vp5ZKdBrfRRB2"],
-    city: city,
-    state: state,
-    country: country,
-    avatarBackground: "https://i.imgur.com/rXVcgTZ.jpg",
-    tels: [
-      { id: 1, name: "Mobile", number: telMobile },
-      { id: 2, name: "Work", number: telWork },
-    ],
-    emails: [
-      { id: 1, name: "Personal", email: emailPersonal },
-      { id: 2, name: "Work", email: emailWork },
-    ],
   };
 
   const selectedTypeHandler = (value) => {
@@ -184,62 +164,6 @@ const SignUpInfo = ({ navigation }) => {
             label="Job Title"
             style={InputFieldsStyle}
             onChangeText={onChangeJobTitle}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
-            label="Your City"
-            style={InputFieldsStyle}
-            onChangeText={OnCityChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
-            label="Your State/Province"
-            style={InputFieldsStyle}
-            onChangeText={OnStateChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
-            label="Your Country"
-            style={InputFieldsStyle}
-            onChangeText={OnCountryChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
-            label="Your Avatar Background"
-            style={InputFieldsStyle}
-            onChangeText={OnAvatarBackgroundChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
-            label="Your Mobile Number"
-            style={InputFieldsStyle}
-            onChangeText={OnTelMobileChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
-            label="Your Work Number"
-            style={InputFieldsStyle}
-            onChangeText={OnTelWorkChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
-            label="Your Personal Email"
-            style={InputFieldsStyle}
-            onChangeText={OnEmailPersonalChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
-            label="Your Work Email"
-            style={InputFieldsStyle}
-            onChangeText={OnEmailWorkChange}
           />
           <Button
             title="Set up Profile Picture"
