@@ -39,6 +39,31 @@ const TabSelector = ({ selected }) => {
   );
 };
 
+// export const UserTypeItem = (props) => {
+//   const { image, label, labelColor, selected, ...attributes } = props;
+//   return (
+//     <TouchableOpacity {...attributes}>
+//       <View
+//         style={[
+//           styles.userTypeItemContainer,
+//           selected && styles.userTypeItemContainerSelected,
+//         ]}
+//       >
+//         <Text style={[styles.userTypeLabel, { color: labelColor }]}>
+//           {label}
+//         </Text>
+//         <Image
+//           source={image}
+//           style={[
+//             styles.userTypeMugshot,
+//             selected && styles.userTypeMugshotSelected,
+//           ]}
+//         />
+//       </View>
+//     </TouchableOpacity>
+//   );
+// };
+
 const SignUp = ({ navigation }) => {
   const [isLoading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -99,7 +124,7 @@ const SignUp = ({ navigation }) => {
   };
 
   const loginHandler = async () => {
-    // console.log("user id was " + auth.currentUser.uid);
+    console.log("user id was " + auth.currentUser.uid);
     return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         Alert.alert("Successfully Logged In");

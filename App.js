@@ -13,12 +13,32 @@ import {
 import Home from "./screens/Home";
 import SignUpInfo from "./screens/SignUpInfo";
 import SignUp from "./screens/SignUp";
-import Profile from "./screens/Profile.js";
+
+// const theme = createTheme({
+//   // Colors
+//   lightColors: {
+//     primary: '#e7e7e8',
+//   },
+//   darkColors: {
+//     primary: '#000',
+//   },
+//   mode: 'light',
+//   // Component styles
+//   components: {
+//     Button: {
+//       raised: true,
+//       color: "primary",
+//     },
+//   },
+// });
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    // <View>
+    //   <SignUpInfo></SignUpInfo>
+    // </View>
     <SafeAreaProvider>
       <ThemeProvider>
         <NavigationContainer>
@@ -30,7 +50,6 @@ export default function App() {
           >
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
           </Stack.Navigator>
         </NavigationContainer>
