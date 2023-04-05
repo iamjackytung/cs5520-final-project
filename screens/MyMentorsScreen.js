@@ -31,7 +31,7 @@ const MyMentorsScreen = () => {
   );
 
   const renderList = ({ item }) => (
-    <TouchableOpacity key={item.userId}>
+    <TouchableOpacity>
       <ListItem bottomDivider>
         <Avatar source={{ uri: item.profilePictureUrl }} />
         <ListItem.Content>
@@ -43,7 +43,7 @@ const MyMentorsScreen = () => {
   );
 
   const renderGridItem = ({ item }) => (
-    <TouchableOpacity key={item.userId} style={styles.gridItem}>
+    <TouchableOpacity style={styles.gridItem}>
       <Avatar size="large" source={{ uri: item.profilePictureUrl }} />
       <ListItem.Content>
         <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
@@ -74,7 +74,7 @@ const MyMentorsScreen = () => {
       <FlatList
         data={filteredUsers}
         renderItem={viewStyle === "list" ? renderList : renderGridItem}
-        keyExtractor={(item) => item.userId}
+        keyExtractor={(item) => item.id}
         numColumns={viewStyle === "list" ? 1 : 2}
         key={viewStyle}
       />

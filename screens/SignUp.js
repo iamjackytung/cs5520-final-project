@@ -10,7 +10,7 @@ import {
   LayoutAnimation,
   UIManager,
   TouchableOpacity,
-  Platform
+  Platform,
 } from "react-native";
 import { Input, Button, Icon, InputProps } from "@rneui/themed";
 import {
@@ -83,16 +83,16 @@ const SignUp = ({ navigation }) => {
 
   const selectCategory = (selectedCategoryIndex) => {
     // Animation leads to crash on Android
-    if (Platform.OS === 'ios') { 
-      LayoutAnimation.easeInEaseOut(); 
+    if (Platform.OS === "ios") {
+      LayoutAnimation.easeInEaseOut();
     }
     setLoading(false);
     setSelectedCategory(selectedCategoryIndex);
   };
 
   const selectedTypeHandler = (value) => {
-    if (Platform.OS === 'ios') { 
-      LayoutAnimation.easeInEaseOut(); 
+    if (Platform.OS === "ios") {
+      LayoutAnimation.easeInEaseOut();
     }
     setSelectedType(value);
   };
@@ -151,8 +151,8 @@ const SignUp = ({ navigation }) => {
       const isPasswordValidFlag =
         password.length >= 8 || passwordInput.current.shake();
 
-      if (Platform.OS === 'ios') { 
-        LayoutAnimation.easeInEaseOut(); 
+      if (Platform.OS === "ios") {
+        LayoutAnimation.easeInEaseOut();
       }
       setLoading(false);
       setEmailValid(isEmailValidFlag);
@@ -172,8 +172,8 @@ const SignUp = ({ navigation }) => {
       const isConfirmPasswordValidFlag =
         password === confirmPassword || confirmationInput.current.shake();
 
-      if (Platform.OS === 'ios') { 
-        LayoutAnimation.easeInEaseOut(); 
+      if (Platform.OS === "ios") {
+        LayoutAnimation.easeInEaseOut();
       }
       setLoading(false);
       setEmailValid(validateEmail(email) || emailInput.current.shake());
