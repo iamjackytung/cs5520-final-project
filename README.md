@@ -56,12 +56,12 @@ Jacky:
 
 - Setup permissions for photo and camera access
 - Build user profile page
+- Mentor profile page
 
 Victor:
 
 - Request to connect
 - Accept connection
-- Mentor profile page
 
 Guoao
 
