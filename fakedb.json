@@ -6,7 +6,20 @@
       "lastName": "Tung",
       "email": "jacky@jacky.com",
       "field": "Software Engineering",
-      "profilePictureUrl": "https://pbs.twimg.com/media/ExlpJBEWUAMMt8A?format=jpg&name=small" 
+      "profilePictureUrl": "https://pbs.twimg.com/media/ExlpJBEWUAMMt8A?format=jpg&name=small",
+      "city": "Ginatown",
+      "state": "Massachusetts",
+      "country": "Nepal",
+      "avatar": "https://i.imgur.com/GfkNpVG.jpg",
+      "avatarBackground": "https://i.imgur.com/rXVcgTZ.jpg",
+      "tels": [
+        { "id": 1, "name": "Mobile", "number": "+66 (089)-928-2134" },
+        { "id": 2, "name": "Work", "number": "+41 (112)-435-9887" }
+      ],
+      "emails": [
+        { "id": 1, "name": "Personal", "email": "elsie-goodman@mail.com" },
+        { "id": 2, "name": "Work", "email": "elsie@work.com" }
+      ]
     },
     {
       "userId": "afupsiohfpuashf8072uh",
@@ -14,7 +27,20 @@
       "lastName": "Wei",
       "email": "guao@guao.com",
       "field": "Artificial intelligence",
-      "profilePictureUrl": "https://i.gzn.jp/img/2019/02/17/this-person-does-not-exist/img-snap08930.jpg"
+      "profilePictureUrl": "https://i.gzn.jp/img/2019/02/17/this-person-does-not-exist/img-snap08930.jpg",
+      "city": "Ginatown",
+      "state": "Massachusetts",
+      "country": "Nepal",
+      "avatar": "https://i.imgur.com/GfkNpVG.jpg",
+      "avatarBackground": "https://i.imgur.com/rXVcgTZ.jpg",
+      "tels": [
+        { "id": 1, "name": "Mobile", "number": "+66 (089)-928-2134" },
+        { "id": 2, "name": "Work", "number": "+41 (112)-435-9887" }
+      ],
+      "emails": [
+        { "id": 1, "name": "Personal", "email": "elsie-goodman@mail.com" },
+        { "id": 2, "name": "Work", "email": "elsie@work.com" }
+      ]
     },
     {
       "userId": "g07yrebt19zgtr1763",
@@ -22,13 +48,26 @@
       "lastName": "Wilm",
       "email": "victor@victor.com",
       "field": "Machine Learnin",
-      "profilePictureUrl": "https://pbs.twimg.com/media/E9GEAoDXIA0VSkQ?format=jpg&name=small"
+      "profilePictureUrl": "https://pbs.twimg.com/media/E9GEAoDXIA0VSkQ?format=jpg&name=small",
+      "city": "Ginatown",
+      "state": "Massachusetts",
+      "country": "Nepal",
+      "avatar": "https://i.imgur.com/GfkNpVG.jpg",
+      "avatarBackground": "https://i.imgur.com/rXVcgTZ.jpg",
+      "tels": [
+        { "id": 1, "name": "Mobile", "number": "+66 (089)-928-2134" },
+        { "id": 2, "name": "Work", "number": "+41 (112)-435-9887" }
+      ],
+      "emails": [
+        { "id": 1, "name": "Personal", "email": "elsie-goodman@mail.com" },
+        { "id": 2, "name": "Work", "email": "elsie@work.com" }
+      ]
     }
   ],
   "mentors": [
     {
       "userId": "oygfdoasfg0823t81ghesedwd",
-      "mentorId": "r7yrh278df087egfgs"    
+      "mentorId": "r7yrh278df087egfgs"
     },
     {
       "userId": "afupsiohfpuashf8072uh",
