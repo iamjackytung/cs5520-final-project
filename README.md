@@ -55,19 +55,15 @@ You should have React Native components created to represent the functionality y
 Jacky:
 
 - Setup permissions for photo and camera access
-- FaceID unlock
 - Build user profile page
 
 Victor:
 
-- Build empty home page
-- Search mentor/mentee functions
-- My mentees page
-- Undo/delete/deactivate mentorship
+- Request to connect
+- Accept connection
+- Mentor profile page
 
 Guoao
 
-- Setup mentorship, schedule meeting between mentors and mentees
-- Accept connection
-- Get user location
-- Invoke Google Map API
+- Book meeting page
+- Obtain location and show static map
