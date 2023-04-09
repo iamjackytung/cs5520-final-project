@@ -9,25 +9,24 @@ import {
   ViewStyle,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { Header as HeaderRNE, HeaderProps, Icon, Avatar } from "@rneui/themed";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { auth, db } from "../Firebase/firebase-setup";
 // import { collection } from "firebase/firestore";
 // import { onValue, ref } from "firebase/database";
-import { doc, getDoc } from "firebase/firestore";
-import { useState } from "react";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { useState, useEffect } from "react";
 
 const Header = (props) => {
   const [photo, onChangePhoto] = useState(null);
 
   const navigation = useNavigation();
-  const getPhoto = async () => {
-    let docRef = doc(db, "users", auth.currentUser.uid);
-    let docSnap = await getDoc(docRef);
-    onChangePhoto(docSnap.get("profilePictureUrl"));
-  };
-  getPhoto();
+
+  useEffect(() => {
+    onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+      onChangePhoto(doc.get("profilePictureUrl"));
+    });
+  }, []);
 
   const docsNavigate = () => {
     // Linking.openURL(
