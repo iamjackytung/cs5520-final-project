@@ -51,13 +51,7 @@ export async function getMyMentors() {
 
       if (mentorDocSnap.exists()) {
         const mentorData = mentorDocSnap.data();
-        mentorDetailsList.push({
-          id: mentorDocSnap.id,
-          firstName: mentorData.firstName,
-          lastName: mentorData.lastName,
-          profilePictureUrl: mentorData.profilePictureUrl,
-          jobTitle: mentorData.jobTitle,
-        });
+        mentorDetailsList.push(mentorData);
       }
     }
     return mentorDetailsList;

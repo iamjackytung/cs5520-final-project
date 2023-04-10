@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { getMyMentors } from "../Firebase/firestoreHelper";
-import { ListItem, Avatar, Button, Icon } from "@rneui/themed";
+import { ListItem, Avatar, Button, Icon, Card, Text } from "@rneui/themed";
 import { Header } from "../components/Header";
 
 const MyMentorsScreen = ({ navigation }) => {
@@ -58,6 +58,22 @@ const MyMentorsScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
+  const renderEmptyList = () => (
+    <Card>
+      <Card.Title h4>You have no mentors</Card.Title>
+      <Card.Divider />
+      <Text style={styles.emptyText}>
+        It seems you don't have any mentors yet. Click the button below to
+        search for new mentors.
+      </Text>
+      <Button
+        title="Find Mentors"
+        onPress={() => navigation.navigate("MentorsSearch")}
+        containerStyle={styles.findMentorsButton}
+      />
+    </Card>
+  );
+
   return (
     <View style={styles.container}>
       <Header title="My Mentors" />
@@ -83,6 +99,7 @@ const MyMentorsScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         numColumns={viewStyle === "list" ? 1 : 2}
         key={viewStyle}
+        ListEmptyComponent={renderEmptyList}
       />
     </View>
   );
@@ -97,7 +114,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
-    paddingTop: 50,
     paddingBottom: 10,
   },
   searchInput: {
@@ -123,6 +139,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
+  },
+
+  emptyText: {
+    marginBottom: 10,
+    textAlign: "center",
+  },
+
+  findMentorsButton: {
+    alignSelf: "center",
+    marginBottom: 10,
   },
 });
 
