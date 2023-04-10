@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { Card, Icon } from "react-native-elements";
 import {
   FlatList,
@@ -11,24 +11,19 @@ import {
   Text,
   View,
 } from "react-native";
-import PropTypes from "prop-types";
-import Email from "../components/Email";
-import Separator from "../components/Separator";
-import Tel from "../components/Tel";
 import Profile from "../components/Profile";
 import { useState } from "react";
 import { db, auth } from "../Firebase/firebase-setup";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const UserProfile = () => {
   const [userData, onChangeUserData] = useState("hello");
 
-  const getUserData = async () => {
-    let docRef = doc(db, "users", auth.currentUser.uid);
-    let docSnap = await getDoc(docRef);
-    onChangeUserData(docSnap.data());
-  };
-  getUserData();
+  useEffect(() => {
+    onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+      onChangeUserData(doc.data());
+    });
+  }, []);
 
   return <Profile userData={userData} />;
 };
