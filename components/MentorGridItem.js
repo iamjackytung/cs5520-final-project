@@ -2,9 +2,16 @@ import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { Avatar, ListItem } from "@rneui/themed";
 
-const MentorGridItem = ({ item }) => {
+const MentorGridItem = ({ item, navigation }) => {
   return (
-    <TouchableOpacity style={styles.gridItem}>
+    <TouchableOpacity
+      style={styles.gridItem}
+      onPress={() => {
+        navigation.navigate("ClickedProfile", {
+          userData: item,
+        });
+      }}
+    >
       <Avatar size="large" source={{ uri: item.profilePictureUrl }} />
       <ListItem.Content>
         <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>

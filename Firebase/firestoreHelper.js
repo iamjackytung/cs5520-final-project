@@ -1,11 +1,17 @@
-import { collection, setDoc, getDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  setDoc,
+  getDoc,
+  doc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { auth, firestore } from "./firebase-setup";
 export async function writeToDB(userData) {
-  console.log(userData);
   try {
     // await addDoc(uid, ...signUpData);
     // await addDoc(collection(...signUpData, uid)
-    console.log(userData.uid);
     const newDoc = await setDoc(doc(firestore, "users", userData.uid), {
       ...userData,
     });
@@ -57,5 +63,50 @@ export async function getMyMentors() {
     return mentorDetailsList;
   } catch (error) {
     console.log("Error fetching mentors:", error);
+  }
+}
+
+export async function findNewMentors(searchInput) {
+  try {
+    if (!auth.currentUser.uid) {
+      console.log("No user is signed in");
+      return null;
+    }
+    const usersCollection = collection(firestore, "users");
+    const userDocRef = doc(usersCollection, auth.currentUser.uid);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      console.log("User document does not exist.");
+      return;
+    }
+
+    const myMentors = userDocSnap.data().mentors;
+
+    const searchToken = searchInput.trim().toLowerCase();
+
+    const allUsersSnap = await getDocs(usersCollection);
+
+    const potentialMentors = [];
+
+    allUsersSnap.forEach((doc) => {
+      if (
+        doc.exists() &&
+        !myMentors.includes(doc.id) &&
+        doc.id !== auth.currentUser.uid
+      ) {
+        const userData = doc.data();
+        if (userData.firstName && userData.lastName) {
+          const fullName = `${userData.firstName.toLowerCase()} ${userData.lastName.toLowerCase()}`;
+          if (fullName.includes(searchToken)) {
+            potentialMentors.push(userData);
+          }
+        }
+      }
+    });
+
+    return potentialMentors;
+  } catch (error) {
+    console.log("Error finding new mentors:", error);
   }
 }

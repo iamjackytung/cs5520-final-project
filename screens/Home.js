@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyMentorsScreen from "./MyMentorsScreen";
@@ -6,7 +5,7 @@ import UserProfile from "./UserProfile";
 
 const Tab = createBottomTabNavigator();
 
-export default function Home({ navigation }) {
+export default function Home() {
   return (
     <>
       <Tab.Navigator

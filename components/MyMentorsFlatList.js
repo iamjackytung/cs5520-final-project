@@ -1,10 +1,15 @@
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import MentorListItem from "./MentorListItem";
 import MentorGridItem from "./MentorGridItem";
 import { Button, Card, Text } from "@rneui/themed";
 
-const MentorsFlatList = ({ data, viewStyle, navigation }) => {
+const MyMentorsFlatList = ({
+  data,
+  viewStyle,
+  navigation,
+  onFindNewMentorsPress,
+}) => {
   const renderEmptyMyMentorsList = () => (
     <Card>
       <Card.Title h4>You have no mentors</Card.Title>
@@ -15,23 +20,31 @@ const MentorsFlatList = ({ data, viewStyle, navigation }) => {
       </Text>
       <Button
         title="Find Mentors"
-        onPress={() => navigation.navigate("MentorsSearch")}
+        onPress={onFindNewMentorsPress}
         containerStyle={styles.findMentorsButton}
       />
     </Card>
   );
+
+  const renderMyMentorsListTitle = () => (
+    <View>
+      <Text style={styles.myMentorsFlatListTitlle}>My current mentors</Text>
+    </View>
+  );
+
   return (
     <FlatList
       data={data}
       renderItem={
         viewStyle === "list"
           ? ({ item }) => <MentorListItem item={item} navigation={navigation} />
-          : ({ item }) => <MentorGridItem item={item} />
+          : ({ item }) => <MentorGridItem item={item} navigation={navigation} />
       }
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.uid}
       numColumns={viewStyle === "list" ? 1 : 2}
       key={viewStyle}
       ListEmptyComponent={renderEmptyMyMentorsList}
+      ListHeaderComponent={renderMyMentorsListTitle}
     />
   );
 };
@@ -46,6 +59,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 10,
   },
+
+  myMentorsFlatListTitlle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 10,
+    marginTop: 10,
+  },
 });
 
-export default MentorsFlatList;
+export default MyMentorsFlatList;
