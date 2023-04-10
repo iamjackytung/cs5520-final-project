@@ -56,7 +56,7 @@ const SignUpInfo = ({ navigation }) => {
         aspect: [4, 3],
         quality: 1,
       });
-      if (!result.canceled) setImage(result.assets[0].uri);
+      if (!result.canceled) setProfileImage(result.assets[0].uri);
     } else
       mediaPermStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
   };
@@ -68,11 +68,26 @@ const SignUpInfo = ({ navigation }) => {
         aspect: [4, 3],
       });
       console.log(result);
-      if (!result.canceled) setImage(result.assets[0].uri);
+      if (!result.canceled) setProfileImage(result.assets[0].uri);
     } else cameraPermStatus = await ImagePicker.requestCameraPermissionsAsync();
   };
+  const pickBackgroundImage = async () => {
+    let mediaPermStatus = await ImagePicker.getMediaLibraryPermissionsAsync();
+    // console.log(mediaPermStatus);
+    if (mediaPermStatus.granted) {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.canceled) setBackgroundImage(result.assets[0].uri);
+    } else
+      mediaPermStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  };
 
-  const [image, setImage] = useState(null);
+  const [imageProfile, setProfileImage] = useState(null);
+  const [imageBackground, setBackgroundImage] = useState(null);
   const [firstName, onChangeFirstName] = React.useState(null);
   const [lastName, onChangeLastName] = React.useState(null);
   // const [text, onChangeTag] = React.useState(null);
@@ -80,8 +95,10 @@ const SignUpInfo = ({ navigation }) => {
   const [isMentee, onChangeIsMentee] = React.useState(false);
   const [isMentor, onChangeIsMentor] = React.useState(false);
   const [profilePictureUrl, onChangeprofilePictureUrl] = useState(null);
+  const [backgroundImageUrl, onChangebackgroundImageUrl] = useState(null);
   const [selectedType, setSelectedType] = useState("");
-  const [visible, setVisible] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(false);
+  const [backgroundVisible, setBackgroundVisible] = useState(false);
   const [city, OnCityChange] = useState(null);
   const [state, OnStateChange] = useState(null);
   const [country, OnCountryChange] = useState(null);
@@ -91,8 +108,11 @@ const SignUpInfo = ({ navigation }) => {
   const [emailPersonal, OnEmailPersonalChange] = useState(null);
   const [emailWork, OnEmailWorkChange] = useState(null);
 
-  const toggleOverlay = () => {
-    setVisible(!visible);
+  const toggleProfileOverlay = () => {
+    setProfileVisible(!profileVisible);
+  };
+  const toggleBackgroundOverlay = () => {
+    setBackgroundVisible(!backgroundVisible);
   };
 
   const userData = {
@@ -108,7 +128,7 @@ const SignUpInfo = ({ navigation }) => {
     city: city,
     state: state,
     country: country,
-    avatarBackground: "https://i.imgur.com/rXVcgTZ.jpg",
+    avatarBackground: backgroundImageUrl,
     tels: [
       { id: 1, name: "Mobile", number: telMobile },
       { id: 2, name: "Work", number: telWork },
@@ -140,7 +160,7 @@ const SignUpInfo = ({ navigation }) => {
   return (
     // console.log(image),
     <>
-      <Header view="Submit" title="My mentors" />
+      <Header view="Submit" title="Sign Up" />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{ alignItems: "center", marginBottom: 16 }}>
           <View style={styles.formContainer}>
@@ -209,13 +229,6 @@ const SignUpInfo = ({ navigation }) => {
           <Input
             containerStyle={styles.inputContainerStyle}
             // placeholder="Enter Your Job Title"
-            label="Your Avatar Background"
-            style={InputFieldsStyle}
-            onChangeText={OnAvatarBackgroundChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
             label="Your Mobile Number"
             style={InputFieldsStyle}
             onChangeText={OnTelMobileChange}
@@ -243,11 +256,14 @@ const SignUpInfo = ({ navigation }) => {
           />
           <Button
             title="Set up Profile Picture"
-            onPress={toggleOverlay}
+            onPress={toggleProfileOverlay}
             buttonStyle={styles.button}
           />
-          <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-            {!image && (
+          <Overlay
+            isVisible={profileVisible}
+            onBackdropPress={toggleProfileOverlay}
+          >
+            {!imageProfile && (
               <>
                 <Button
                   title="Pick image from photo library"
@@ -260,7 +276,7 @@ const SignUpInfo = ({ navigation }) => {
                 />
               </>
             )}
-            {image && (
+            {imageProfile && (
               <>
                 <Image
                   source={{ uri: image }}
@@ -271,13 +287,57 @@ const SignUpInfo = ({ navigation }) => {
                   title="Confirm Photo?"
                   onPress={() => {
                     onChangeprofilePictureUrl(image);
-                    toggleOverlay();
+                    toggleProfileOverlay();
                   }}
                 />
                 <Text> </Text>
                 <Button
                   title="Choose new photo"
-                  onPress={() => setImage(null)}
+                  onPress={() => setProfileImage(null)}
+                />
+              </>
+            )}
+          </Overlay>
+          <Button
+            title="Set up Avatar Background"
+            onPress={toggleBackgroundOverlay}
+            buttonStyle={styles.button}
+          />
+          <Overlay
+            isVisible={backgroundVisible}
+            onBackdropPress={toggleBackgroundOverlay}
+          >
+            {!imageBackground && (
+              <>
+                <Button
+                  title="Pick image from photo library"
+                  onPress={pickBackgroundImage}
+                />
+                <Text> </Text>
+                <Button
+                  title="Take a picture from camera roll"
+                  onPress={takePicture}
+                />
+              </>
+            )}
+            {imageBackground && (
+              <>
+                <Image
+                  source={{ uri: imageBackground }}
+                  style={{ width: 100, height: 100 }}
+                />
+                <Text> </Text>
+                <Button
+                  title="Confirm Photo?"
+                  onPress={() => {
+                    onChangebackgroundImageUrl(imageBackground);
+                    toggleBackgroundOverlay();
+                  }}
+                />
+                <Text> </Text>
+                <Button
+                  title="Choose new photo"
+                  onPress={() => setBackgroundImage(null)}
                 />
               </>
             )}
@@ -285,12 +345,6 @@ const SignUpInfo = ({ navigation }) => {
 
           <Button
             title="Submit"
-            // icon={{
-            //   name: "Submit",
-            //   type: "font-awesome",
-            //   size: 15,
-            //   color: "white",
-            // }}
             iconContainerStyle={{ marginRight: 10 }}
             titleStyle={{ fontWeight: "700" }}
             buttonStyle={{
