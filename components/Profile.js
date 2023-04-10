@@ -1,23 +1,29 @@
 import React, { Component } from "react";
-import { Card, Icon } from "react-native-elements";
+import * as ImagePicker from "expo-image-picker";
+import {
+  updateProfilePic,
+  getImageFromLibrary,
+} from "../Firebase/firestoreHelper";
+import { Card, Icon, Overlay } from "react-native-elements";
 import {
   FlatList,
   Image,
   ImageBackground,
   Linking,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import PropTypes from "prop-types";
 import Email from "../components/Email";
 import Separator from "../components/Separator";
 import Tel from "../components/Tel";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Button } from "react-native-elements";
 import { db, auth } from "../Firebase/firebase-setup";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -40,19 +46,6 @@ const styles = StyleSheet.create({
     paddingTop: 45,
   },
   headerContainer: {},
-  headerColumn: {
-    backgroundColor: "transparent",
-    ...Platform.select({
-      ios: {
-        alignItems: "center",
-        elevation: 1,
-        marginTop: -1,
-      },
-      android: {
-        alignItems: "center",
-      },
-    }),
-  },
   placeIcon: {
     color: "white",
     fontSize: 26,
@@ -86,6 +79,49 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     width: 170,
   },
+  editProfileImageIcon: {
+    borderColor: "transparent",
+    height: 30,
+    borderWidth: 2,
+    marginTop: 140,
+    marginLeft: 130,
+    width: 30,
+    borderRadius: 5,
+    backgroundColor: "#FFF",
+  },
+  pressableImage: {
+    height: 170,
+    width: 170,
+    position: "absolute",
+  },
+  editBackgroundImageIcon: {
+    borderColor: "transparent",
+    height: 30,
+    borderWidth: 2,
+    width: 30,
+    borderRadius: 5,
+    backgroundColor: "#FFF",
+  },
+  pressableBackground: {
+    right: 35,
+    top: 15,
+    height: 10,
+    width: 10,
+    position: "absolute",
+  },
+  headerColumn: {
+    backgroundColor: "transparent",
+    ...Platform.select({
+      ios: {
+        alignItems: "center",
+        elevation: 1,
+        marginTop: -1,
+      },
+      android: {
+        alignItems: "center",
+      },
+    }),
+  },
   userNameText: {
     color: "#FFF",
     fontSize: 22,
@@ -95,7 +131,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Profile = ({ userData }) => {
+const Profile = ({ userData, isUserProfile }) => {
   onPressPlace = () => {
     console.log("place");
   };
@@ -117,39 +153,143 @@ const Profile = ({ userData }) => {
   };
 
   renderHeader = () => {
+    const [profileVisible, setProfileVisible] = useState(false);
+    const [imageProfile, setProfileImage] = useState(null);
+    // useEffect(() => {
+    //   onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+    //     onChangeprofilePictureUrl(doc.get("profilePictureUrl"));
+    //   });
+    // }, []);
+
+    const toggleProfileOverlay = () => {
+      setProfileVisible(!profileVisible);
+    };
+
+    const pickImage = async () => {
+      let mediaPermStatus = await ImagePicker.getMediaLibraryPermissionsAsync();
+      // console.log(mediaPermStatus);
+      if (mediaPermStatus.granted) {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+        if (!result.canceled) setProfileImage(result.assets[0].uri);
+      } else
+        mediaPermStatus =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+    };
+
+    const takePicture = async () => {
+      let cameraPermStatus = await ImagePicker.getCameraPermissionsAsync();
+      if (cameraPermStatus.granted) {
+        let result = await ImagePicker.launchCameraAsync({
+          allowsEditing: true,
+          aspect: [4, 3],
+        });
+        console.log(result);
+        if (!result.canceled) setProfileImage(result.assets[0].uri);
+      } else
+        cameraPermStatus = await ImagePicker.requestCameraPermissionsAsync();
+    };
     return (
-      <View style={styles.headerContainer}>
-        <ImageBackground
-          style={styles.headerBackgroundImage}
-          blurRadius={10}
-          source={{ uri: userData.avatarBackground }}
+      <>
+        <Overlay
+          isVisible={profileVisible}
+          onBackdropPress={toggleProfileOverlay}
         >
-          <View style={styles.headerColumn}>
-            <Image
-              style={styles.userImage}
-              source={{ uri: userData.profilePictureUrl }}
-            />
-            <Text style={styles.userNameText}>
-              {userData.firstName + " " + userData.lastName}
-            </Text>
-            <View style={styles.userAddressRow}>
-              <View>
-                <Icon
-                  name="place"
-                  underlayColor="transparent"
-                  iconStyle={styles.placeIcon}
-                  onPress={this.onPressPlace}
-                />
-              </View>
-              <View style={styles.userCityRow}>
-                <Text style={styles.userCityText}>
-                  {userData.city}, {userData.country}
-                </Text>
+          {!imageProfile && (
+            <>
+              <Button
+                title="Pick image from photo library"
+                onPress={pickImage}
+              />
+              <Text> </Text>
+              <Button
+                title="Take a picture from camera roll"
+                onPress={takePicture}
+              />
+            </>
+          )}
+          {imageProfile && (
+            <>
+              <Image
+                source={{ uri: imageProfile }}
+                style={{ width: 100, height: 100 }}
+              />
+              <Text> </Text>
+              <Button
+                title="Confirm Photo?"
+                onPress={() => {
+                  // onChangeprofilePictureUrl(imageProfile);
+                  toggleProfileOverlay();
+                  updateProfilePic(imageProfile);
+                }}
+              />
+              <Text> </Text>
+              <Button
+                title="Choose new photo"
+                onPress={() => setProfileImage(null)}
+              />
+            </>
+          )}
+        </Overlay>
+        <View style={styles.headerContainer}>
+          <ImageBackground
+            style={styles.headerBackgroundImage}
+            blurRadius={10}
+            source={{ uri: userData.avatarBackground }}
+          >
+            <Pressable
+              style={styles.pressableBackground}
+              onPress={toggleProfileOverlay}
+            >
+              <Image
+                style={styles.editBackgroundImageIcon}
+                source={require("../assets/edit-button.png")}
+              />
+            </Pressable>
+            <View style={styles.headerColumn}>
+              <Image
+                style={styles.userImage}
+                source={{ uri: userData.profilePictureUrl }}
+              />
+              {isUserProfile && (
+                <>
+                  <Pressable
+                    style={styles.pressableImage}
+                    onPress={toggleProfileOverlay}
+                  >
+                    <Image
+                      style={styles.editProfileImageIcon}
+                      source={require("../assets/edit-button.png")}
+                    />
+                  </Pressable>
+                </>
+              )}
+              <Text style={styles.userNameText}>
+                {userData.firstName + " " + userData.lastName}
+              </Text>
+              <View style={styles.userAddressRow}>
+                <View>
+                  <Icon
+                    name="place"
+                    underlayColor="transparent"
+                    iconStyle={styles.placeIcon}
+                    onPress={this.onPressPlace}
+                  />
+                </View>
+                <View style={styles.userCityRow}>
+                  <Text style={styles.userCityText}>
+                    {userData.city}, {userData.country}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-        </ImageBackground>
-      </View>
+          </ImageBackground>
+        </View>
+      </>
     );
   };
 

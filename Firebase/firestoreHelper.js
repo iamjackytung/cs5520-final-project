@@ -9,8 +9,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { auth, firestore } from "./firebase-setup";
+import * as ImagePicker from "expo-image-picker";
 export async function writeToDB(userData) {
   try {
+    // console.log(userData.uid);
     // await addDoc(uid, ...signUpData);
     // await addDoc(collection(...signUpData, uid)
     const newDoc = await setDoc(doc(firestore, "users", userData.uid), {
@@ -20,6 +22,39 @@ export async function writeToDB(userData) {
     console.log(err);
   }
 }
+
+export async function updateProfilePic(profilePicUrl) {
+  console.log(profilePicUrl);
+  try {
+    const newDoc = doc(firestore, "users", auth.currentUser.uid);
+
+    await updateDoc(newDoc, {
+      profilePictureUrl: profilePicUrl,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// export async function getImageFromLibrary() {
+//   let mediaPermStatus = await ImagePicker.getMediaLibraryPermissionsAsync();
+//   // console.log(mediaPermStatus);
+//   if (mediaPermStatus.granted) {
+//     let result = await ImagePicker.launchImageLibraryAsync({
+//       mediaTypes: ImagePicker.MediaTypeOptions.All,
+//       allowsEditing: true,
+//       aspect: [4, 3],
+//       quality: 1,
+//     });
+//     if (!result.canceled) return result.assets[0].uri;
+//     else {
+//       console.log("failure. Empty Avatar used instead.");
+//       return "https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png?ssl=1";
+//     }
+//   } else
+//     mediaPermStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+//   return "https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png?ssl=1";
+// }
 
 // export async function writeToDB(uid, signUpData) {
 //   firestore()

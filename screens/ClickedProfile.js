@@ -19,10 +19,20 @@ import Profile from "../components/Profile";
 import { useState } from "react";
 import { db, auth } from "../Firebase/firebase-setup";
 import { doc, getDoc } from "firebase/firestore";
+import { Header } from "../components/Header";
 
 const ClickedProfile = ({ route }) => {
   const userData = route.params.userData;
-  return <Profile userData={userData} />;
+  console.log(userData);
+  return (
+    <>
+      <Header
+        view={userData.firstName + "'s Profile"}
+        title={userData.firstName + "'s Profile"}
+      />
+      <Profile userData={userData} isUserProfile={false} />
+    </>
+  );
 };
 
 export default ClickedProfile;
