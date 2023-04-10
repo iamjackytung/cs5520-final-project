@@ -6,6 +6,7 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import { auth, firestore } from "./firebase-setup";
 export async function writeToDB(userData) {
@@ -136,16 +137,51 @@ export async function connectWithMentor(mentorId) {
     const userData = userDocSnap.data();
     const mentorData = mentorDocSnap.data();
 
-    if (!userData.myMentors.includes(mentorId)) {
-      userData.myMentors.push(mentorId);
-      await setDoc(userDocRef, userData);
+    if (!userData.mentors.includes(mentorId)) {
+      userData.mentors.push(mentorId);
+      await updateDoc(userDocRef, userData);
     }
 
-    if (!mentorData.myMentees.includes(currentUser.uid)) {
-      mentorData.myMentees.push(currentUser.uid);
-      await setDoc(mentorDocRef, mentorData);
+    if (!mentorData.mentees.includes(currentUser.uid)) {
+      mentorData.mentees.push(currentUser.uid);
+      await updateDoc(mentorDocRef, mentorData);
     }
   } catch (error) {
     console.log("Error connecting with mentor:", error);
+  }
+}
+
+export async function disconnectWithMentor(mentorId) {
+  try {
+    if (!auth.currentUser.uid) {
+      console.log("No user is signed in");
+      return null;
+    }
+    const usersCollection = collection(firestore, "users");
+    const currentUserDocRef = doc(usersCollection, auth.currentUser.uid);
+    const currentUserDocSnap = await getDoc(currentUserDocRef);
+    if (!currentUserDocSnap.exists()) {
+      console.log("User document does not exist.");
+      return;
+    }
+    const currentUserData = currentUserDocSnap.data();
+    const myMentors = currentUserData.mentors || [];
+    const myMentees = currentUserData.mentees || [];
+    const updatedMyMentors = myMentors.filter((id) => id !== mentorId);
+    await updateDoc(currentUserDocRef, { mentors: updatedMyMentors });
+    const mentorDocRef = doc(usersCollection, mentorId);
+    const mentorDocSnap = await getDoc(mentorDocRef);
+    if (!mentorDocSnap.exists()) {
+      console.log("Mentor document does not exist.");
+      return;
+    }
+    const mentorData = mentorDocSnap.data();
+    const mentorMentees = mentorData.mentees || [];
+    const updatedMentorMentees = mentorMentees.filter(
+      (id) => id !== auth.currentUser.uid
+    );
+    await updateDoc(mentorDocRef, { mentees: updatedMentorMentees });
+  } catch (error) {
+    console.log("Error disconnecting with mentor:", error);
   }
 }

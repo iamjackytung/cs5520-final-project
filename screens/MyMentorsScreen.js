@@ -86,6 +86,8 @@ const MyMentorsScreen = ({ navigation }) => {
           viewStyle={viewStyle}
           navigation={navigation}
           onFindNewMentorsPress={onFindNewMentorsPress}
+          myMentors={myMentors}
+          setMyMentors={setMyMentors}
         />
       )}
       {newMentorsFilter && (
@@ -96,6 +98,10 @@ const MyMentorsScreen = ({ navigation }) => {
             <MentorListItem item={item} navigation={navigation} />
           )}
           renderGridItem={({ item }) => <MentorGridItem item={item} />}
+          myMentors={myMentors}
+          setMyMentors={setMyMentors}
+          newMentors={newMentors}
+          setNewMentors={setNewMentors}
         />
       )}
     </View>

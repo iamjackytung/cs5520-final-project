@@ -5,7 +5,15 @@ import MentorGridItem from "./MentorGridItem";
 import { Card, Text } from "@rneui/themed";
 import { connectWithMentor } from "../Firebase/firestoreHelper";
 
-const NewMentorsFlatList = ({ data, viewStyle, navigation }) => {
+const NewMentorsFlatList = ({
+  data,
+  viewStyle,
+  navigation,
+  myMentors,
+  newMentors,
+  setMyMentors,
+  setNewMentors,
+}) => {
   const renderEmptyNewMentorsList = () => (
     <Card>
       <Card.Title h4>We couldn't match you with new mentors</Card.Title>
@@ -34,7 +42,13 @@ const NewMentorsFlatList = ({ data, viewStyle, navigation }) => {
               <MentorListItem
                 item={item}
                 navigation={navigation}
-                onConnect={() => connectWithMentor(item.uid)}
+                onConnect={() => {
+                  connectWithMentor(item.uid);
+                  setMyMentors([...myMentors, item]);
+                  setNewMentors(
+                    newMentors.filter((mentor) => mentor.uid !== item.uid)
+                  );
+                }}
                 connectButton={true}
               />
             )
@@ -42,7 +56,13 @@ const NewMentorsFlatList = ({ data, viewStyle, navigation }) => {
               <MentorGridItem
                 item={item}
                 navigation={navigation}
-                onConnect={() => connectWithMentor(item.uid)}
+                onConnect={() => {
+                  connectWithMentor(item.uid);
+                  setMyMentors([...myMentors, item]);
+                  setNewMentors(
+                    newMentors.filter((mentor) => mentor.uid !== item.uid)
+                  );
+                }}
                 connectButton={true}
               />
             )

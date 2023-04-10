@@ -3,12 +3,15 @@ import { FlatList, StyleSheet, View } from "react-native";
 import MentorListItem from "./MentorListItem";
 import MentorGridItem from "./MentorGridItem";
 import { Button, Card, Text } from "@rneui/themed";
+import { disconnectWithMentor } from "../Firebase/firestoreHelper";
 
 const MyMentorsFlatList = ({
   data,
   viewStyle,
   navigation,
   onFindNewMentorsPress,
+  myMentors,
+  setMyMentors,
 }) => {
   const renderEmptyMyMentorsList = () => (
     <Card>
@@ -42,6 +45,12 @@ const MyMentorsFlatList = ({
                 item={item}
                 navigation={navigation}
                 disconnectButton={true}
+                onDisconnect={() => {
+                  disconnectWithMentor(item.uid);
+                  setMyMentors(
+                    myMentors.filter((mentor) => mentor.uid !== item.uid)
+                  );
+                }}
               />
             )
           : ({ item }) => (
@@ -49,6 +58,12 @@ const MyMentorsFlatList = ({
                 item={item}
                 navigation={navigation}
                 disconnectButton={true}
+                onDisconnect={() => {
+                  disconnectWithMentor(item.uid);
+                  setMyMentors(
+                    myMentors.filter((mentor) => mentor.uid !== item.uid)
+                  );
+                }}
               />
             )
       }
