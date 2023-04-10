@@ -110,3 +110,42 @@ export async function findNewMentors(searchInput) {
     console.log("Error finding new mentors:", error);
   }
 }
+
+export async function connectWithMentor(mentorId) {
+  try {
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      console.log("No user is signed in");
+      return;
+    }
+
+    const usersCollection = collection(firestore, "users");
+
+    const userDocRef = doc(usersCollection, currentUser.uid);
+    const mentorDocRef = doc(usersCollection, mentorId);
+
+    const userDocSnap = await getDoc(userDocRef);
+    const mentorDocSnap = await getDoc(mentorDocRef);
+
+    if (!userDocSnap.exists() || !mentorDocSnap.exists()) {
+      console.log("User or Mentor document does not exist.");
+      return;
+    }
+
+    const userData = userDocSnap.data();
+    const mentorData = mentorDocSnap.data();
+
+    if (!userData.myMentors.includes(mentorId)) {
+      userData.myMentors.push(mentorId);
+      await setDoc(userDocRef, userData);
+    }
+
+    if (!mentorData.myMentees.includes(currentUser.uid)) {
+      mentorData.myMentees.push(currentUser.uid);
+      await setDoc(mentorDocRef, mentorData);
+    }
+  } catch (error) {
+    console.log("Error connecting with mentor:", error);
+  }
+}

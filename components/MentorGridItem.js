@@ -1,8 +1,13 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
-import { Avatar, ListItem } from "@rneui/themed";
+import { Avatar, ListItem, Button } from "@rneui/themed";
 
-const MentorGridItem = ({ item, navigation }) => {
+const MentorGridItem = ({
+  item,
+  navigation,
+  connectButton = false,
+  disconnectButton = false,
+}) => {
   return (
     <TouchableOpacity
       style={styles.gridItem}
@@ -16,6 +21,15 @@ const MentorGridItem = ({ item, navigation }) => {
       <ListItem.Content>
         <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
         <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
+        {connectButton && (
+          <Button title="Connect" onPress={() => connectWithMentor(item.uid)} />
+        )}
+        {disconnectButton && (
+          <Button
+            title="Disconnect"
+            onPress={() => disconnectWithMentor(item.uid)}
+          />
+        )}
       </ListItem.Content>
     </TouchableOpacity>
   );

@@ -1,8 +1,13 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import { ListItem, Avatar } from "@rneui/themed";
+import { ListItem, Avatar, Button } from "@rneui/themed";
 
-const MentorListItem = ({ item, navigation }) => {
+const MentorListItem = ({
+  item,
+  navigation,
+  connectButton = false,
+  disconnectButton = false,
+}) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -16,6 +21,18 @@ const MentorListItem = ({ item, navigation }) => {
         <ListItem.Content>
           <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
           <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
+          {connectButton && (
+            <Button
+              title="Connect"
+              onPress={() => connectWithMentor(item.uid)}
+            />
+          )}
+          {disconnectButton && (
+            <Button
+              title="Disconnect"
+              onPress={() => disconnectWithMentor(item.uid)}
+            />
+          )}
         </ListItem.Content>
       </ListItem>
     </TouchableOpacity>

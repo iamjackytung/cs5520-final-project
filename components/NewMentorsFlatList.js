@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import MentorListItem from "./MentorListItem";
 import MentorGridItem from "./MentorGridItem";
 import { Card, Text } from "@rneui/themed";
+import { connectWithMentor } from "../Firebase/firestoreHelper";
 
 const NewMentorsFlatList = ({ data, viewStyle, navigation }) => {
   const renderEmptyNewMentorsList = () => (
@@ -29,8 +30,22 @@ const NewMentorsFlatList = ({ data, viewStyle, navigation }) => {
       data={data}
       renderItem={
         viewStyle === "list"
-          ? ({ item }) => <MentorListItem item={item} navigation={navigation} />
-          : ({ item }) => <MentorGridItem item={item} navigation={navigation} />
+          ? ({ item }) => (
+              <MentorListItem
+                item={item}
+                navigation={navigation}
+                onConnect={() => connectWithMentor(item.uid)}
+                connectButton={true}
+              />
+            )
+          : ({ item }) => (
+              <MentorGridItem
+                item={item}
+                navigation={navigation}
+                onConnect={() => connectWithMentor(item.uid)}
+                connectButton={true}
+              />
+            )
       }
       keyExtractor={(item) => item.uid}
       numColumns={viewStyle === "list" ? 1 : 2}
@@ -51,7 +66,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 10,
-    marginTop: 10,
   },
 });
 

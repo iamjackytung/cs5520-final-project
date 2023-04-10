@@ -37,8 +37,20 @@ const MyMentorsFlatList = ({
       data={data}
       renderItem={
         viewStyle === "list"
-          ? ({ item }) => <MentorListItem item={item} navigation={navigation} />
-          : ({ item }) => <MentorGridItem item={item} navigation={navigation} />
+          ? ({ item }) => (
+              <MentorListItem
+                item={item}
+                navigation={navigation}
+                disconnectButton={true}
+              />
+            )
+          : ({ item }) => (
+              <MentorGridItem
+                item={item}
+                navigation={navigation}
+                disconnectButton={true}
+              />
+            )
       }
       keyExtractor={(item) => item.uid}
       numColumns={viewStyle === "list" ? 1 : 2}
