@@ -2,6 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyMentorsScreen from "./MyMentorsScreen";
 import UserProfile from "./UserProfile";
+import { StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
