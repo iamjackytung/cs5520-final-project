@@ -71,7 +71,6 @@ const NewMentorsFlatList = ({
       numColumns={viewStyle === "list" ? 1 : 2}
       key={viewStyle}
       ListEmptyComponent={renderEmptyNewMentorsList}
-      ListHeaderComponent={renderNewMentorsListTitle}
     />
   );
 };
@@ -80,12 +79,6 @@ const styles = StyleSheet.create({
   emptyText: {
     marginBottom: 10,
     textAlign: "center",
-  },
-
-  renderNewMentorsListTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
   },
 });
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 import { getMyMentors, findNewMentors } from "../Firebase/firestoreHelper";
 import { Button, Icon } from "@rneui/themed";
 import { Header } from "../components/Header";
@@ -100,27 +100,33 @@ const MyMentorsScreen = ({ navigation }) => {
         />
       </View>
       {myMentorsFilter && (
-        <MyMentorsFlatList
-          data={filteredMyMentors}
-          viewStyle={viewStyle}
-          navigation={navigation}
-          onFindNewMentorsPress={onFindNewMentorsPress}
-          myMentors={myMentors}
-          setMyMentors={setMyMentors}
-        />
+        <View>
+          <Text style={styles.listTitle}>My current mentors</Text>
+          <MyMentorsFlatList
+            data={filteredMyMentors}
+            viewStyle={viewStyle}
+            navigation={navigation}
+            onFindNewMentorsPress={onFindNewMentorsPress}
+            myMentors={myMentors}
+            setMyMentors={setMyMentors}
+          />
+        </View>
       )}
       {newMentorsFilter && (
-        <NewMentorsFlatList
-          data={newMentors}
-          viewStyle={viewStyle}
-          navigation={navigation}
-          renderList={({ item }) => <MentorListItem item={item} />}
-          renderGridItem={({ item }) => <MentorGridItem item={item} />}
-          myMentors={myMentors}
-          setMyMentors={setMyMentors}
-          newMentors={newMentors}
-          setNewMentors={setNewMentors}
-        />
+        <View>
+          <Text style={styles.listTitle}>Connect with new mentors</Text>
+          <NewMentorsFlatList
+            data={newMentors}
+            viewStyle={viewStyle}
+            navigation={navigation}
+            renderList={({ item }) => <MentorListItem item={item} />}
+            renderGridItem={({ item }) => <MentorGridItem item={item} />}
+            myMentors={myMentors}
+            setMyMentors={setMyMentors}
+            newMentors={newMentors}
+            setNewMentors={setNewMentors}
+          />
+        </View>
       )}
     </View>
   );
@@ -179,6 +185,12 @@ const styles = StyleSheet.create({
   },
   inactiveButtonText: {
     color: "#008B8B",
+  },
+  listTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 10,
+    marginTop: 10,
   },
 });
 

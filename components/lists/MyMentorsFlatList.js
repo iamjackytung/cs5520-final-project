@@ -71,7 +71,6 @@ const MyMentorsFlatList = ({
       numColumns={viewStyle === "list" ? 1 : 2}
       key={viewStyle}
       ListEmptyComponent={renderEmptyMyMentorsList}
-      ListHeaderComponent={renderMyMentorsListTitle}
     />
   );
 };
@@ -85,13 +84,6 @@ const styles = StyleSheet.create({
   findMentorsButton: {
     alignSelf: "center",
     marginBottom: 10,
-  },
-
-  myMentorsFlatListTitlle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-    marginTop: 10,
   },
 });
 
