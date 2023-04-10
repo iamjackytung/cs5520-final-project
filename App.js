@@ -13,7 +13,8 @@ import {
 import Home from "./screens/Home";
 import SignUpInfo from "./screens/SignUpInfo";
 import SignUp from "./screens/SignUp";
-import Profile from "./screens/Profile.js";
+import UserProfile from "./screens/UserProfile.js";
+import ClickedProfile from "./screens/ClickedProfile";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,8 +31,9 @@ export default function App() {
           >
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="UserProfile" component={UserProfile} />
             <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
+            <Stack.Screen name="ClickedProfile" component={ClickedProfile} />
           </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>

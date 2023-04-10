@@ -95,16 +95,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Profile = () => {
-  const [userData, onChangeUserData] = useState("hello");
-
-  const getUserData = async () => {
-    let docRef = doc(db, "users", auth.currentUser.uid);
-    let docSnap = await getDoc(docRef);
-    onChangeUserData(docSnap.data());
-  };
-  getUserData();
-
+const Profile = ({ userData }) => {
   onPressPlace = () => {
     console.log("place");
   };
