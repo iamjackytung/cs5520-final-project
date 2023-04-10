@@ -10,10 +10,11 @@ import {
 } from "react-native";
 import { Header } from "../components/Header";
 import { Input, Icon, Button, Overlay } from "@rneui/themed";
-import { auth } from "../Firebase/firebase-setup";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { writeToDB } from "../Firebase/firestoreHelper";
 import * as ImagePicker from "expo-image-picker";
+import { db, auth } from "../Firebase/firebase-setup";
+import { FieldPath, doc, onSnapshot } from "firebase/firestore";
 
 const USER_MENTOR = require("../assets/mentor.png");
 const USER_MENTEE = require("../assets/mentee.png");
@@ -67,7 +68,7 @@ const SignUpInfo = ({ navigation }) => {
         allowsEditing: true,
         aspect: [4, 3],
       });
-      console.log(result);
+      // console.log(result);
       if (!result.canceled) setProfileImage(result.assets[0].uri);
     } else cameraPermStatus = await ImagePicker.requestCameraPermissionsAsync();
   };
@@ -88,25 +89,46 @@ const SignUpInfo = ({ navigation }) => {
 
   const [imageProfile, setProfileImage] = useState(null);
   const [imageBackground, setBackgroundImage] = useState(null);
-  const [firstName, onChangeFirstName] = React.useState(null);
-  const [lastName, onChangeLastName] = React.useState(null);
-  // const [text, onChangeTag] = React.useState(null);
-  const [jobTitle, onChangeJobTitle] = React.useState(null);
-  const [isMentee, onChangeIsMentee] = React.useState(false);
-  const [isMentor, onChangeIsMentor] = React.useState(false);
-  const [profilePictureUrl, onChangeprofilePictureUrl] = useState(null);
-  const [backgroundImageUrl, onChangebackgroundImageUrl] = useState(null);
   const [selectedType, setSelectedType] = useState("");
   const [profileVisible, setProfileVisible] = useState(false);
   const [backgroundVisible, setBackgroundVisible] = useState(false);
+  const [firstName, onChangeFirstName] = useState(null);
+  const [lastName, onChangeLastName] = useState(null);
+  const [jobTitle, onChangeJobTitle] = useState(null);
+  const [isMentee, onChangeIsMentee] = useState(false);
+  const [isMentor, onChangeIsMentor] = useState(false);
+  const [profilePictureUrl, onChangeprofilePictureUrl] = useState(null);
+  const [backgroundImageUrl, onChangebackgroundImageUrl] = useState(null);
   const [city, OnCityChange] = useState(null);
   const [state, OnStateChange] = useState(null);
   const [country, OnCountryChange] = useState(null);
-  const [avatarBackground, OnAvatarBackgroundChange] = useState(null);
-  const [telMobile, OnTelMobileChange] = useState(null);
-  const [telWork, OnTelWorkChange] = useState(null);
+  const [telMobile, OnTelMobileChange] = useState("");
+  const [telWork, OnTelWorkChange] = useState("");
   const [emailPersonal, OnEmailPersonalChange] = useState(null);
   const [emailWork, OnEmailWorkChange] = useState(null);
+  const signingUp = true;
+
+  useEffect(() => {
+    onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+      if (doc.data()) {
+        signingUp == false;
+        onChangeFirstName(doc.get("firstName"));
+        onChangeIsMentee(doc.get("isMentee"));
+        onChangeIsMentor(doc.get("isMentor"));
+        onChangeJobTitle(doc.get("jobTitle"));
+        onChangeLastName(doc.get("lastName"));
+        onChangebackgroundImageUrl(doc.get("profilePictureUrl"));
+        onChangeprofilePictureUrl(doc.get("profilePictureUrl"));
+        OnCityChange(doc.get("city"));
+        OnStateChange(doc.get("state"));
+        OnCountryChange(doc.get("country"));
+        OnTelMobileChange(doc.get("tels")[0]["number"]);
+        OnTelWorkChange(doc.get("tels")[1]["number"]);
+        OnEmailPersonalChange(doc.get("emails")[0]["email"]);
+        OnEmailWorkChange(doc.get("emails")[1]["email"]);
+      }
+    });
+  }, []);
 
   const toggleProfileOverlay = () => {
     setProfileVisible(!profileVisible);
@@ -185,7 +207,7 @@ const SignUpInfo = ({ navigation }) => {
           </View>
           <Input
             containerStyle={{ width: "90%" }}
-            // placeholder="First Name"
+            placeholder={firstName}
             label="First Name"
             labelStyle={{ marginTop: 16 }}
             style={InputFieldsStyle}
@@ -193,155 +215,159 @@ const SignUpInfo = ({ navigation }) => {
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            // placeholder="Last Name"
+            placeholder={lastName}
             label="Last Name"
             style={InputFieldsStyle}
             onChangeText={onChangeLastName}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
+            placeholder={jobTitle}
             label="Job Title"
             style={InputFieldsStyle}
             onChangeText={onChangeJobTitle}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
+            placeholder={city}
             label="Your City"
             style={InputFieldsStyle}
             onChangeText={OnCityChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
+            placeholder={state}
             label="Your State/Province"
             style={InputFieldsStyle}
             onChangeText={OnStateChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
+            placeholder={country}
             label="Your Country"
             style={InputFieldsStyle}
             onChangeText={OnCountryChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
-            label="Your Mobile Number"
+            label="Your Home Number"
+            placeholder={telMobile.toString()}
             style={InputFieldsStyle}
             onChangeText={OnTelMobileChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
+            placeholder={telWork.toString()}
             label="Your Work Number"
             style={InputFieldsStyle}
             onChangeText={OnTelWorkChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
+            placeholder={emailPersonal}
             label="Your Personal Email"
             style={InputFieldsStyle}
             onChangeText={OnEmailPersonalChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            // placeholder="Enter Your Job Title"
+            placeholder={emailWork}
             label="Your Work Email"
             style={InputFieldsStyle}
             onChangeText={OnEmailWorkChange}
           />
-          <Button
-            title="Set up Profile Picture"
-            onPress={toggleProfileOverlay}
-            buttonStyle={styles.button}
-          />
-          <Overlay
-            isVisible={profileVisible}
-            onBackdropPress={toggleProfileOverlay}
-          >
-            {!imageProfile && (
-              <>
-                <Button
-                  title="Pick image from photo library"
-                  onPress={pickImage}
-                />
-                <Text> </Text>
-                <Button
-                  title="Take a picture from camera roll"
-                  onPress={takePicture}
-                />
-              </>
-            )}
-            {imageProfile && (
-              <>
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 100, height: 100 }}
-                />
-                <Text> </Text>
-                <Button
-                  title="Confirm Photo?"
-                  onPress={() => {
-                    onChangeprofilePictureUrl(image);
-                    toggleProfileOverlay();
-                  }}
-                />
-                <Text> </Text>
-                <Button
-                  title="Choose new photo"
-                  onPress={() => setProfileImage(null)}
-                />
-              </>
-            )}
-          </Overlay>
-          <Button
-            title="Set up Avatar Background"
-            onPress={toggleBackgroundOverlay}
-            buttonStyle={styles.button}
-          />
-          <Overlay
-            isVisible={backgroundVisible}
-            onBackdropPress={toggleBackgroundOverlay}
-          >
-            {!imageBackground && (
-              <>
-                <Button
-                  title="Pick image from photo library"
-                  onPress={pickBackgroundImage}
-                />
-                <Text> </Text>
-                <Button
-                  title="Take a picture from camera roll"
-                  onPress={takePicture}
-                />
-              </>
-            )}
-            {imageBackground && (
-              <>
-                <Image
-                  source={{ uri: imageBackground }}
-                  style={{ width: 100, height: 100 }}
-                />
-                <Text> </Text>
-                <Button
-                  title="Confirm Photo?"
-                  onPress={() => {
-                    onChangebackgroundImageUrl(imageBackground);
-                    toggleBackgroundOverlay();
-                  }}
-                />
-                <Text> </Text>
-                <Button
-                  title="Choose new photo"
-                  onPress={() => setBackgroundImage(null)}
-                />
-              </>
-            )}
-          </Overlay>
+          {signingUp && (
+            <>
+              <Button
+                title="Set up Profile Picture"
+                onPress={toggleProfileOverlay}
+                buttonStyle={styles.button}
+              />
+              <Overlay
+                isVisible={profileVisible}
+                onBackdropPress={toggleProfileOverlay}
+              >
+                {!imageProfile && (
+                  <>
+                    <Button
+                      title="Pick image from photo library"
+                      onPress={pickImage}
+                    />
+                    <Text> </Text>
+                    <Button
+                      title="Take a picture from camera roll"
+                      onPress={takePicture}
+                    />
+                  </>
+                )}
+                {imageProfile && (
+                  <>
+                    <Image
+                      source={{ uri: imageProfile }}
+                      style={{ width: 100, height: 100 }}
+                    />
+                    <Text> </Text>
+                    <Button
+                      title="Confirm Photo?"
+                      onPress={() => {
+                        onChangeprofilePictureUrl(imageProfile);
+                        toggleProfileOverlay();
+                      }}
+                    />
+                    <Text> </Text>
+                    <Button
+                      title="Choose new photo"
+                      onPress={() => setProfileImage(null)}
+                    />
+                  </>
+                )}
+              </Overlay>
+              <Button
+                title="Set up Avatar Background"
+                onPress={toggleBackgroundOverlay}
+                buttonStyle={styles.button}
+              />
+              <Overlay
+                isVisible={backgroundVisible}
+                onBackdropPress={toggleBackgroundOverlay}
+              >
+                {!imageBackground && (
+                  <>
+                    <Button
+                      title="Pick image from photo library"
+                      onPress={pickBackgroundImage}
+                    />
+                    <Text> </Text>
+                    <Button
+                      title="Take a picture from camera roll"
+                      onPress={takePicture}
+                    />
+                  </>
+                )}
+                {imageBackground && (
+                  <>
+                    <Image
+                      source={{ uri: imageBackground }}
+                      style={{ width: 100, height: 100 }}
+                    />
+                    <Text> </Text>
+                    <Button
+                      title="Confirm Photo?"
+                      onPress={() => {
+                        onChangebackgroundImageUrl(imageBackground);
+                        toggleBackgroundOverlay();
+                      }}
+                    />
+                    <Text> </Text>
+                    <Button
+                      title="Choose new photo"
+                      onPress={() => setBackgroundImage(null)}
+                    />
+                  </>
+                )}
+              </Overlay>
+            </>
+          )}
 
           <Button
             title="Submit"
