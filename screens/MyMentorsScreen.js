@@ -10,7 +10,7 @@ import { getMyMentors } from "../Firebase/firestoreHelper";
 import { ListItem, Avatar, Button, Icon } from "@rneui/themed";
 import { Header } from "../components/Header";
 
-const MyMentorsScreen = () => {
+const MyMentorsScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [viewStyle, setViewStyle] = useState("list");
   const [myMentors, setMyMentors] = useState([]);
@@ -31,7 +31,13 @@ const MyMentorsScreen = () => {
   );
 
   const renderList = ({ item }) => (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("ClickedProfile", {
+          userData: item,
+        });
+      }}
+    >
       <ListItem bottomDivider>
         <Avatar source={{ uri: item.profilePictureUrl }} />
         <ListItem.Content>
