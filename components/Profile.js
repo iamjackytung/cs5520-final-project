@@ -6,7 +6,6 @@ import {
 } from "../Firebase/firestoreHelper";
 import { Card, Icon, Overlay } from "react-native-elements";
 import {
-  FlatList,
   Image,
   ImageBackground,
   Linking,
@@ -293,45 +292,50 @@ const Profile = ({ userData, isUserProfile }) => {
     );
   };
 
-  renderTel = () => (
-    <FlatList
-      contentContainerStyle={styles.telContainer}
-      data={userData.tels}
-      renderItem={(list) => {
-        const { id, name, number } = list.item;
-        return (
-          <Tel
-            key={`tel-${id}`}
-            index={list.index}
-            name={name}
-            number={number}
-            onPressSms={this.onPressSms}
-            onPressTel={this.onPressTel}
-          />
-        );
-      }}
-    />
-  );
+  renderTel = () => {
+    if (!userData || !userData.tels) {
+      return <Text> Loading... </Text>;
+    }
 
-  renderEmail = () => (
-    <FlatList
-      contentContainerStyle={styles.emailContainer}
-      data={userData.emails}
-      renderItem={(list) => {
-        const { email, id, name } = list.item;
+    return (
+      <View style={styles.telContainer}>
+        {userData.tels.map((item, index) => (
+          <>
+            <Tel
+              key={`tel-${item.id}`}
+              index={index.index}
+              name={item.name}
+              number={item.number}
+              onPressSms={this.onPressSms}
+              onPressTel={this.onPressTel}
+            />
+          </>
+        ))}
+      </View>
+    );
+  };
 
-        return (
-          <Email
-            key={`email-${id}`}
-            index={list.index}
-            name={name}
-            email={email}
-            onPressEmail={this.onPressEmail}
-          />
-        );
-      }}
-    />
-  );
+  renderEmail = () => {
+    if (!userData || !userData.emails) {
+      return <Text> Loading... </Text>;
+    }
+
+    return (
+      <View style={styles.emailContainer}>
+        {userData.emails.map((item, index) => (
+          <>
+            <Email
+              key={`email-${item.id}`}
+              index={index}
+              name={item.name}
+              email={item.email}
+              onPressEmail={this.onPressEmail}
+            />
+          </>
+        ))}
+      </View>
+    );
+  };
 
   return (
     <ScrollView style={styles.scroll}>
