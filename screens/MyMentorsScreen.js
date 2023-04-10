@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 import { getMyMentors, findNewMentors } from "../Firebase/firestoreHelper";
 import { Button, Icon } from "@rneui/themed";
 import { Header } from "../components/Header";
-import MyMentorsFlatList from "../components/MyMentorsFlatList";
-import NewMentorsFlatList from "../components/NewMentorsFlatList";
+import MyMentorsFlatList from "../components/lists/MyMentorsFlatList";
+import NewMentorsFlatList from "../components/lists/NewMentorsFlatList";
 
 const MyMentorsScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
@@ -63,7 +63,10 @@ const MyMentorsScreen = ({ navigation }) => {
           containerStyle={styles.switchButton}
           onPress={() => setViewStyle(viewStyle === "list" ? "grid" : "list")}
           icon={
-            <Icon name={viewStyle === "list" ? "view-module" : "view-list"} />
+            <Icon
+              size={35}
+              name={viewStyle === "list" ? "view-module" : "view-list"}
+            />
           }
           type="clear"
         />
@@ -73,35 +76,57 @@ const MyMentorsScreen = ({ navigation }) => {
           title="My Mentors"
           onPress={() => setMyMentorsFilter(!myMentorsFilter)}
           type={myMentorsFilter ? "solid" : "outline"}
+          buttonStyle={
+            myMentorsFilter ? styles.activeButton : styles.inactiveButton
+          }
+          titleStyle={
+            myMentorsFilter
+              ? styles.activeButtonText
+              : styles.inactiveButtonText
+          }
         />
         <Button
           title="New Mentors"
           onPress={() => setNewMentorsFilter(!newMentorsFilter)}
           type={newMentorsFilter ? "solid" : "outline"}
+          buttonStyle={
+            newMentorsFilter ? styles.activeButton : styles.inactiveButton
+          }
+          titleStyle={
+            newMentorsFilter
+              ? styles.activeButtonText
+              : styles.inactiveButtonText
+          }
         />
       </View>
       {myMentorsFilter && (
-        <MyMentorsFlatList
-          data={filteredMyMentors}
-          viewStyle={viewStyle}
-          navigation={navigation}
-          onFindNewMentorsPress={onFindNewMentorsPress}
-          myMentors={myMentors}
-          setMyMentors={setMyMentors}
-        />
+        <View>
+          <Text style={styles.listTitle}>My current mentors</Text>
+          <MyMentorsFlatList
+            data={filteredMyMentors}
+            viewStyle={viewStyle}
+            navigation={navigation}
+            onFindNewMentorsPress={onFindNewMentorsPress}
+            myMentors={myMentors}
+            setMyMentors={setMyMentors}
+          />
+        </View>
       )}
       {newMentorsFilter && (
-        <NewMentorsFlatList
-          data={newMentors}
-          viewStyle={viewStyle}
-          navigation={navigation}
-          renderList={({ item }) => <MentorListItem item={item} />}
-          renderGridItem={({ item }) => <MentorGridItem item={item} />}
-          myMentors={myMentors}
-          setMyMentors={setMyMentors}
-          newMentors={newMentors}
-          setNewMentors={setNewMentors}
-        />
+        <View>
+          <Text style={styles.listTitle}>Connect with new mentors</Text>
+          <NewMentorsFlatList
+            data={newMentors}
+            viewStyle={viewStyle}
+            navigation={navigation}
+            renderList={({ item }) => <MentorListItem item={item} />}
+            renderGridItem={({ item }) => <MentorGridItem item={item} />}
+            myMentors={myMentors}
+            setMyMentors={setMyMentors}
+            newMentors={newMentors}
+            setNewMentors={setNewMentors}
+          />
+        </View>
       )}
     </View>
   );
@@ -110,30 +135,62 @@ const MyMentorsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f8f8ff",
   },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
-    paddingBottom: 10,
   },
   searchInput: {
     flex: 1,
     height: 50,
-    borderColor: "gray",
+    borderColor: "#ccc",
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 50,
     paddingHorizontal: 8,
-    marginRight: 10,
+    marginRight: 1,
+    backgroundColor: "#ffffff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   switchButton: {
-    padding: 10,
+    padding: 5,
   },
   filterContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 10,
+    marginVertical: 10,
+  },
+  activeButton: {
+    backgroundColor: "#008B8B",
+    borderColor: "#008B8B",
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
+  },
+  inactiveButton: {
+    backgroundColor: "transparent",
+    borderColor: "#008B8B",
+    borderRadius: 5,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
+  },
+  activeButtonText: {
+    color: "#ffffff",
+  },
+  inactiveButtonText: {
+    color: "#008B8B",
+  },
+  listTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginLeft: 10,
+    marginTop: 10,
   },
 });
 
