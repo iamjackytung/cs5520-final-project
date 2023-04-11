@@ -1,9 +1,9 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import MentorListItem from "./MentorListItem";
-import MentorGridItem from "./MentorGridItem";
+import MentorListItem from "../MentorListItem";
+import MentorGridItem from "../MentorGridItem";
 import { Button, Card, Text } from "@rneui/themed";
-import { disconnectWithMentor } from "../Firebase/firestoreHelper";
+import { disconnectWithMentor } from "../../Firebase/firestoreHelper";
 
 const MyMentorsFlatList = ({
   data,
@@ -71,7 +71,6 @@ const MyMentorsFlatList = ({
       numColumns={viewStyle === "list" ? 1 : 2}
       key={viewStyle}
       ListEmptyComponent={renderEmptyMyMentorsList}
-      ListHeaderComponent={renderMyMentorsListTitle}
     />
   );
 };
@@ -85,13 +84,6 @@ const styles = StyleSheet.create({
   findMentorsButton: {
     alignSelf: "center",
     marginBottom: 10,
-  },
-
-  myMentorsFlatListTitlle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 10,
-    marginTop: 10,
   },
 });
 
