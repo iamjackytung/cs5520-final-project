@@ -108,9 +108,13 @@ Guoao:
 
 Jacky:
 
-- Avatar + background images storage
-- My profile screen
-- Mentor profile screen
+- Header avatar now redirects to signupinfo page
+- User profile and clicked profile now both has Headers. Profile Page is now the child component of User profile or Clicked Profile. Prop will be passed into Profile page to check this.
+- Book meeting page UI completed for calendar, but does not get or update any data yet for real-time booking
+  SignUp Info page is now both the signup page and the update profile page. This page's function changes depending on when the user is signed in or not.
+- firestore now has helper that updates profile picture
+- Profile page now has a button that can be used to update profile picture. This button will create an overlay for camera/libary options. This button is only available for User Profile and not Clicked Profile.
+- Completed bug fixes. One of them includes that telephone numbers should be numbers not strings
 
 Victor:
 
