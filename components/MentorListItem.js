@@ -1,6 +1,8 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { ListItem, Avatar, Button } from "@rneui/themed";
+import ConnectButton from "./buttons/ConnectButton";
+import DisconnectButton from "./buttons/DisconnectButton";
 
 const MentorListItem = ({
   item,
@@ -20,17 +22,30 @@ const MentorListItem = ({
     >
       <ListItem bottomDivider>
         <Avatar source={{ uri: item.profilePictureUrl }} />
-        <ListItem.Content>
-          <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
-          <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
-          {connectButton && <Button title="Connect" onPress={onConnect} />}
-          {disconnectButton && (
-            <Button title="Disconnect" onPress={onDisconnect} />
+        <View style={styles.listItemContent}>
+          <ListItem.Content>
+            <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
+            <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
+          </ListItem.Content>
+          {connectButton && (
+            <ConnectButton title="Connect" onPress={onConnect} />
           )}
-        </ListItem.Content>
+          {disconnectButton && (
+            <DisconnectButton title="Disconnect" onPress={onDisconnect} />
+          )}
+        </View>
       </ListItem>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  listItemContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flex: 1,
+  },
+});
 
 export default MentorListItem;

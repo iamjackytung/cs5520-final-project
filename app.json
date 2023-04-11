@@ -32,6 +32,12 @@
           "cameraPermission": "$(PRODUCT_NAME) needs access to your camera.",
           "photosPermission": "$(PRODUCT_NAME) needs access to your photos."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
       ]
     ]
   }

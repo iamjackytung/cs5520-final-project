@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { Avatar, ListItem, Button } from "@rneui/themed";
+import ConnectButton from "./buttons/ConnectButton";
 
 const MentorGridItem = ({
   item,
@@ -23,7 +24,7 @@ const MentorGridItem = ({
       <ListItem.Content>
         <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
         <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
-        {connectButton && <Button title="Connect" onPress={onConnect} />}
+        {connectButton && <ConnectButton title="Connect" onPress={onConnect} />}
         {disconnectButton && (
           <Button title="Disconnect" onPress={onDisconnect} />
         )}

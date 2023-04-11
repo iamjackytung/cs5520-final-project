@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyMentorsScreen from "./MyMentorsScreen";
 import UserProfile from "./UserProfile";
 import Booking from "./Booking";
+import { StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
