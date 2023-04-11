@@ -3,7 +3,15 @@ import "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { ThemeProvider } from "@rneui/themed";
+import {
+  Button,
+  lightColors,
+  createTheme,
+  ThemeProvider,
+  Avatar,
+} from "@rneui/themed";
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider } from '@ui-kitten/components';
 import Home from "./screens/Home";
 import SignUpInfo from "./screens/SignUpInfo";
 import SignUp from "./screens/SignUp";
@@ -15,6 +23,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <SafeAreaProvider>
+      <ApplicationProvider {...eva} theme={eva.light}>
       <ThemeProvider>
         <NavigationContainer>
           <Stack.Navigator
@@ -31,6 +40,7 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>
+      </ApplicationProvider>
     </SafeAreaProvider>
   );
 }

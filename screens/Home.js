@@ -2,6 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyMentorsScreen from "./MyMentorsScreen";
 import UserProfile from "./UserProfile";
+import Booking from "./Booking";
 import { StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
@@ -16,6 +17,7 @@ export default function Home() {
       >
         <Tab.Screen name="MyMentors" component={MyMentorsScreen} />
         <Tab.Screen name="UserProfile" component={UserProfile} />
+        <Tab.Screen name="Booking" component={Booking} />
       </Tab.Navigator>
     </>
   );
