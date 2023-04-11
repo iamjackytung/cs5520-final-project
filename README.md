@@ -77,11 +77,11 @@ Finished in iteration 1 and improved in iteration 2:
 
 - Allow users to setup profile and background picture after signup.
 - Allow users to provide more personal details for their profile page. Work and personal phone number, work and personal email, city, province/state, country,
-  <img src="./screenshots/iteration-2/profile1.png" width="80%">
-  <img src="./screenshots/iteration-2/profile2.png" width="80%">
+  <img src="./screenshots/iteration-2/profile1.png" width="30%">
+  <img src="./screenshots/iteration-2/profile2.png" width="30%">
   <img src="./screenshots/iteration-2/profile3.png" width="30%">
   <img src="./screenshots/iteration-2/profile4.png" width="30%">
-  <img src="./screenshots/iteration-2/profile5.png" width="30%">
+  <img src="./screenshots/iteration-2/profile5.jpeg" width="30%">
 
 ~~Camera use~~
 
@@ -89,7 +89,11 @@ Users can use the camera to take a picture for their avatar in user profile
 
 ~~Location use~~
 
-EDIT HERE GUOAO
+The booking page obtains the current location, and autocomplete nearby location when user is typing in the input box.
+
+<img src="./screenshots/iteration-2/booking.png" width="30%">
+<img src="./screenshots/iteration-2/booking_autocomplete.png" width="30%">
+
 
 Notification
 
