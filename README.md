@@ -37,6 +37,7 @@ Screenshots:
 ### Requirements
 
 You should have React Native components created to represent the functionality you will be building, and the overall structure of your app should be in place.
+
 - We have React Native components that are created for our sign-up/sign-in page. Our react component is also create for when the user inserts their information when they sign up.
 - Our My Mentors list page is created. Creating the My Mentees page should be really quick since it is a duplicate of the same page.
 - Calendar page and Profile page is not yet set up, but will be completed in the next iteration.
@@ -45,10 +46,10 @@ You should have React Native components created to represent the functionality y
 - Overall, we will need to also setup logout to end persistence.
 
 * Navigation
-    * Your app should have at least 2 navigators 
-        * Our app includes a bottom and top navigator once users signup/login
+  - Your app should have at least 2 navigators
+    - Our app includes a bottom and top navigator once users signup/login
 * The basis of CRUD operations to Firestore should be established and working.
-    * The basis of CRUD operations work as we are able to set up our initial collection for users. Our other CRUD operations will work given that this works too.
+  - The basis of CRUD operations work as we are able to set up our initial collection for users. Our other CRUD operations will work given that this works too.
 
 ### Next steps
 
@@ -67,3 +68,55 @@ Guoao
 
 - Book meeting page
 - Obtain location and show static map
+
+## Iteration 2
+
+~~Authentication~~
+
+Finished in iteration 1 and improved in iteration 2:
+
+- Allow users to setup profile and background picture after signup.
+- Allow users to provide more personal details for their profile page. Work and personal phone number, work and personal email, city, province/state, country,
+  <img src="./screenshots/iteration-2/profile1.png" width="30%">
+  <img src="./screenshots/iteration-2/profile2.png" width="30%">
+  <img src="./screenshots/iteration-2/profile3.png" width="30%">
+  <img src="./screenshots/iteration-2/profile4.png" width="30%">
+  <img src="./screenshots/iteration-2/profile5.jpeg" width="30%">
+
+~~Camera use~~
+
+Users can use the camera to take a picture for their avatar in user profile
+
+~~Location use~~
+
+The booking page obtains the current location, and autocomplete nearby location when user is typing in the input box.
+
+<img src="./screenshots/iteration-2/booking.png" width="30%">
+<img src="./screenshots/iteration-2/booking_autocomplete.png" width="30%">
+
+
+Notification
+
+External API use
+
+Guoao:
+
+- Built a skeleton of the Booking page
+- Added dropdown for selecting duration
+- Added Autocomplete for address using Google API
+- Fixed several bugs
+
+Jacky:
+
+- Avatar + background images storage
+- My profile screen
+- Mentor profile screen
+
+Victor:
+
+- Two new filters in my mentors page: New mentors and My mentors filters
+- Filters allow users to hide any of the list
+- Connect button: once clicked, a connection between the mentor and mentee is created, which will mentees to interact and meet with their mentors
+- Disconnect button: ends the connection between a mentor and a mentee
+
+<img src="./screenshots/iteration-2/mymentors.jpeg" width="30%">
