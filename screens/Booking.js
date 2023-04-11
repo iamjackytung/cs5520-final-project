@@ -2,31 +2,17 @@ import { View, Text, StyleSheet } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import { auth } from "../Firebase/firebase-setup";
 import { Input, Icon, Button } from '@rneui/themed';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { IndexPath, Layout, Select, SelectItem } from '@ui-kitten/components';
 import { Header } from "../components/Header";
+import AddressAutocomplete from "../components/AddressAutocomplete";
+import DurationSelect from "../components/DurationSelect";
 
 
 export default function Booking() {
-  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
-
-  // const input = useRef();
   const [topic, setTopic] = useState("");
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 'Apple', value: 'apple'},
-    {label: 'Banana', value: 'banana'}
-  ]);
-
-  // function shakeInput() {
-  //   input.current.shake();
-  // }
 
   function onSubmit() {
 
@@ -61,45 +47,17 @@ export default function Booking() {
           />
         </View>
         <View style={styles.inputRow}>
-          <Icon style={styles.icon} size={24} name='clockcircleo' type="antdesign" />
-          {/* <Input
-          value={duration}
-          onChangeText={setDuration}
-          containerStyle={styles.input}
-          placeholder='Duration'
-          /> */}
-          {/* <View style={{flex: 1, zIndex: 100 }}>
-            <DropDownPicker
-            placeholder="Select duration"
-            // containerStyle={{marginBottom: 10}}
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            />
-          </View> */}
-          <View style={{width: "100%"}}>
-            <Select
-            placeholder='Select duration'
-            selectedIndex={selectedIndex}
-            onSelect={index => setSelectedIndex(index)}>
-            <SelectItem title='15 minutes'/>
-            <SelectItem title='30 minutes'/>
-            <SelectItem title='1 hour'/>
-          </Select>
-          </View>
-
+          <Icon
+            style={styles.icon}
+            size={24}
+            name="clockcircleo"
+            type="antdesign"
+          />
+          <DurationSelect onSelectDuration={setDuration}/>
         </View>
         <View style={styles.inputRow}>
           <Icon style={styles.icon} size={24} name='location-outline' type="ionicon" />
-          <Input
-          value={location}
-          onChangeText={setLocation}
-          containerStyle={styles.input}
-          placeholder='Location'
-          />
+          <AddressAutocomplete onChangeLocation={setLocation}/>
         </View>
         <View style={styles.inputRow}>
           <Icon style={styles.icon} size={24} name='sticky-note-o' type="font-awesome" />
