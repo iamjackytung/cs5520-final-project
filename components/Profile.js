@@ -300,16 +300,14 @@ const Profile = ({ userData, isUserProfile }) => {
     return (
       <View style={styles.telContainer}>
         {userData.tels.map((item, index) => (
-          <>
             <Tel
               key={`tel-${item.id}`}
-              index={index.index}
+            index={index}
               name={item.name}
               number={item.number}
               onPressSms={this.onPressSms}
               onPressTel={this.onPressTel}
             />
-          </>
         ))}
       </View>
     );
@@ -323,7 +321,6 @@ const Profile = ({ userData, isUserProfile }) => {
     return (
       <View style={styles.emailContainer}>
         {userData.emails.map((item, index) => (
-          <>
             <Email
               key={`email-${item.id}`}
               index={index}
@@ -331,7 +328,6 @@ const Profile = ({ userData, isUserProfile }) => {
               email={item.email}
               onPressEmail={this.onPressEmail}
             />
-          </>
         ))}
       </View>
     );
