@@ -7,6 +7,7 @@ import {
   where,
   getDocs,
   updateDoc,
+  or,
 } from "firebase/firestore";
 import { auth, firestore } from "./firebase-setup";
 import * as ImagePicker from "expo-image-picker";
@@ -42,15 +43,14 @@ export async function getMeetings() {
   const bookingCollection = collection(firestore, "bookings");
   const q = query(
     bookingCollection,
-    where("attendee_ids", "array-contains", "jGmVqzsHdWRBL73Vnj1xvPiZkte2")
+    or(
+      where("organizer_id", "==", auth.currentUser.uid),
+      where("attendee_ids", "array-contains", auth.currentUser.uid)
+    )
   );
   const querySnapshot = await getDocs(q);
   const MeetingsList = {};
 
-  //  [
-  //    {"day": "2017-08-12", "name": "Item for 2017-08-12 #0"},
-  //    {"day": "2017-08-12", "name": "Item for 2017-08-12 #1"}
-  //  ]
   const getMeetingList = async (querySnapshot) => {
     try {
       for (const booking of querySnapshot.docs) {
@@ -65,31 +65,26 @@ export async function getMeetings() {
         const date = booking.data().start_date.toDate();
         const simpleDate = date.toISOString().split("T")[0];
         const usersCollection = collection(firestore, "users");
-        const meetingUser1 = booking.data().attendee_ids[0];
-        const meetingUser2 = booking.data().attendee_ids[1];
-        const meetingUser1DocRef = doc(usersCollection, meetingUser1);
-        const meetingUser2DocRef = doc(usersCollection, meetingUser2);
-        const meetingUser1DocSnap = await getDoc(meetingUser1DocRef);
-        const meetingUser2DocSnap = await getDoc(meetingUser2DocRef);
-        const user1firstName = meetingUser1DocSnap.data().firstName;
-        const user2firstName = meetingUser2DocSnap.data().firstName;
-        const organizingID = booking.data().organizer_id;
-        // console.log(user1firstName + " " + user2firstName);
+
+        let namesOfAttendees = "";
+        for (let i = 0; i < booking.data().attendee_ids.length; i++) {
+          const meetingUser = booking.data().attendee_ids[i];
+          const meetingUserDocRef = doc(usersCollection, meetingUser);
+          const meetingUserDocSnap = await getDoc(meetingUserDocRef);
+          const userFirstName = meetingUserDocSnap.data().firstName;
+          if (i == 0) namesOfAttendees += userFirstName;
+          else namesOfAttendees += " & " + userFirstName;
+        }
+        const organizerID = booking.data().organizer_id;
         const location = booking.data().location;
         if (!MeetingsList[simpleDate]) {
           MeetingsList[simpleDate] = [];
         }
+
         MeetingsList[simpleDate].push({
-          organizingID: organizingID,
+          organizerID: organizerID,
           day: simpleDate,
-          name:
-            user1firstName +
-            " and " +
-            user2firstName +
-            " meeting \n" +
-            location +
-            "\n @ " +
-            time,
+          name: namesOfAttendees + " meeting \n@" + location + " - " + time,
         });
       }
     } catch (error) {
