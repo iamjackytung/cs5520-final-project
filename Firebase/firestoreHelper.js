@@ -7,6 +7,7 @@ import {
   where,
   getDocs,
   updateDoc,
+  or,
 } from "firebase/firestore";
 import { auth, firestore } from "./firebase-setup";
 import * as ImagePicker from "expo-image-picker";
@@ -36,38 +37,63 @@ export async function updateProfilePic(profilePicUrl) {
   }
 }
 
-// export async function getImageFromLibrary() {
-//   let mediaPermStatus = await ImagePicker.getMediaLibraryPermissionsAsync();
-//   // console.log(mediaPermStatus);
-//   if (mediaPermStatus.granted) {
-//     let result = await ImagePicker.launchImageLibraryAsync({
-//       mediaTypes: ImagePicker.MediaTypeOptions.All,
-//       allowsEditing: true,
-//       aspect: [4, 3],
-//       quality: 1,
-//     });
-//     if (!result.canceled) return result.assets[0].uri;
-//     else {
-//       console.log("failure. Empty Avatar used instead.");
-//       return "https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png?ssl=1";
-//     }
-//   } else
-//     mediaPermStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-//   return "https://i0.wp.com/rouelibrenmaine.fr/wp-content/uploads/2018/10/empty-avatar.png?ssl=1";
-// }
+export async function getMeetings() {
+  // const currentUser = auth.currentUser;
+  // console.log("jGmVqzsHdWRBL73Vnj1xvPiZkte2");
+  const bookingCollection = collection(firestore, "bookings");
+  const q = query(
+    bookingCollection,
+    or(
+      where("organizer_id", "==", auth.currentUser.uid),
+      where("attendee_ids", "array-contains", auth.currentUser.uid)
+    )
+  );
+  const querySnapshot = await getDocs(q);
+  const MeetingsList = {};
 
-// export async function writeToDB(uid, signUpData) {
-//   firestore()
-//     .collection("users")
-//     .doc(uid)
-//     .set({
-//       name: "Ada Lovelace",
-//       age: 30,
-//     })
-//     .then(() => {
-//       console.log("User added!");
-//     });
-// }
+  const getMeetingList = async (querySnapshot) => {
+    try {
+      for (const booking of querySnapshot.docs) {
+        // console.log(typeof booking.data().start_date.);
+        const time = booking
+          .data()
+          .start_date.toDate()
+          .toISOString()
+          .split("T")[1]
+          .split(".")[0];
+
+        const date = booking.data().start_date.toDate();
+        const simpleDate = date.toISOString().split("T")[0];
+        const usersCollection = collection(firestore, "users");
+
+        let namesOfAttendees = "";
+        for (let i = 0; i < booking.data().attendee_ids.length; i++) {
+          const meetingUser = booking.data().attendee_ids[i];
+          const meetingUserDocRef = doc(usersCollection, meetingUser);
+          const meetingUserDocSnap = await getDoc(meetingUserDocRef);
+          const userFirstName = meetingUserDocSnap.data().firstName;
+          if (i == 0) namesOfAttendees += userFirstName;
+          else namesOfAttendees += " & " + userFirstName;
+        }
+        const organizerID = booking.data().organizer_id;
+        const location = booking.data().location;
+        if (!MeetingsList[simpleDate]) {
+          MeetingsList[simpleDate] = [];
+        }
+
+        MeetingsList[simpleDate].push({
+          organizerID: organizerID,
+          day: simpleDate,
+          name: namesOfAttendees + " meeting \n@" + location + " - " + time,
+        });
+      }
+    } catch (error) {
+      console.log("Error fetching mentors:", error);
+    }
+    return MeetingsList;
+  };
+  return getMeetingList(querySnapshot);
+}
 
 export async function getMyMentors() {
   try {
