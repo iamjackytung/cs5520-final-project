@@ -3,7 +3,7 @@ import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { ListItem, Avatar, Icon } from "@rneui/themed";
 import { Button } from "react-native-elements";
 
-const ConnectionRequestItem = ({ item, navigation, onAccept, onDeny }) => {
+const ConnectionRequestItem = ({ item, navigation, onAccept, onDecline }) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -27,8 +27,8 @@ const ConnectionRequestItem = ({ item, navigation, onAccept, onDeny }) => {
             />
             <Button
               icon={<Icon name="close" size={20} color="white" />}
-              buttonStyle={styles.denyButton}
-              onPress={onDeny}
+              buttonStyle={styles.declineButton}
+              onPress={onDecline}
             />
           </View>
         </View>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: "green",
     marginRight: 5,
   },
-  denyButton: {
+  declineButton: {
     backgroundColor: "red",
   },
 });

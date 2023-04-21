@@ -154,6 +154,7 @@ export function getMyMentors(callback) {
       }
 
       const userMentors = userDocSnap.data().mentors;
+      const userOutboundRequests = userDocSnap.data().outboundRequests;
       const mentorDetailsList = [];
 
       for (const mentorID of userMentors) {
@@ -162,7 +163,16 @@ export function getMyMentors(callback) {
 
         if (mentorDocSnap.exists()) {
           const mentorData = mentorDocSnap.data();
-          mentorDetailsList.push(mentorData);
+          mentorDetailsList.push({ ...mentorData, outboundRequest: false });
+        }
+      }
+      for (const mentorID of userOutboundRequests) {
+        const mentorDocRef = doc(usersCollection, mentorID);
+        const mentorDocSnap = await getDoc(mentorDocRef);
+
+        if (mentorDocSnap.exists()) {
+          const mentorData = mentorDocSnap.data();
+          mentorDetailsList.push({ ...mentorData, outboundRequest: true });
         }
       }
       callback(mentorDetailsList);
@@ -227,6 +237,8 @@ export async function findNewMentors(searchInput) {
 
     const myMentors = userDocSnap.data().mentors;
 
+    const myOutboundRequests = userDocSnap.data().outboundRequests;
+
     const searchToken = searchInput.trim().toLowerCase();
 
     const allUsersSnap = await getDocs(usersCollection);
@@ -237,6 +249,7 @@ export async function findNewMentors(searchInput) {
       if (
         doc.exists() &&
         !myMentors.includes(doc.id) &&
+        !myOutboundRequests.includes(doc.id) &&
         doc.id !== auth.currentUser.uid
       ) {
         const userData = doc.data();
@@ -295,6 +308,11 @@ export async function connectWithMentor(mentorId) {
       userData.outboundRequests = userData.outboundRequests || [];
       userData.outboundRequests.push(mentorId);
       await updateDoc(userDocRef, userData);
+      sendPushNotification(
+        userData.pushToken,
+        "Connection Request Sent",
+        `You sent a connection request to ${mentorData.firstName} ${mentorData.lastName}!`
+      );
     }
   } catch (error) {
     console.log("Error connecting with mentor:", error);
@@ -422,7 +440,7 @@ export async function disconnectWithMentor(mentorId) {
     }
     const currentUserData = currentUserDocSnap.data();
     const myMentors = currentUserData.mentors || [];
-    const myMentees = currentUserData.mentees || [];
+
     const updatedMyMentors = myMentors.filter((id) => id !== mentorId);
     await updateDoc(currentUserDocRef, { mentors: updatedMyMentors });
     const mentorDocRef = doc(usersCollection, mentorId);
@@ -437,6 +455,17 @@ export async function disconnectWithMentor(mentorId) {
       (id) => id !== auth.currentUser.uid
     );
     await updateDoc(mentorDocRef, { mentees: updatedMentorMentees });
+    const myOutboundRequests = currentUserData.outboundRequests || [];
+    const updatedMentorOutboundRequests = myOutboundRequests.filter(
+      (id) => id !== mentorId
+    );
+    await updateDoc(currentUserDocRef, {
+      outboundRequests: updatedMentorOutboundRequests,
+    });
+    const mentorInboundRequests = mentorData.inboundRequests || [];
+    const updatedMentorInboundRequests = mentorInboundRequests.filter(
+      (id) => id !== auth.currentUser.uid
+    );
     sendPushNotification(
       mentorData.pushToken,
       "Connection Disconnected",

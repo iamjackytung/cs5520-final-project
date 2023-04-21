@@ -46,6 +46,7 @@ export const PushTokenProvider = ({ children }) => {
 };
 
 export async function sendPushNotification(expoPushToken, title, message) {
+  console.log("Started sending push notification");
   const messageObj = {
     to: expoPushToken,
     sound: "default",
@@ -64,4 +65,5 @@ export async function sendPushNotification(expoPushToken, title, message) {
     },
     body: JSON.stringify(messageObj),
   });
+  return;
 }
