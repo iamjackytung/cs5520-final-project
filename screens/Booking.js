@@ -5,7 +5,7 @@ import AddressAutocomplete from "../components/AddressAutocomplete";
 import DateTimePickerButtonList from "../components/DateTimePickerButtonList";
 import DateTimePickerButtonListAndroid from "../components/DateTimePickerButtonListAndroid";
 import { Header } from "../components/Header";
-import { addBooking, saveUserData, getCurrentUserDate } from "../Firebase/firestoreHelper";
+import { addBooking, saveUserData, getCurrentUserData } from "../Firebase/firestoreHelper";
 import { PushTokenContext } from "../contexts/PushTokenContext";
 
 export default function Booking({ route, navigation }) {
@@ -44,7 +44,7 @@ export default function Booking({ route, navigation }) {
         [{ text: "OK", onPress: () => navigation.goBack() }]
       );
 
-      const currentUserData = getCurrentUserData();
+      const currentUserData = await getCurrentUserData();
 
       let dateOptions = { month: 'short', day: 'numeric'};
       const dateString = startDate.toLocaleDateString("en-US", dateOptions);
@@ -53,15 +53,19 @@ export default function Booking({ route, navigation }) {
       const timeString = startDate.toLocaleTimeString("en-US", timeOptions);
 
       // Send push notification to attendee
-      fetch("https://exp.host/--/api/v2/push/send", {
+      const result = await fetch("https://exp.host/--/api/v2/push/send", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           to: attendeeToken,
           title: `New booking from ${currentUserData.firstName} ${currentUserData.lastName}`,
-          body: dateString + timeString
+          body: dateString + ", " + timeString
         }),
       });
+
+      if (!result.ok) {
+        throw new Error("HTTP error with status", result.status);
+      }
 
     } else {
       Alert.alert("Booking failed");
