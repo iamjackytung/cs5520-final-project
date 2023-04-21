@@ -47,8 +47,13 @@ const Header = (props) => {
         <Avatar
           size={"small"}
           rounded
+<<<<<<< HEAD
           source={require("../assets/back.png")}
           onPress={() => navigation.goBack()}
+=======
+          source={require("../assets/emptyAvatar.png")}
+          onPress={() => navigation.navigate("UserProfile")}
+>>>>>>> 7bfcf1e915e537890edf64d29391c07e7d6ec65c
         />
       );
     } else {
@@ -72,6 +77,17 @@ const Header = (props) => {
         );
       }
     }
+<<<<<<< HEAD
+=======
+    return (
+      <Avatar
+        size={"small"}
+        rounded
+        source={{ uri: photo }}
+        onPress={() => navigation.navigate("UserProfile")}
+      />
+    );
+>>>>>>> 7bfcf1e915e537890edf64d29391c07e7d6ec65c
   };
 
   const playgroundNavigate = () => {
