@@ -18,18 +18,34 @@ const MyMenteesScreen = ({ navigation }) => {
   const searchInputRef = useRef(null);
   const [connectionRequests, setConnectionRequests] = useState([]);
 
+  // useEffect(() => {
+  //   async function fetchMyMentees() {
+  //     const mentees = await getMyMentees();
+  //     setMyMentees(mentees);
+  //   }
+  //   async function fetchInboundRequests() {
+  //     const requests = await getInboundRequests();
+  //     setConnectionRequests(requests);
+  //   }
+
+  //   fetchMyMentees();
+  //   fetchInboundRequests();
+  // }, []);
+
   useEffect(() => {
-    async function fetchMyMentees() {
-      const mentees = await getMyMentees();
+    const unsubscribe = getMyMentees((mentees) => {
       setMyMentees(mentees);
-    }
+    });
+
     async function fetchInboundRequests() {
       const requests = await getInboundRequests();
       setConnectionRequests(requests);
     }
 
-    fetchMyMentees();
     fetchInboundRequests();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const filteredMyMentees = myMentees.filter((mentee) =>

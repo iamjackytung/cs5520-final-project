@@ -16,12 +16,13 @@ const MyMentorsScreen = ({ navigation }) => {
   const searchInputRef = useRef(null);
 
   useEffect(() => {
-    async function fetchMyMentors() {
-      const mentors = await getMyMentors();
+    const unsubscribe = getMyMentors((mentors) => {
       setMyMentors(mentors);
-    }
+    });
 
-    fetchMyMentors();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   useEffect(() => {

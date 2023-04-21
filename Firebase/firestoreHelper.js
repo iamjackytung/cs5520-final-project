@@ -9,6 +9,7 @@ import {
   getDocs,
   updateDoc,
   or,
+  onSnapshot,
 } from "firebase/firestore";
 import { auth, firestore } from "./firebase-setup";
 
@@ -43,7 +44,7 @@ export async function getCurrentUserData() {
   }
 }
 
-export async function isMentor() {
+export async function userIsMentor() {
   try {
     const docRef = doc(firestore, "users", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
@@ -54,7 +55,7 @@ export async function isMentor() {
   }
 }
 
-export async function isMentee() {
+export async function userIsMentee() {
   try {
     const docRef = doc(firestore, "users", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
@@ -96,28 +97,14 @@ export async function getMeetings() {
     try {
       for (const booking of querySnapshot.docs) {
         // console.log(typeof booking.data().start_date.);
-        const time = booking
-          .data()
-          .start_date.toDate()
-          .toISOString()
-          .split("T")[1]
-          .split(".")[0];
+        const time = booking.data().start_date.to; // useEffect(() => {
+        //   async function fetchMyMentors() {
+        //     const mentors = await getMyMentors();
+        //     setMyMentors(mentors);
+        //   }
 
-        const date = booking.data().start_date.toDate();
-        const simpleDate = date.toISOString().split("T")[0];
-        const usersCollection = collection(firestore, "users");
-
-        let namesOfAttendees = "";
-        for (let i = 0; i < booking.data().attendee_ids.length; i++) {
-          const meetingUser = booking.data().attendee_ids[i];
-          const meetingUserDocRef = doc(usersCollection, meetingUser);
-          const meetingUserDocSnap = await getDoc(meetingUserDocRef);
-          const userFirstName = meetingUserDocSnap.data().firstName;
-          if (i == 0) namesOfAttendees += userFirstName;
-          else namesOfAttendees += " & " + userFirstName;
-        }
-        const organizerID = booking.data().organizer_id;
-        const location = booking.data().location;
+        //   fetchMyMentors();
+        // }, []);n = booking.data().location;
         if (!MeetingsList[simpleDate]) {
           MeetingsList[simpleDate] = [];
         }
@@ -150,7 +137,7 @@ export async function addBooking(info) {
   }
 }
 
-export async function getMyMentors() {
+export function getMyMentors(callback) {
   try {
     if (!auth.currentUser.uid) {
       console.log("No user is signed in");
@@ -158,32 +145,35 @@ export async function getMyMentors() {
     }
     const usersCollection = collection(firestore, "users");
     const userDocRef = doc(usersCollection, auth.currentUser.uid);
-    const userDocSnap = await getDoc(userDocRef);
 
-    if (!userDocSnap.exists()) {
-      console.log("User document does not exist.");
-      return;
-    }
-
-    const userMentors = userDocSnap.data().mentors;
-    const mentorDetailsList = [];
-
-    for (const mentorID of userMentors) {
-      const mentorDocRef = doc(usersCollection, mentorID);
-      const mentorDocSnap = await getDoc(mentorDocRef);
-
-      if (mentorDocSnap.exists()) {
-        const mentorData = mentorDocSnap.data();
-        mentorDetailsList.push(mentorData);
+    const unsubscribe = onSnapshot(userDocRef, async (userDocSnap) => {
+      if (!userDocSnap.exists()) {
+        console.log("User document does not exist.");
+        return;
       }
-    }
-    return mentorDetailsList;
+
+      const userMentors = userDocSnap.data().mentors;
+      const mentorDetailsList = [];
+
+      for (const mentorID of userMentors) {
+        const mentorDocRef = doc(usersCollection, mentorID);
+        const mentorDocSnap = await getDoc(mentorDocRef);
+
+        if (mentorDocSnap.exists()) {
+          const mentorData = mentorDocSnap.data();
+          mentorDetailsList.push(mentorData);
+        }
+      }
+      callback(mentorDetailsList);
+    });
+
+    return unsubscribe;
   } catch (error) {
     console.log("Error fetching mentors:", error);
   }
 }
 
-export async function getMyMentees() {
+export function getMyMentees(callback) {
   try {
     if (!auth.currentUser.uid) {
       console.log("No user is signed in");
@@ -191,28 +181,31 @@ export async function getMyMentees() {
     }
     const usersCollection = collection(firestore, "users");
     const userDocRef = doc(usersCollection, auth.currentUser.uid);
-    const userDocSnap = await getDoc(userDocRef);
 
-    if (!userDocSnap.exists()) {
-      console.log("User document does not exist.");
-      return;
-    }
-
-    const userMentees = userDocSnap.data().mentees;
-    const menteeDetailsList = [];
-
-    for (const menteeID of userMentees) {
-      const menteeDocRef = doc(usersCollection, menteeID);
-      const menteeDocSnap = await getDoc(menteeDocRef);
-
-      if (menteeDocSnap.exists()) {
-        const menteeData = menteeDocSnap.data();
-        menteeDetailsList.push(menteeData);
+    const unsubscribe = onSnapshot(userDocRef, async (userDocSnap) => {
+      if (!userDocSnap.exists()) {
+        console.log("User document does not exist.");
+        return;
       }
-    }
-    return menteeDetailsList;
+
+      const userMentees = userDocSnap.data().mentees;
+      const menteeDetailsList = [];
+
+      for (const menteeID of userMentees) {
+        const menteeDocRef = doc(usersCollection, menteeID);
+        const menteeDocSnap = await getDoc(menteeDocRef);
+
+        if (menteeDocSnap.exists()) {
+          const menteeData = menteeDocSnap.data();
+          menteeDetailsList.push(menteeData);
+        }
+      }
+      callback(menteeDetailsList);
+    });
+
+    return unsubscribe;
   } catch (error) {
-    console.log("Error fetching mentors:", error);
+    console.log("Error fetching mentees:", error);
   }
 }
 

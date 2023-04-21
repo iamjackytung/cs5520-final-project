@@ -44,10 +44,10 @@ const NewMentorsFlatList = ({
                 navigation={navigation}
                 onConnect={() => {
                   connectWithMentor(item.uid);
-                  setMyMentors([...myMentors, item]);
-                  setNewMentors(
-                    newMentors.filter((mentor) => mentor.uid !== item.uid)
-                  );
+                  // setMyMentors([...myMentors, item]);
+                  // setNewMentors(
+                  //   newMentors.filter((mentor) => mentor.uid !== item.uid)
+                  // );
                 }}
                 connectButton={true}
               />
