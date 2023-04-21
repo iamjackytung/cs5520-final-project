@@ -82,7 +82,9 @@ export default function AddressAutocomplete ({ onChangeLocation }) {
   }
 
   const onSelect = (index) => {
-    setValue(options[index].title);
+    const newValue = options[index].title;
+    setValue(newValue);
+    onChangeLocation(newValue);
   };
 
   const onChangeText = (query) => {

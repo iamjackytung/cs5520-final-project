@@ -17,6 +17,7 @@ import SignUpInfo from "./screens/SignUpInfo";
 import SignUp from "./screens/SignUp";
 import UserProfile from "./screens/UserProfile.js";
 import ClickedProfile from "./screens/ClickedProfile";
+import Booking from "./screens/Booking";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,14 +30,14 @@ export default function App() {
           <Stack.Navigator
             screenOptions={{
               headerShown: false,
-              gestureEnabled: false,
             }}
           >
-            <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="SignUp" component={SignUp} options={{gestureEnabled: false}} />
+            <Stack.Screen name="Home" component={Home} options={{gestureEnabled: false}}/>
             <Stack.Screen name="UserProfile" component={UserProfile} />
             <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
             <Stack.Screen name="ClickedProfile" component={ClickedProfile} />
+            <Stack.Screen name="Booking" component={Booking} />
           </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>

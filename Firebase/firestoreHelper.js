@@ -2,6 +2,7 @@ import {
   collection,
   setDoc,
   getDoc,
+  addDoc,
   doc,
   query,
   where,
@@ -93,6 +94,17 @@ export async function getMeetings() {
     return MeetingsList;
   };
   return getMeetingList(querySnapshot);
+}
+
+export async function addBooking(info) {
+  try {
+    const docRef = await addDoc(collection(firestore, "bookings"), {...info, organizer_id: auth.currentUser.uid});
+    console.log("New booking written with ID: ", docRef.id);
+    return true;
+  } catch (err) {
+    console.log("Error adding new booking: ", err);
+    return false;
+  }
 }
 
 export async function getMyMentors() {
