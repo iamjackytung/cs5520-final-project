@@ -16,18 +16,24 @@ import { auth, db } from "../Firebase/firebase-setup";
 // import { onValue, ref } from "firebase/database";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import { useRoute } from "@react-navigation/native";
 
 const Header = (props) => {
   const [photo, onChangePhoto] = useState(null);
-
+  const route = useRoute();
   const navigation = useNavigation();
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
-      onChangePhoto(doc.get("profilePictureUrl"));
-    });
+    const unsubscribe = onSnapshot(
+      doc(db, "users", auth.currentUser.uid),
+      (doc) => {
+        onChangePhoto(doc.get("profilePictureUrl"));
+      }
+    );
 
-    return () => {unsubscribe()};
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const docsNavigate = () => {
@@ -36,24 +42,36 @@ const Header = (props) => {
     // );
   };
   const leftAvatar = () => {
-    if (photo == null) {
+    if (route.name == "UserProfile") {
       return (
         <Avatar
           size={"small"}
           rounded
-          source={require("../assets/emptyAvatar.png")}
-          onPress={() => navigation.navigate("UserProfile")}
+          source={require("../assets/back.png")}
+          onPress={() => navigation.goBack()}
         />
       );
+    } else {
+      if (photo == null) {
+        return (
+          <Avatar
+            size={"small"}
+            rounded
+            source={require("../assets/emptyAvatar.png")}
+            onPress={() => navigation.navigate("UserProfile")}
+          />
+        );
+      } else {
+        return (
+          <Avatar
+            size={"small"}
+            rounded
+            source={{ uri: photo }}
+            onPress={() => navigation.navigate("UserProfile")}
+          />
+        );
+      }
     }
-    return (
-      <Avatar
-        size={"small"}
-        rounded
-        source={{ uri: photo }}
-        onPress={() => navigation.navigate("UserProfile")}
-      />
-    );
   };
 
   const playgroundNavigate = () => {

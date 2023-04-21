@@ -16,7 +16,7 @@ export default function Home() {
         }}
       >
         <Tab.Screen name="MyMentors" component={MyMentorsScreen} />
-        <Tab.Screen name="UserProfile" component={UserProfile} />
+        {/* <Tab.Screen name="UserProfile" component={UserProfile} /> */}
         <Tab.Screen name="Calendar Dashboard" component={CalendarDashboard} />
       </Tab.Navigator>
     </>
