@@ -45,25 +45,46 @@ export const PushTokenProvider = ({ children }) => {
   );
 };
 
-export async function sendPushNotification(expoPushToken, title, message) {
-  console.log("Started sending push notification");
+export async function sendPushNotification({
+  expoPushToken,
+  title,
+  message,
+  data = {},
+  sound = "default",
+  displayInForeground = true,
+}) {
+  // Check if the expoPushToken is valid
+  if (!expoPushToken || typeof expoPushToken !== "string") {
+    console.error("Invalid Expo push token:", expoPushToken);
+    return;
+  }
+
   const messageObj = {
     to: expoPushToken,
-    sound: "default",
-    title: title,
+    sound,
+    title,
     body: message,
-    data: { data: "goes here" },
-    _displayInForeground: true,
+    data,
+    _displayInForeground: displayInForeground,
   };
 
-  await fetch("https://exp.host/--/api/v2/push/send", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Accept-Encoding": "gzip, deflate, br",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(messageObj),
-  });
-  return;
+  try {
+    const response = await fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(messageObj),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Failed to send push notification:", errorText);
+      return;
+    }
+  } catch (error) {
+    console.error("Error sending push notification:", error);
+  }
 }

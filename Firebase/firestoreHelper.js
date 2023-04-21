@@ -298,21 +298,21 @@ export async function connectWithMentor(mentorId) {
       mentorData.inboundRequests = mentorData.inboundRequests || [];
       mentorData.inboundRequests.push(currentUser.uid);
       await updateDoc(mentorDocRef, mentorData);
-      sendPushNotification(
-        mentorData.pushToken,
-        "New Connection Request",
-        `${userData.firstName} ${userData.lastName} wants to connect with you!`
-      );
+      sendPushNotification({
+        expoPushToken: mentorData.token,
+        title: "New Connection Request",
+        message: `${userData.firstName} ${userData.lastName} wants to connect with you!`,
+      });
     }
     if (!userData.outboundRequests?.includes(mentorId)) {
       userData.outboundRequests = userData.outboundRequests || [];
       userData.outboundRequests.push(mentorId);
       await updateDoc(userDocRef, userData);
-      sendPushNotification(
-        userData.pushToken,
-        "Connection Request Sent",
-        `You sent a connection request to ${mentorData.firstName} ${mentorData.lastName}!`
-      );
+      sendPushNotification({
+        expoPushToken: userData.token,
+        title: "Connection Request Sent",
+        message: `You sent a connection request to ${mentorData.firstName} ${mentorData.lastName}!`,
+      });
     }
   } catch (error) {
     console.log("Error connecting with mentor:", error);
@@ -367,11 +367,11 @@ export async function acceptConnectionRequest(menteeId) {
     // Update the documents
     await updateDoc(userDocRef, userData);
     await updateDoc(menteeDocRef, menteeData);
-    sendPushNotification(
-      menteeData.pushToken,
-      "Connection Request Accepted",
-      `${userData.firstName} ${userData.lastName} has accepted your connection request!`
-    );
+    sendPushNotification({
+      expoPushToken: menteeData.token,
+      title: "Connection Request Accepted",
+      message: `${userData.firstName} ${userData.lastName} has accepted your connection request!`,
+    });
   } catch (error) {
     console.log("Error accepting connection request:", error);
   }
@@ -415,11 +415,11 @@ export async function declineConnection(menteeId) {
     // Update the documents
     await updateDoc(userDocRef, userData);
     await updateDoc(menteeDocRef, menteeData);
-    sendPushNotification(
-      menteeData.pushToken,
-      "Connection Request Denied",
-      `${userData.firstName} ${userData.lastName} has denied your connection request.`
-    );
+    sendPushNotification({
+      expoPushToken: menteeData.token,
+      title: "Connection Request Denied",
+      message: `${userData.firstName} ${userData.lastName} has denied your connection request.`,
+    });
   } catch (error) {
     console.log("Error denying connection request:", error);
   }
@@ -469,11 +469,11 @@ export async function disconnectWithMentor(mentorId) {
     await updateDoc(mentorDocRef, {
       inboundRequests: updatedMentorInboundRequests,
     });
-    sendPushNotification(
-      mentorData.pushToken,
-      "Connection Disconnected",
-      `${currentUserData.firstName} ${currentUserData.lastName} has disconnected from you.`
-    );
+    sendPushNotification({
+      expoPushToken: mentorData.token,
+      title: "Connection Disconnected",
+      message: `${currentUserData.firstName} ${currentUserData.lastName} has disconnected from you.`,
+    });
   } catch (error) {
     console.log("Error disconnecting with mentor:", error);
   }
@@ -508,11 +508,11 @@ export async function disconnectWithMentee(menteeId) {
       (id) => id !== auth.currentUser.uid
     );
     await updateDoc(menteeDocRef, { mentors: updatedMenteeMentors });
-    sendPushNotification(
-      menteeData.pushToken,
-      "Connection Disconnected",
-      `${currentUserData.firstName} ${currentUserData.lastName} has disconnected from you.`
-    );
+    sendPushNotification({
+      expoPushToken: menteeData.token,
+      title: "Connection Disconnected",
+      message: `${currentUserData.firstName} ${currentUserData.lastName} has disconnected from you.`,
+    });
   } catch (error) {
     console.log("Error disconnecting with mentee:", error);
   }
