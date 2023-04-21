@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { BottomSheet, Button, ListItem } from "@rneui/themed";
 import { StyleSheet, View } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { getAuth, signOut } from "firebase/auth";
 import { Icon } from "react-native-elements";
 import { useNavigation, CommonActions } from "@react-navigation/native";
@@ -10,8 +11,10 @@ import RNRestart from "react-native-restart";
 import { auth } from "../Firebase/firebase-setup";
 
 const HeaderSettings = ({ setIsVisible, isVisible }) => {
+  const insets = useSafeAreaInsets();
+
   const editProfile = () => {
-    navigation.navigate("SignUpInfo");
+    navigation.navigate("SignUpInfo", { headerTitle: "Edit Profile" });
     setIsVisible(false);
   };
   async function logOut() {
@@ -19,7 +22,7 @@ const HeaderSettings = ({ setIsVisible, isVisible }) => {
       // const auth = getAuth();
       signOut(auth);
       console.log(auth);
-      RNRestart.Restart();
+      // RNRestart.Restart();
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -37,13 +40,13 @@ const HeaderSettings = ({ setIsVisible, isVisible }) => {
       onPress: () =>
         Alert.alert("Confirm Logout", "Are you sure you want to Logout?", [
           {
-            text: "Yes, Logout",
-            onPress: () => logOut(),
+            style: "cancel",
+            text: "Cancel",
+            // onPress: () => console.log("OK Pressed"),
           },
           {
-            // style: "cancel",
-            text: "Cancel",
-            onPress: () => console.log("OK Pressed"),
+            text: "Yes, Logout",
+            onPress: () => logOut(),
           },
         ]),
     },
@@ -58,7 +61,7 @@ const HeaderSettings = ({ setIsVisible, isVisible }) => {
   ];
 
   return (
-    <BottomSheet modalProps={{}} isVisible={isVisible}>
+    <BottomSheet containerStyle={{paddingBottom: insets.bottom}} modalProps={{}} isVisible={isVisible}>
       {list.map((l, i) => (
         <ListItem key={i} containerStyle={l.containerStyle} onPress={l.onPress}>
           <ListItem.Content
