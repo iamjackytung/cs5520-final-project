@@ -3,10 +3,7 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
+  TouchableOpacity
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Header as HeaderRNE, Icon, Avatar } from "@rneui/themed";
@@ -57,31 +54,36 @@ const Header = (props) => {
     );
   };
 
-  return (
-    <>
-      <HeaderRNE
-        leftComponent={leftAvatar()}
-        leftContainerStyle={styles.headerLeft}
-        rightComponent={
-          <View style={styles.headerRight}>
-            {/* <TouchableOpacity>
-              <Icon name="description" color="white" />
-            </TouchableOpacity> */}
+  const rightSettings = () => {
+    if (route.name === "MyMentors" || route.name === "Calendar Dashboard") {
+      return (
+        <>
             <TouchableOpacity
               style={{ marginLeft: 10 }}
               onPress={() => setIsVisible(true)}
             >
               <Icon type="material" name="settings" color="white" />
             </TouchableOpacity>
-          </View>
-        }
+        </>
+      )
+    }
+    return <></>;
+  }
+
+  return (
+    <>
+      <HeaderRNE
+        leftComponent={leftAvatar()}
+        leftContainerStyle={styles.headerLeft}
+        rightComponent={rightSettings()}
+        rightContainerStyle={styles.headerRight}
         centerComponent={{ text: props.title, style: styles.heading }}
       />
-      <HeaderSettings
-        style={styles.setting}
-        isVisible={isVisible}
-        setIsVisible={setIsVisible}
-      />
+        <HeaderSettings
+          style={styles.setting}
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+        />
     </>
   );
 };
@@ -110,6 +112,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
   headerLeft: {
     display: "flex",
