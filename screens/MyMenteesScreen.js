@@ -18,20 +18,6 @@ const MyMenteesScreen = ({ navigation }) => {
   const searchInputRef = useRef(null);
   const [connectionRequests, setConnectionRequests] = useState([]);
 
-  // useEffect(() => {
-  //   async function fetchMyMentees() {
-  //     const mentees = await getMyMentees();
-  //     setMyMentees(mentees);
-  //   }
-  //   async function fetchInboundRequests() {
-  //     const requests = await getInboundRequests();
-  //     setConnectionRequests(requests);
-  //   }
-
-  //   fetchMyMentees();
-  //   fetchInboundRequests();
-  // }, []);
-
   useEffect(() => {
     const unsubscribe = getMyMentees((mentees) => {
       setMyMentees(mentees);
@@ -96,6 +82,12 @@ const MyMenteesScreen = ({ navigation }) => {
             data={connectionRequests}
             onAccept={(menteeId) => {
               acceptConnectionRequest(menteeId);
+              setConnectionRequests(
+                connectionRequests.filter((request) => request.uid !== menteeId)
+              );
+            }}
+            onDecline={(menteeId) => {
+              declineConnection(menteeId);
               setConnectionRequests(
                 connectionRequests.filter((request) => request.uid !== menteeId)
               );

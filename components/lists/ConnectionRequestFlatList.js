@@ -3,7 +3,12 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { Card, Text } from "@rneui/themed";
 import ConnectionRequestItem from "../ConnectionRequestItem";
 
-const ConnectionRequestFlatList = ({ data, onAccept, navigation }) => {
+const ConnectionRequestFlatList = ({
+  data,
+  onAccept,
+  onDecline,
+  navigation,
+}) => {
   const renderEmptyList = () => (
     <Card>
       <Card.Title h4>No Connection Requests</Card.Title>
@@ -23,6 +28,9 @@ const ConnectionRequestFlatList = ({ data, onAccept, navigation }) => {
           navigation={navigation}
           onAccept={() => {
             onAccept(item.uid);
+          }}
+          onDecline={() => {
+            onDecline(item.uid);
           }}
         />
       )}

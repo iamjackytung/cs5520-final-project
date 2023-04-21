@@ -11,6 +11,8 @@ const MentorListItem = ({
   onConnect = undefined,
   disconnectButton = false,
   onDisconnect = undefined,
+  cancelRequest = false,
+  onCancelRequest = undefined,
 }) => {
   return (
     <TouchableOpacity
@@ -27,6 +29,9 @@ const MentorListItem = ({
             <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
             <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
           </ListItem.Content>
+          {cancelRequest && (
+            <Button title="Cancel Request" onPress={onCancelRequest} />
+          )}
           {connectButton && (
             <ConnectButton title="Connect" onPress={onConnect} />
           )}

@@ -359,6 +359,54 @@ export async function acceptConnectionRequest(menteeId) {
   }
 }
 
+export async function declineConnection(menteeId) {
+  try {
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      console.log("No user is signed in");
+      return;
+    }
+
+    const usersCollection = collection(firestore, "users");
+
+    const userDocRef = doc(usersCollection, currentUser.uid);
+    const menteeDocRef = doc(usersCollection, menteeId);
+
+    const userDocSnap = await getDoc(userDocRef);
+    const menteeDocSnap = await getDoc(menteeDocRef);
+
+    if (!userDocSnap.exists() || !menteeDocSnap.exists()) {
+      console.log("User or Mentee document does not exist.");
+      return;
+    }
+
+    const userData = userDocSnap.data();
+    const menteeData = menteeDocSnap.data();
+
+    // Remove the connection request from the mentor's list
+    userData.inboundRequests = userData.inboundRequests.filter(
+      (uid) => uid !== menteeId
+    );
+
+    // Remove the connection request from the mentee's list
+    menteeData.outboundRequests = menteeData.outboundRequests.filter(
+      (uid) => uid !== currentUser.uid
+    );
+
+    // Update the documents
+    await updateDoc(userDocRef, userData);
+    await updateDoc(menteeDocRef, menteeData);
+    sendPushNotification(
+      menteeData.pushToken,
+      "Connection Request Denied",
+      `${userData.firstName} ${userData.lastName} has denied your connection request.`
+    );
+  } catch (error) {
+    console.log("Error denying connection request:", error);
+  }
+}
+
 export async function disconnectWithMentor(mentorId) {
   try {
     if (!auth.currentUser.uid) {
