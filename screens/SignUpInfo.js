@@ -109,7 +109,7 @@ const SignUpInfo = ({ navigation }) => {
   const signingUp = true;
 
   useEffect(() => {
-    onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+    const unsubscribe = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
       if (doc.data()) {
         signingUp == false;
         onChangeFirstName(doc.get("firstName"));
@@ -128,6 +128,8 @@ const SignUpInfo = ({ navigation }) => {
         OnEmailWorkChange(doc.get("emails")[1]["email"]);
       }
     });
+
+    return () => {unsubscribe()};
   }, []);
 
   const toggleProfileOverlay = () => {
