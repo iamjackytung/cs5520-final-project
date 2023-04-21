@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import {
   updateProfilePic,
   getImageFromLibrary,
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     marginTop: 140,
     marginLeft: 130,
     width: 30,
-    borderRadius: 5,
+    borderRadius: 30,
     backgroundColor: "#FFF",
   },
   pressableImage: {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     height: 30,
     borderWidth: 2,
     width: 30,
-    borderRadius: 5,
+    borderRadius: 30,
     backgroundColor: "#FFF",
   },
   pressableBackground: {
@@ -131,13 +131,13 @@ const styles = StyleSheet.create({
   },
   bookingButtonContainer: {
     flex: 1,
-    paddingHorizontal: 60
-  }
+    paddingHorizontal: 60,
+  },
 });
 
 const Profile = ({ userData, isUserProfile }) => {
   const navigation = useNavigation();
-  
+
   onPressPlace = () => {
     console.log("place");
   };
@@ -342,7 +342,7 @@ const Profile = ({ userData, isUserProfile }) => {
 
   renderBookingButton = () => {
     if (isUserProfile) {
-      return <></>
+      return <></>;
     }
 
     if (!userData || !userData.emails) {
@@ -351,11 +351,15 @@ const Profile = ({ userData, isUserProfile }) => {
 
     return (
       <View style={styles.bookingButtonContainer}>
-        <Button title="Book meeting" onPress={() => {navigation.navigate("Booking", { attendeeData: userData })}}/>
+        <Button
+          title="Book meeting"
+          onPress={() => {
+            navigation.navigate("Booking", { attendeeData: userData });
+          }}
+        />
       </View>
-    )
-  }
-
+    );
+  };
 
   return (
     <ScrollView style={styles.scroll}>
