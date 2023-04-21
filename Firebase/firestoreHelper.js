@@ -287,17 +287,72 @@ export async function connectWithMentor(mentorId) {
     const userData = userDocSnap.data();
     const mentorData = mentorDocSnap.data();
 
-    if (!userData.mentors.includes(mentorId)) {
-      userData.mentors.push(mentorId);
-      await updateDoc(userDocRef, userData);
-    }
-
-    if (!mentorData.mentees.includes(currentUser.uid)) {
-      mentorData.mentees.push(currentUser.uid);
+    // Send a connection request to the mentor
+    if (!mentorData.inboundRequests?.includes(currentUser.uid)) {
+      mentorData.inboundRequests = mentorData.inboundRequests || [];
+      mentorData.inboundRequests.push(currentUser.uid);
       await updateDoc(mentorDocRef, mentorData);
+    }
+    if (!userData.outboundRequests?.includes(mentorId)) {
+      userData.outboundRequests = userData.outboundRequests || [];
+      userData.outboundRequests.push(mentorId);
+      await updateDoc(userDocRef, userData);
     }
   } catch (error) {
     console.log("Error connecting with mentor:", error);
+  }
+}
+
+export async function acceptConnectionRequest(menteeId) {
+  try {
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      console.log("No user is signed in");
+      return;
+    }
+
+    const usersCollection = collection(firestore, "users");
+
+    const userDocRef = doc(usersCollection, currentUser.uid);
+    const menteeDocRef = doc(usersCollection, menteeId);
+
+    const userDocSnap = await getDoc(userDocRef);
+    const menteeDocSnap = await getDoc(menteeDocRef);
+
+    if (!userDocSnap.exists() || !menteeDocSnap.exists()) {
+      console.log("User or Mentee document does not exist.");
+      return;
+    }
+
+    const userData = userDocSnap.data();
+    const menteeData = menteeDocSnap.data();
+
+    // Remove the connection request from the mentor's list
+    userData.inboundRequests = userData.inboundRequests.filter(
+      (uid) => uid !== menteeId
+    );
+
+    // Remove the connection request from the mentee's list
+    menteeData.outboundRequests = menteeData.outboundRequests.filter(
+      (uid) => uid !== currentUser.uid
+    );
+
+    // Add the mentee to the mentor's list of mentees
+    if (!userData.mentees.includes(menteeId)) {
+      userData.mentees.push(menteeId);
+    }
+
+    // Add the mentor to the mentee's list of mentors
+    if (!menteeData.mentors.includes(currentUser.uid)) {
+      menteeData.mentors.push(currentUser.uid);
+    }
+
+    // Update the documents
+    await updateDoc(userDocRef, userData);
+    await updateDoc(menteeDocRef, menteeData);
+  } catch (error) {
+    console.log("Error accepting connection request:", error);
   }
 }
 
@@ -333,5 +388,75 @@ export async function disconnectWithMentor(mentorId) {
     await updateDoc(mentorDocRef, { mentees: updatedMentorMentees });
   } catch (error) {
     console.log("Error disconnecting with mentor:", error);
+  }
+}
+
+export async function disconnectWithMentee(menteeId) {
+  try {
+    if (!auth.currentUser.uid) {
+      console.log("No user is signed in");
+      return null;
+    }
+    const usersCollection = collection(firestore, "users");
+    const currentUserDocRef = doc(usersCollection, auth.currentUser.uid);
+    const currentUserDocSnap = await getDoc(currentUserDocRef);
+    if (!currentUserDocSnap.exists()) {
+      console.log("User document does not exist.");
+      return;
+    }
+    const currentUserData = currentUserDocSnap.data();
+    const myMentees = currentUserData.mentees || [];
+    const updatedMyMentees = myMentees.filter((id) => id !== menteeId);
+    await updateDoc(currentUserDocRef, { mentees: updatedMyMentees });
+    const menteeDocRef = doc(usersCollection, menteeId);
+    const menteeDocSnap = await getDoc(menteeDocRef);
+    if (!menteeDocSnap.exists()) {
+      console.log("Mentee document does not exist.");
+      return;
+    }
+    const menteeData = menteeDocSnap.data();
+    const menteeMentors = menteeData.mentors || [];
+    const updatedMenteeMentors = menteeMentors.filter(
+      (id) => id !== auth.currentUser.uid
+    );
+    await updateDoc(menteeDocRef, { mentors: updatedMenteeMentors });
+  } catch (error) {
+    console.log("Error disconnecting with mentee:", error);
+  }
+}
+
+export async function getInboundRequests() {
+  try {
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      console.log("No user is signed in");
+      return [];
+    }
+
+    const userDocRef = doc(collection(firestore, "users"), currentUser.uid);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      console.log("User document does not exist.");
+      return [];
+    }
+
+    const userData = userDocSnap.data();
+    const inboundRequests = userData.inboundRequests || [];
+
+    const requestDocs = await Promise.all(
+      inboundRequests.map((uid) =>
+        getDoc(doc(collection(firestore, "users"), uid))
+      )
+    );
+
+    return requestDocs.map((docSnap) => ({
+      uid: docSnap.id,
+      ...docSnap.data(),
+    }));
+  } catch (error) {
+    console.log("Error fetching inbound requests:", error);
+    return [];
   }
 }

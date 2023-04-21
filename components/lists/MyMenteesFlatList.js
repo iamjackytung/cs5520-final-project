@@ -22,7 +22,7 @@ const MyMenteesFlatList = ({
 
   const renderMyMenteessListTitle = () => (
     <View>
-      <Text style={styles.myMentorsFlatListTitlle}>My current mentees</Text>
+      <Text style={styles.myMentorsFlatListTitlle}>My mentees</Text>
     </View>
   );
 

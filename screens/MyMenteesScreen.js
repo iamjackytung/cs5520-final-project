@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, TextInput, Text } from "react-native";
-import { getMyMentees } from "../Firebase/firestoreHelper";
+import {
+  getMyMentees,
+  acceptConnectionRequest,
+  getInboundRequests,
+} from "../Firebase/firestoreHelper";
 import { Button, Icon } from "@rneui/themed";
 import { Header } from "../components/Header";
 import MyMenteesFlatList from "../components/lists/MyMenteesFlatList";
+import ConnectionRequestFlatList from "../components/lists/ConnectionRequestFlatList";
 
 const MyMenteesScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
@@ -11,14 +16,20 @@ const MyMenteesScreen = ({ navigation }) => {
   const [myMentees, setMyMentees] = useState([]);
   const [myMenteesFilter, setMyMenteesFilter] = useState(true);
   const searchInputRef = useRef(null);
+  const [connectionRequests, setConnectionRequests] = useState([]);
 
   useEffect(() => {
     async function fetchMyMentees() {
       const mentees = await getMyMentees();
       setMyMentees(mentees);
     }
+    async function fetchInboundRequests() {
+      const requests = await getInboundRequests();
+      setConnectionRequests(requests);
+    }
 
     fetchMyMentees();
+    fetchInboundRequests();
   }, []);
 
   const filteredMyMentees = myMentees.filter((mentee) =>
@@ -52,13 +63,28 @@ const MyMenteesScreen = ({ navigation }) => {
       </View>
       {myMenteesFilter && (
         <View>
-          <Text style={styles.listTitle}>My current mentees</Text>
+          <Text style={styles.listTitle}>My mentees</Text>
           <MyMenteesFlatList
             data={filteredMyMentees}
             viewStyle={viewStyle}
             navigation={navigation}
             myMentees={myMentees}
             setMyMentees={setMyMentees}
+          />
+        </View>
+      )}
+      {myMenteesFilter && (
+        <View>
+          <Text style={styles.listTitle}>Connection requests</Text>
+          <ConnectionRequestFlatList
+            data={connectionRequests}
+            onAccept={(menteeId) => {
+              acceptConnectionRequest(menteeId);
+              setConnectionRequests(
+                connectionRequests.filter((request) => request.uid !== menteeId)
+              );
+            }}
+            navigation={navigation}
           />
         </View>
       )}
