@@ -64,9 +64,9 @@ const Header = (props) => {
         leftContainerStyle={styles.headerLeft}
         rightComponent={
           <View style={styles.headerRight}>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Icon name="description" color="white" />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={{ marginLeft: 10 }}
               onPress={() => setIsVisible(true)}
