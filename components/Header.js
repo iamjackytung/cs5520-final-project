@@ -40,7 +40,7 @@ const Header = (props) => {
           size={"small"}
           rounded
           source={require("../assets/emptyAvatar.png")}
-          onPress={() => navigation.navigate("SignUpInfo")}
+          onPress={() => navigation.navigate("UserProfile")}
         />
       );
     }
@@ -49,7 +49,7 @@ const Header = (props) => {
         size={"small"}
         rounded
         source={{ uri: photo }}
-        onPress={() => navigation.navigate("SignUpInfo")}
+        onPress={() => navigation.navigate("UserProfile")}
       />
     );
   };
