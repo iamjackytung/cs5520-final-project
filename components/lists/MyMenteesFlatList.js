@@ -1,18 +1,18 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import MentorListItem from "../MentorListItem";
-import MentorGridItem from "../MentorGridItem";
+import MenteeListItem from "../MenteeListItem";
+import MenteeGridItem from "../MentorGridItem";
 import { Button, Card, Text } from "@rneui/themed";
-import { disconnectWithMentor } from "../../Firebase/firestoreHelper";
+import { disconnectWithMentee } from "../../Firebase/firestoreHelper";
 
 const MyMenteesFlatList = ({
   data,
   viewStyle,
   navigation,
-  myMentors,
-  setMyMentors,
+  myMentees,
+  setMyMentees,
 }) => {
-  const renderEmptyMyMentorsList = () => (
+  const renderEmptyMyMenteesList = () => (
     <Card>
       <Card.Title h4>You have no mentees</Card.Title>
       <Card.Divider />
@@ -32,27 +32,27 @@ const MyMenteesFlatList = ({
       renderItem={
         viewStyle === "list"
           ? ({ item }) => (
-              <MentorListItem
+              <MenteeListItem
                 item={item}
                 navigation={navigation}
                 disconnectButton={true}
                 onDisconnect={() => {
-                  disconnectWithMentor(item.uid);
-                  setMyMentors(
-                    myMentors.filter((mentor) => mentor.uid !== item.uid)
+                  disconnectWithMentee(item.uid);
+                  setMyMentees(
+                    myMentees.filter((mentee) => mentee.uid !== item.uid)
                   );
                 }}
               />
             )
           : ({ item }) => (
-              <MentorGridItem
+              <MenteeGridItem
                 item={item}
                 navigation={navigation}
                 disconnectButton={true}
                 onDisconnect={() => {
-                  disconnectWithMentor(item.uid);
-                  setMyMentors(
-                    myMentors.filter((mentor) => mentor.uid !== item.uid)
+                  disconnectWithMentee(item.uid);
+                  setMyMentees(
+                    myMentees.filter((mentess) => mentee.uid !== item.uid)
                   );
                 }}
               />
@@ -61,7 +61,7 @@ const MyMenteesFlatList = ({
       keyExtractor={(item) => item.uid}
       numColumns={viewStyle === "list" ? 1 : 2}
       key={viewStyle}
-      ListEmptyComponent={renderEmptyMyMentorsList}
+      ListEmptyComponent={renderEmptyMyMenteesList}
     />
   );
 };
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  findMentorsButton: {
+  findMenteesButton: {
     alignSelf: "center",
     marginBottom: 10,
   },
