@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import { BottomSheet, Button, ListItem } from "@rneui/themed";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { getAuth, signOut } from "firebase/auth";
 import { Icon } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, CommonActions } from "@react-navigation/native";
+import { Alert, Text } from "react-native";
+import RNRestart from "react-native-restart";
 
 const HeaderSettings = ({ setIsVisible, isVisible }) => {
   const editProfile = () => {
     navigation.navigate("SignUpInfo");
     setIsVisible(false);
   };
+  async function logOut() {
+    try {
+      const auth = getAuth();
+      signOut(auth);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  }
   const navigation = useNavigation();
   const list = [
     {
@@ -17,7 +28,22 @@ const HeaderSettings = ({ setIsVisible, isVisible }) => {
       icon: "edit",
       onPress: () => editProfile(),
     },
-    { title: "  Logout", icon: "logout", onPress: () => setIsVisible(false) },
+    {
+      title: "  Logout",
+      icon: "logout",
+      onPress: () =>
+        Alert.alert("Confirm Logout", "Are you sure you want to Logout?", [
+          {
+            text: "Yes, Logout",
+            onPress: () => logOut(),
+          },
+          {
+            // style: "cancel",
+            text: "Cancel",
+            onPress: () => console.log("OK Pressed"),
+          },
+        ]),
+    },
     {
       title: "  Cancel",
       icon: "cancel",
