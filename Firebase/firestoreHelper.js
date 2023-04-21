@@ -24,7 +24,9 @@ export async function writeToDB(userData) {
 
 export async function saveUserData(data) {
   try {
-    await setDoc(doc(firestore, "users", auth.currentUser.uid), data, { merge: true });
+    await setDoc(doc(firestore, "users", auth.currentUser.uid), data, {
+      merge: true,
+    });
   } catch (err) {
     console.log("Save user data error: ", err);
   }
@@ -36,6 +38,28 @@ export async function getCurrentUserData() {
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
     return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function isMentor() {
+  try {
+    const docRef = doc(firestore, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+    return data.isMentor;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function isMentee() {
+  try {
+    const docRef = doc(firestore, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+    return data.isMentee;
   } catch (err) {
     console.log(err);
   }
@@ -114,7 +138,10 @@ export async function getMeetings() {
 
 export async function addBooking(info) {
   try {
-    const docRef = await addDoc(collection(firestore, "bookings"), {...info, organizer_id: auth.currentUser.uid});
+    const docRef = await addDoc(collection(firestore, "bookings"), {
+      ...info,
+      organizer_id: auth.currentUser.uid,
+    });
     console.log("New booking written with ID: ", docRef.id);
     return true;
   } catch (err) {
@@ -151,6 +178,40 @@ export async function getMyMentors() {
       }
     }
     return mentorDetailsList;
+  } catch (error) {
+    console.log("Error fetching mentors:", error);
+  }
+}
+
+export async function getMyMentees() {
+  try {
+    if (!auth.currentUser.uid) {
+      console.log("No user is signed in");
+      return null;
+    }
+    const usersCollection = collection(firestore, "users");
+    const userDocRef = doc(usersCollection, auth.currentUser.uid);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      console.log("User document does not exist.");
+      return;
+    }
+
+    const userMentees = userDocSnap.data().mentees;
+    const menteeDetailsList = [];
+
+    for (const menteeID of userMentees) {
+      const menteeDocRef = doc(usersCollection, menteeID);
+      const menteeDocSnap = await getDoc(menteeDocRef);
+
+      if (menteeDocSnap.exists()) {
+        const menteeData = menteeDocSnap.data();
+        menteeDetailsList.push(menteeData);
+      }
+    }
+    console.log("HMMMM");
+    return menteeDetailsList;
   } catch (error) {
     console.log("Error fetching mentors:", error);
   }
