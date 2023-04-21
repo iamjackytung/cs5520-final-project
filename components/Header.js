@@ -30,7 +30,7 @@ const Header = (props) => {
   }, []);
 
   const leftAvatar = () => {
-    if (route.name === "UserProfile") {
+    if (route.name === "UserProfile" || route.name === "ClickedProfile") {
       return (
         <Avatar
           size="small"
