@@ -23,9 +23,11 @@ const Header = (props) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+    const unsubscribe = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
       onChangePhoto(doc.get("profilePictureUrl"));
     });
+
+    return () => {unsubscribe()};
   }, []);
 
   const docsNavigate = () => {

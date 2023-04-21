@@ -1,13 +1,16 @@
 import { Button, Icon, Input } from "@rneui/themed";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Alert, Keyboard, Platform, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import AddressAutocomplete from "../components/AddressAutocomplete";
 import DateTimePickerButtonList from "../components/DateTimePickerButtonList";
 import DateTimePickerButtonListAndroid from "../components/DateTimePickerButtonListAndroid";
 import { Header } from "../components/Header";
-import { addBooking } from "../Firebase/firestoreHelper";
+import { addBooking, saveUserData, getCurrentUserData } from "../Firebase/firestoreHelper";
+import { PushTokenContext } from "../contexts/PushTokenContext";
 
 export default function Booking({ route, navigation }) {
+  const token = useContext(PushTokenContext);
+  const attendeeToken = route.params.attendeeData.token;
   const [topic, setTopic] = useState(`Meeting with ${route.params.attendeeData.firstName} ${route.params.attendeeData.lastName}`);
   const now = new Date();
   const [startDate, setStartDate] = useState(now);
@@ -17,6 +20,8 @@ export default function Booking({ route, navigation }) {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
+    
+    saveUserData({ token: token });
   }, []);
 
   async function onSubmit() {
@@ -38,6 +43,30 @@ export default function Booking({ route, navigation }) {
         `You have booked a meeting with ${route.params.attendeeData.firstName} ${route.params.attendeeData.lastName}`,
         [{ text: "OK", onPress: () => navigation.goBack() }]
       );
+
+      const currentUserData = await getCurrentUserData();
+
+      let dateOptions = { month: 'short', day: 'numeric'};
+      const dateString = startDate.toLocaleDateString("en-US", dateOptions);
+
+      let timeOptions = { hour: 'numeric', minute: 'numeric'}
+      const timeString = startDate.toLocaleTimeString("en-US", timeOptions);
+
+      // Send push notification to attendee
+      const result = await fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          to: attendeeToken,
+          title: `New booking from ${currentUserData.firstName} ${currentUserData.lastName}`,
+          body: dateString + ", " + timeString
+        }),
+      });
+
+      if (!result.ok) {
+        throw new Error("HTTP error with status", result.status);
+      }
+
     } else {
       Alert.alert("Booking failed");
     }
