@@ -41,11 +41,7 @@ export default function Home() {
             options={{
               tabBarLabel: "My Mentees",
               tabBarIcon: ({ color, size }) => (
-                <FontAwesome5
-                  name="chalkboard-teacher"
-                  color={color}
-                  size={size}
-                />
+                <FontAwesome5 name="user-graduate" color={color} size={size} />
               ),
             }}
           />
