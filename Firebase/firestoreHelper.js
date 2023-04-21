@@ -12,6 +12,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { auth, firestore } from "./firebase-setup";
+import { sendPushNotification } from "../contexts/PushTokenContext";
 
 export async function writeToDB(userData) {
   try {
@@ -284,6 +285,11 @@ export async function connectWithMentor(mentorId) {
       mentorData.inboundRequests = mentorData.inboundRequests || [];
       mentorData.inboundRequests.push(currentUser.uid);
       await updateDoc(mentorDocRef, mentorData);
+      sendPushNotification(
+        mentorData.pushToken,
+        "New Connection Request",
+        `${userData.firstName} ${userData.lastName} wants to connect with you!`
+      );
     }
     if (!userData.outboundRequests?.includes(mentorId)) {
       userData.outboundRequests = userData.outboundRequests || [];
@@ -343,6 +349,11 @@ export async function acceptConnectionRequest(menteeId) {
     // Update the documents
     await updateDoc(userDocRef, userData);
     await updateDoc(menteeDocRef, menteeData);
+    sendPushNotification(
+      menteeData.pushToken,
+      "Connection Request Accepted",
+      `${userData.firstName} ${userData.lastName} has accepted your connection request!`
+    );
   } catch (error) {
     console.log("Error accepting connection request:", error);
   }
@@ -378,6 +389,11 @@ export async function disconnectWithMentor(mentorId) {
       (id) => id !== auth.currentUser.uid
     );
     await updateDoc(mentorDocRef, { mentees: updatedMentorMentees });
+    sendPushNotification(
+      mentorData.pushToken,
+      "Connection Disconnected",
+      `${currentUserData.firstName} ${currentUserData.lastName} has disconnected from you.`
+    );
   } catch (error) {
     console.log("Error disconnecting with mentor:", error);
   }
@@ -412,6 +428,11 @@ export async function disconnectWithMentee(menteeId) {
       (id) => id !== auth.currentUser.uid
     );
     await updateDoc(menteeDocRef, { mentors: updatedMenteeMentors });
+    sendPushNotification(
+      menteeData.pushToken,
+      "Connection Disconnected",
+      `${currentUserData.firstName} ${currentUserData.lastName} has disconnected from you.`
+    );
   } catch (error) {
     console.log("Error disconnecting with mentee:", error);
   }
