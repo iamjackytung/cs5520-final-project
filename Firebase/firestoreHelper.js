@@ -210,7 +210,6 @@ export async function getMyMentees() {
         menteeDetailsList.push(menteeData);
       }
     }
-    console.log("HMMMM");
     return menteeDetailsList;
   } catch (error) {
     console.log("Error fetching mentors:", error);
