@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyMentorsScreen from "./MyMentorsScreen";
 import MyMenteesScreen from "./MyMenteesScreen";
@@ -6,11 +6,22 @@ import UserProfile from "./UserProfile";
 import { StyleSheet } from "react-native";
 import CalendarDashboard from "../components/CalendarDashboard";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
-import { isMentor, isMentee } from "../Firebase/firestoreHelper";
+import { userIsMentor, userIsMentee } from "../Firebase/firestoreHelper";
 
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
+  const [isMentor, setIsMentor] = useState(false);
+  const [isMentee, setIsMentee] = useState(false);
+  useEffect(() => {
+    userIsMentor().then((isMentor) => {
+      setIsMentor(isMentor);
+    });
+    userIsMentee().then((isMentee) => {
+      setIsMentee(isMentee);
+    });
+  }, []);
+
   return (
     <>
       <Tab.Navigator
@@ -18,7 +29,7 @@ export default function Home() {
           headerShown: false,
         }}
       >
-        {isMentee() && (
+        {isMentee && (
           <Tab.Screen
             name="MyMentors"
             component={MyMentorsScreen}
@@ -34,7 +45,7 @@ export default function Home() {
             }}
           />
         )}
-        {isMentor() && (
+        {isMentor && (
           <Tab.Screen
             name="MyMentees"
             component={MyMenteesScreen}
