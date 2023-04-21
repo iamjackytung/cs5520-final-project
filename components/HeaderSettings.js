@@ -7,6 +7,7 @@ import { Icon } from "react-native-elements";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 import { Alert, Text } from "react-native";
 import RNRestart from "react-native-restart";
+import { auth } from "../Firebase/firebase-setup";
 
 const HeaderSettings = ({ setIsVisible, isVisible }) => {
   const editProfile = () => {
@@ -15,8 +16,10 @@ const HeaderSettings = ({ setIsVisible, isVisible }) => {
   };
   async function logOut() {
     try {
-      const auth = getAuth();
+      // const auth = getAuth();
       signOut(auth);
+      console.log(auth);
+      RNRestart.Restart();
     } catch (error) {
       console.error("Error signing out:", error);
     }
