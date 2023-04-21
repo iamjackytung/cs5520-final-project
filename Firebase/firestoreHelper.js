@@ -466,6 +466,9 @@ export async function disconnectWithMentor(mentorId) {
     const updatedMentorInboundRequests = mentorInboundRequests.filter(
       (id) => id !== auth.currentUser.uid
     );
+    await updateDoc(mentorDocRef, {
+      inboundRequests: updatedMentorInboundRequests,
+    });
     sendPushNotification(
       mentorData.pushToken,
       "Connection Disconnected",
