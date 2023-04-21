@@ -11,6 +11,7 @@ import * as eva from '@eva-design/eva';
 import { ApplicationProvider } from '@ui-kitten/components';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase/firebase-setup";
+import * as Notifications from "expo-notifications";
 import Home from "./screens/Home";
 import SignUpInfo from "./screens/SignUpInfo";
 import SignUp from "./screens/SignUp";
@@ -18,6 +19,17 @@ import UserProfile from "./screens/UserProfile.js";
 import ClickedProfile from "./screens/ClickedProfile";
 import Booking from "./screens/Booking";
 import { PushTokenProvider } from "./contexts/PushTokenContext";
+
+// Decide whether to show the notification to user
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+      shouldShowAlert: true,
+    };
+  },
+});
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +58,22 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+
+    // Handle every notification that is received while the app is open
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log("Received notification", notification);
+      }
+    );
+
+    // Handle every notification that is tapped on while the app is open
+    const responseListener = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log("Interacted notification", response.notification);
+        Linking.openURL(response.notification.request.content.data.url);
+      }
+    );
+
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsAuthenticated(true);
@@ -53,6 +81,8 @@ export default function App() {
         setIsAuthenticated(false);
       }
     });
+
+    return () => {subscription.remove(); responseListener.remove()};
   }, []);
 
   return (
