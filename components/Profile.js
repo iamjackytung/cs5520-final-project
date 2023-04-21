@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from '@react-navigation/native';
 import {
   updateProfilePic,
   getImageFromLibrary,
@@ -128,9 +129,15 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     textAlign: "center",
   },
+  bookingButtonContainer: {
+    flex: 1,
+    paddingHorizontal: 60
+  }
 });
 
 const Profile = ({ userData, isUserProfile }) => {
+  const navigation = useNavigation();
+  
   onPressPlace = () => {
     console.log("place");
   };
@@ -300,14 +307,14 @@ const Profile = ({ userData, isUserProfile }) => {
     return (
       <View style={styles.telContainer}>
         {userData.tels.map((item, index) => (
-            <Tel
-              key={`tel-${item.id}`}
+          <Tel
+            key={`tel-${item.id}`}
             index={index}
-              name={item.name}
-              number={item.number}
-              onPressSms={this.onPressSms}
-              onPressTel={this.onPressTel}
-            />
+            name={item.name}
+            number={item.number}
+            onPressSms={this.onPressSms}
+            onPressTel={this.onPressTel}
+          />
         ))}
       </View>
     );
@@ -321,17 +328,34 @@ const Profile = ({ userData, isUserProfile }) => {
     return (
       <View style={styles.emailContainer}>
         {userData.emails.map((item, index) => (
-            <Email
-              key={`email-${item.id}`}
-              index={index}
-              name={item.name}
-              email={item.email}
-              onPressEmail={this.onPressEmail}
-            />
+          <Email
+            key={`email-${item.id}`}
+            index={index}
+            name={item.name}
+            email={item.email}
+            onPressEmail={this.onPressEmail}
+          />
         ))}
       </View>
     );
   };
+
+  renderBookingButton = () => {
+    if (isUserProfile) {
+      return <></>
+    }
+
+    if (!userData || !userData.emails) {
+      return <Text> Loading... </Text>;
+    }
+
+    return (
+      <View style={styles.bookingButtonContainer}>
+        <Button title="Book meeting" onPress={() => {navigation.navigate("Booking", { attendeeData: userData })}}/>
+      </View>
+    )
+  }
+
 
   return (
     <ScrollView style={styles.scroll}>
@@ -341,6 +365,7 @@ const Profile = ({ userData, isUserProfile }) => {
           {this.renderTel()}
           {Separator()}
           {this.renderEmail()}
+          {this.renderBookingButton()}
         </Card>
       </View>
     </ScrollView>
