@@ -62,12 +62,13 @@ const Tel = ({
       <View style={[styles.container, containerStyle]}>
         <View style={styles.iconRow}>
           {index === 0 && (
-            <Icon
-              name="call"
-              underlayColor="transparent"
-              iconStyle={styles.telIcon}
-              onPress={() => onPressTel(number)}
-            />
+            <></>
+            // <Icon
+            //   name="rowing"
+            //   underlayColor="transparent"
+            //   iconStyle={styles.telIcon}
+            //   onPress={() => onPressTel(number)}
+            // />
           )}
         </View>
         <View style={styles.telRow}>
@@ -82,7 +83,7 @@ const Tel = ({
         </View>
         <View style={styles.smsRow}>
           <Icon
-            name="textsms"
+            name="call"
             underlayColor="transparent"
             iconStyle={styles.smsIcon}
             onPress={() => onPressSms()}
@@ -97,7 +98,7 @@ Tel.propTypes = {
   containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
   index: PropTypes.number.isRequired,
   name: PropTypes.string,
-  number: PropTypes.number.isRequired,
+  number: PropTypes.string.isRequired,
   onPressSms: PropTypes.func.isRequired,
   onPressTel: PropTypes.func.isRequired,
 };
