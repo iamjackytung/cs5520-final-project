@@ -109,27 +109,32 @@ const SignUpInfo = ({ navigation }) => {
   const signingUp = true;
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
-      if (doc.data()) {
-        signingUp == false;
-        onChangeFirstName(doc.get("firstName"));
-        onChangeIsMentee(doc.get("isMentee"));
-        onChangeIsMentor(doc.get("isMentor"));
-        onChangeJobTitle(doc.get("jobTitle"));
-        onChangeLastName(doc.get("lastName"));
-        onChangebackgroundImageUrl(doc.get("profilePictureUrl"));
-        onChangeprofilePictureUrl(doc.get("profilePictureUrl"));
-        OnCityChange(doc.get("city"));
-        OnStateChange(doc.get("state"));
-        OnCountryChange(doc.get("country"));
-        OnTelMobileChange(doc.get("tels")[0]["number"]);
-        OnTelWorkChange(doc.get("tels")[1]["number"]);
-        OnEmailPersonalChange(doc.get("emails")[0]["email"]);
-        OnEmailWorkChange(doc.get("emails")[1]["email"]);
+    const unsubscribe = onSnapshot(
+      doc(db, "users", auth.currentUser.uid),
+      (doc) => {
+        if (doc.data()) {
+          signingUp == false;
+          onChangeFirstName(doc.get("firstName"));
+          onChangeIsMentee(doc.get("isMentee"));
+          onChangeIsMentor(doc.get("isMentor"));
+          onChangeJobTitle(doc.get("jobTitle"));
+          onChangeLastName(doc.get("lastName"));
+          onChangebackgroundImageUrl(doc.get("profilePictureUrl"));
+          onChangeprofilePictureUrl(doc.get("profilePictureUrl"));
+          OnCityChange(doc.get("city"));
+          OnStateChange(doc.get("state"));
+          OnCountryChange(doc.get("country"));
+          OnTelMobileChange(doc.get("tels")[0]["number"]);
+          OnTelWorkChange(doc.get("tels")[1]["number"]);
+          OnEmailPersonalChange(doc.get("emails")[0]["email"]);
+          OnEmailWorkChange(doc.get("emails")[1]["email"]);
+        }
       }
-    });
+    );
 
-    return () => {unsubscribe()};
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const toggleProfileOverlay = () => {
@@ -182,7 +187,6 @@ const SignUpInfo = ({ navigation }) => {
   // console.log("SignUp page has " + auth.currentUser.uid);
 
   return (
-    // console.log(image),
     <>
       <Header view="Submit" title="Sign Up" />
       <ScrollView keyboardShouldPersistTaps="handled">

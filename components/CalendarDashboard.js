@@ -125,7 +125,7 @@ export default function CalendarDashboard() {
 
   return (
     <>
-      <Header></Header>
+      <Header view={"My Calendar"} title={"My Calendar"} />
       <Agenda
         testID={testIDs.agenda.CONTAINER}
         items={items}
