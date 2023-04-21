@@ -11,15 +11,31 @@ import {
   or,
 } from "firebase/firestore";
 import { auth, firestore } from "./firebase-setup";
-import * as ImagePicker from "expo-image-picker";
+
 export async function writeToDB(userData) {
   try {
-    // console.log(userData.uid);
-    // await addDoc(uid, ...signUpData);
-    // await addDoc(collection(...signUpData, uid)
     const newDoc = await setDoc(doc(firestore, "users", userData.uid), {
       ...userData,
     });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function saveUserData(data) {
+  try {
+    await setDoc(doc(firestore, "users", auth.currentUser.uid), data, { merge: true });
+  } catch (err) {
+    console.log("Save user data error: ", err);
+  }
+}
+
+export async function getCurrentUserData() {
+  try {
+    const docRef = doc(firestore, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+    return data;
   } catch (err) {
     console.log(err);
   }
