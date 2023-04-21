@@ -4,11 +4,9 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState, useEffect } from "react";
-import {
-  ThemeProvider,
-} from "@rneui/themed";
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ThemeProvider } from "@rneui/themed";
+import * as eva from "@eva-design/eva";
+import { ApplicationProvider } from "@ui-kitten/components";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase/firebase-setup";
 import * as Notifications from "expo-notifications";
@@ -35,12 +33,13 @@ const Stack = createNativeStackNavigator();
 
 const AuthStack = (
   <>
-    <Stack.Screen name="SignUp" component={SignUp} options={{gestureEnabled: false}} />
-    <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
+    <Stack.Screen
+      name="SignUp"
+      component={SignUp}
+      options={{ gestureEnabled: false }}
+    />
   </>
-)
-;
-
+);
 const AppStack = (
   <>
     <Stack.Screen
@@ -51,6 +50,7 @@ const AppStack = (
     <Stack.Screen name="UserProfile" component={UserProfile} />
     <Stack.Screen name="ClickedProfile" component={ClickedProfile} />
     <Stack.Screen name="Booking" component={Booking} />
+    <Stack.Screen name="SignUpInfo" component={SignUpInfo} />
   </>
 );
 
@@ -58,7 +58,6 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-
     // Handle every notification that is received while the app is open
     const subscription = Notifications.addNotificationReceivedListener(
       (notification) => {
@@ -67,12 +66,11 @@ export default function App() {
     );
 
     // Handle every notification that is tapped on while the app is open
-    const responseListener = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
+    const responseListener =
+      Notifications.addNotificationResponseReceivedListener((response) => {
         console.log("Interacted notification", response.notification);
         Linking.openURL(response.notification.request.content.data.url);
-      }
-    );
+      });
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -82,25 +80,28 @@ export default function App() {
       }
     });
 
-    return () => {subscription.remove(); responseListener.remove()};
+    return () => {
+      subscription.remove();
+      responseListener.remove();
+    };
   }, []);
 
   return (
     <SafeAreaProvider>
       <PushTokenProvider>
-      <ApplicationProvider {...eva} theme={eva.light}>
-      <ThemeProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            { isAuthenticated? AppStack : AuthStack }
-          </Stack.Navigator>
-        </NavigationContainer>
-      </ThemeProvider>
-      </ApplicationProvider>
+        <ApplicationProvider {...eva} theme={eva.light}>
+          <ThemeProvider>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false,
+                }}
+              >
+                {isAuthenticated ? AppStack : AuthStack}
+              </Stack.Navigator>
+            </NavigationContainer>
+          </ThemeProvider>
+        </ApplicationProvider>
       </PushTokenProvider>
     </SafeAreaProvider>
   );

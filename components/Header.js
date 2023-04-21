@@ -12,8 +12,10 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Header as HeaderRNE, Icon, Avatar } from "@rneui/themed";
 import { auth, db } from "../Firebase/firebase-setup";
 import { doc, onSnapshot } from "firebase/firestore";
+import HeaderSettings from "./HeaderSettings";
 
 const Header = (props) => {
+  const [isVisible, setIsVisible] = useState(false);
   const [photo, onChangePhoto] = useState(null);
   const route = useRoute();
   const navigation = useNavigation();
@@ -30,7 +32,11 @@ const Header = (props) => {
   }, []);
 
   const leftAvatar = () => {
-    if (route.name === "UserProfile" || route.name === "ClickedProfile") {
+    if (
+      route.name === "UserProfile" ||
+      route.name === "ClickedProfile" ||
+      route.name == "SignUpInfo"
+    ) {
       return (
         <Avatar
           size="small"
@@ -52,21 +58,31 @@ const Header = (props) => {
   };
 
   return (
-    <HeaderRNE
-      leftComponent={leftAvatar()}
-      leftContainerStyle={styles.headerLeft}
-      rightComponent={
-        <View style={styles.headerRight}>
-          <TouchableOpacity>
-            <Icon name="description" color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity style={{ marginLeft: 10 }}>
-            <Icon type="antdesign" name="rocket1" color="white" />
-          </TouchableOpacity>
-        </View>
-      }
-      centerComponent={{ text: props.title, style: styles.heading }}
-    />
+    <>
+      <HeaderRNE
+        leftComponent={leftAvatar()}
+        leftContainerStyle={styles.headerLeft}
+        rightComponent={
+          <View style={styles.headerRight}>
+            <TouchableOpacity>
+              <Icon name="description" color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ marginLeft: 10 }}
+              onPress={() => setIsVisible(true)}
+            >
+              <Icon type="material" name="settings" color="white" />
+            </TouchableOpacity>
+          </View>
+        }
+        centerComponent={{ text: props.title, style: styles.heading }}
+      />
+      <HeaderSettings
+        style={styles.setting}
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+      />
+    </>
   );
 };
 
