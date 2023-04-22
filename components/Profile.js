@@ -3,6 +3,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import {
   updateProfilePic,
+  updateAvatarBackground,
   getImageFromLibrary,
 } from "../Firebase/firestoreHelper";
 import { Card, Icon, Overlay } from "react-native-elements";
@@ -20,7 +21,7 @@ import {
 import Email from "../components/Email";
 import Separator from "../components/Separator";
 import Tel from "../components/Tel";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "react-native-elements";
 import { db, auth } from "../Firebase/firebase-setup";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -161,6 +162,7 @@ const Profile = ({ userData, isUserProfile }) => {
   renderHeader = () => {
     const [profileVisible, setProfileVisible] = useState(false);
     const [imageProfile, setProfileImage] = useState(null);
+    const overlayType = useRef("profile");
     // useEffect(() => {
     //   onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
     //     onChangeprofilePictureUrl(doc.get("profilePictureUrl"));
@@ -230,7 +232,12 @@ const Profile = ({ userData, isUserProfile }) => {
                 onPress={() => {
                   // onChangeprofilePictureUrl(imageProfile);
                   toggleProfileOverlay();
-                  updateProfilePic(imageProfile);
+                  // console.log(overlayType.current);
+                  if (overlayType.current === "background") {
+                    updateAvatarBackground(imageProfile);
+                  } else {
+                    updateProfilePic(imageProfile);
+                  }
                 }}
               />
               <Text> </Text>
@@ -249,7 +256,7 @@ const Profile = ({ userData, isUserProfile }) => {
           >
             <Pressable
               style={styles.pressableBackground}
-              onPress={toggleProfileOverlay}
+              onPress={() => { overlayType.current = "background"; toggleProfileOverlay();}}
             >
               <Image
                 style={styles.editBackgroundImageIcon}
@@ -265,7 +272,7 @@ const Profile = ({ userData, isUserProfile }) => {
                 <>
                   <Pressable
                     style={styles.pressableImage}
-                    onPress={toggleProfileOverlay}
+                    onPress={() => { overlayType.current = "profile"; toggleProfileOverlay();}}
                   >
                     <Image
                       style={styles.editProfileImageIcon}
