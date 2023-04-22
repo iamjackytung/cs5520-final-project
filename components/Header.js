@@ -55,7 +55,7 @@ const Header = (props) => {
   };
 
   const rightSettings = () => {
-    if (route.name === "MyMentors" || route.name === "Calendar Dashboard") {
+    if (route.name === "MyMentors" || route.name === "MyMentees" || route.name === "Calendar Dashboard") {
       return (
         <>
             <TouchableOpacity
