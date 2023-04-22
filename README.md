@@ -136,9 +136,28 @@ Victor:
 
 ~~External API use~~
 
+<img src="./screenshots/iteration-3/my_mentees_1.png" width="30%">
+<img src="./screenshots/iteration-3/my_mentees_2.jpeg" width="30%">
+<img src="./screenshots/iteration-3/my_mentees_3.jpeg" width="30%">
+<img src="./screenshots/iteration-3/my_mentees_4.png" width="30%">
+<img src="./screenshots/iteration-3/booking_1.jpeg" width="30%">
+<img src="./screenshots/iteration-3/booking_2.png" width="30%">
+<img src="./screenshots/iteration-3/booking_3.jpeg" width="30%">
+<img src="./screenshots/iteration-3/calendar.jpeg" width="30%">
+<img src="./screenshots/iteration-3/my_mentor_profile.jpeg" width="30%">
+<img src="./screenshots/iteration-3/my_profile.jpeg.jpeg" width="30%">
+
+#### Contributions:
+
 Guoao:
 
 Jacky:
+
+- Clicking left Avatar now redirects to Profile page
+- Tab screen no longer contains user profile
+- Improvements to design edit button on UserProfile page
+- Calendar now has title. Clicking on other people's profile now also has a back button
+- Signout feature
 
 Victor:
 
@@ -149,8 +168,3 @@ Victor:
   - Mentor when mentee asks to connect
   - Mentee when mentor accepts/decline connection
   - Mentor or Mentee when the other party ends a connection
-
-<img src="./screenshots/iteration-3/my_mentees_1.png" width="30%">
-<img src="./screenshots/iteration-3/my_mentees_2.jpeg" width="30%">
-<img src="./screenshots/iteration-3/my_mentees_3.jpeg" width="30%">
-<img src="./screenshots/iteration-3/my_mentees_4.png" width="30%">
