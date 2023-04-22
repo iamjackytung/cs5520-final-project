@@ -68,8 +68,6 @@ export default function Home() {
             ),
           }}
         />
-
-        <Tab.Screen name="UserProfile" component={UserProfile} />
       </Tab.Navigator>
     </>
   );

@@ -66,7 +66,6 @@ export async function userIsMentee() {
     console.log(err);
   }
 }
-
 export async function updateProfilePic(profilePicUrl) {
   console.log(profilePicUrl);
   try {
@@ -98,14 +97,28 @@ export async function getMeetings() {
     try {
       for (const booking of querySnapshot.docs) {
         // console.log(typeof booking.data().start_date.);
-        const time = booking.data().start_date.to; // useEffect(() => {
-        //   async function fetchMyMentors() {
-        //     const mentors = await getMyMentors();
-        //     setMyMentors(mentors);
-        //   }
+        const time = booking
+          .data()
+          .start_date.toDate()
+          .toISOString()
+          .split("T")[1]
+          .split(".")[0];
 
-        //   fetchMyMentors();
-        // }, []);n = booking.data().location;
+        const date = booking.data().start_date.toDate();
+        const simpleDate = date.toISOString().split("T")[0];
+        const usersCollection = collection(firestore, "users");
+
+        let namesOfAttendees = "";
+        for (let i = 0; i < booking.data().attendee_ids.length; i++) {
+          const meetingUser = booking.data().attendee_ids[i];
+          const meetingUserDocRef = doc(usersCollection, meetingUser);
+          const meetingUserDocSnap = await getDoc(meetingUserDocRef);
+          const userFirstName = meetingUserDocSnap.data().firstName;
+          if (i == 0) namesOfAttendees += userFirstName;
+          else namesOfAttendees += " & " + userFirstName;
+        }
+        const organizerID = booking.data().organizer_id;
+        const location = booking.data().location;
         if (!MeetingsList[simpleDate]) {
           MeetingsList[simpleDate] = [];
         }

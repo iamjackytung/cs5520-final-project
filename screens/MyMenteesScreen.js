@@ -4,6 +4,7 @@ import {
   getMyMentees,
   acceptConnectionRequest,
   getInboundRequests,
+  declineConnection,
 } from "../Firebase/firestoreHelper";
 import { Button, Icon } from "@rneui/themed";
 import { Header } from "../components/Header";
