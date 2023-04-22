@@ -3,15 +3,11 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 import { Avatar, ListItem, Button } from "@rneui/themed";
 import ConnectButton from "./buttons/ConnectButton";
 
-const MentorGridItem = ({
+const MenteeGridItem = ({
   item,
   navigation,
-  connectButton = false,
-  onConnect = undefined,
   disconnectButton = false,
   onDisconnect = undefined,
-  cancelRequest = false,
-  onCancelRequest = undefined,
 }) => {
   return (
     <TouchableOpacity
@@ -26,9 +22,6 @@ const MentorGridItem = ({
       <ListItem.Content>
         <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
         <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
-        {cancelRequest && (
-          <Button title="Cancel Request" onPress={onCancelRequest} />
-        )}
         {connectButton && <ConnectButton title="Connect" onPress={onConnect} />}
         {disconnectButton && (
           <Button title="Disconnect" onPress={onDisconnect} />
@@ -52,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MentorGridItem;
+export default MenteeGridItem;

@@ -1,14 +1,11 @@
 import React from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { ListItem, Avatar, Button } from "@rneui/themed";
-import ConnectButton from "./buttons/ConnectButton";
 import DisconnectButton from "./buttons/DisconnectButton";
 
-const MentorListItem = ({
+const MenteeListItem = ({
   item,
   navigation,
-  connectButton = false,
-  onConnect = undefined,
   disconnectButton = false,
   onDisconnect = undefined,
 }) => {
@@ -25,15 +22,8 @@ const MentorListItem = ({
         <View style={styles.listItemContent}>
           <ListItem.Content>
             <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
-            {/* add (pending connection) to the title if item.outboundRequest === true */}
-            {item.outboundRequest && (
-              <ListItem.Title>(pending connection)</ListItem.Title>
-            )}
             <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
           </ListItem.Content>
-          {connectButton && (
-            <ConnectButton title="Connect" onPress={onConnect} />
-          )}
           {disconnectButton && (
             <DisconnectButton title="Disconnect" onPress={onDisconnect} />
           )}
@@ -52,4 +42,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MentorListItem;
+export default MenteeListItem;

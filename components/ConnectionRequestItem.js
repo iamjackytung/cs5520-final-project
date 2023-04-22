@@ -1,17 +1,9 @@
 import React from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
-import { ListItem, Avatar, Button } from "@rneui/themed";
-import ConnectButton from "./buttons/ConnectButton";
-import DisconnectButton from "./buttons/DisconnectButton";
+import { ListItem, Avatar, Icon } from "@rneui/themed";
+import { Button } from "react-native-elements";
 
-const MentorListItem = ({
-  item,
-  navigation,
-  connectButton = false,
-  onConnect = undefined,
-  disconnectButton = false,
-  onDisconnect = undefined,
-}) => {
+const ConnectionRequestItem = ({ item, navigation, onAccept, onDecline }) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -25,18 +17,20 @@ const MentorListItem = ({
         <View style={styles.listItemContent}>
           <ListItem.Content>
             <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
-            {/* add (pending connection) to the title if item.outboundRequest === true */}
-            {item.outboundRequest && (
-              <ListItem.Title>(pending connection)</ListItem.Title>
-            )}
             <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
           </ListItem.Content>
-          {connectButton && (
-            <ConnectButton title="Connect" onPress={onConnect} />
-          )}
-          {disconnectButton && (
-            <DisconnectButton title="Disconnect" onPress={onDisconnect} />
-          )}
+          <View style={styles.buttonContainer}>
+            <Button
+              icon={<Icon name="check" size={20} color="white" />}
+              buttonStyle={styles.acceptButton}
+              onPress={onAccept}
+            />
+            <Button
+              icon={<Icon name="close" size={20} color="white" />}
+              buttonStyle={styles.declineButton}
+              onPress={onDecline}
+            />
+          </View>
         </View>
       </ListItem>
     </TouchableOpacity>
@@ -50,6 +44,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
+  buttonContainer: {
+    flexDirection: "row",
+  },
+  acceptButton: {
+    backgroundColor: "green",
+    marginRight: 5,
+  },
+  declineButton: {
+    backgroundColor: "red",
+  },
 });
 
-export default MentorListItem;
+export default ConnectionRequestItem;
