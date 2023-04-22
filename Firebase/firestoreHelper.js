@@ -531,38 +531,43 @@ export async function disconnectWithMentee(menteeId) {
   }
 }
 
-export async function getInboundRequests() {
+export function getInboundRequests(callback) {
   try {
     const currentUser = auth.currentUser;
 
     if (!currentUser) {
       console.log("No user is signed in");
-      return [];
+      return null;
     }
 
     const userDocRef = doc(collection(firestore, "users"), currentUser.uid);
-    const userDocSnap = await getDoc(userDocRef);
 
-    if (!userDocSnap.exists()) {
-      console.log("User document does not exist.");
-      return [];
-    }
+    const unsubscribe = onSnapshot(userDocRef, async (userDocSnap) => {
+      if (!userDocSnap.exists()) {
+        console.log("User document does not exist.");
+        return;
+      }
 
-    const userData = userDocSnap.data();
-    const inboundRequests = userData.inboundRequests || [];
+      const userData = userDocSnap.data();
+      const inboundRequests = userData.inboundRequests || [];
+      const requestDetailsList = [];
 
-    const requestDocs = await Promise.all(
-      inboundRequests.map((uid) =>
-        getDoc(doc(collection(firestore, "users"), uid))
-      )
-    );
+      for (const requestID of inboundRequests) {
+        const requestDocRef = doc(collection(firestore, "users"), requestID);
+        const requestDocSnap = await getDoc(requestDocRef);
 
-    return requestDocs.map((docSnap) => ({
-      uid: docSnap.id,
-      ...docSnap.data(),
-    }));
+        if (requestDocSnap.exists()) {
+          const requestData = requestDocSnap.data();
+          requestDetailsList.push({ ...requestData, uid: requestDocSnap.id });
+        }
+      }
+
+      callback(requestDetailsList);
+    });
+
+    return unsubscribe;
   } catch (error) {
     console.log("Error fetching inbound requests:", error);
-    return [];
+    return null;
   }
 }

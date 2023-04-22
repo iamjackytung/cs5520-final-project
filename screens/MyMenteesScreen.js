@@ -20,18 +20,17 @@ const MyMenteesScreen = ({ navigation }) => {
   const [connectionRequests, setConnectionRequests] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = getMyMentees((mentees) => {
+    const unsubscribeMentees = getMyMentees((mentees) => {
       setMyMentees(mentees);
     });
 
-    async function fetchInboundRequests() {
-      const requests = await getInboundRequests();
+    const unsubscribeInboundRequests = getInboundRequests((requests) => {
       setConnectionRequests(requests);
-    }
+    });
 
-    fetchInboundRequests();
     return () => {
-      unsubscribe();
+      unsubscribeMentees();
+      unsubscribeInboundRequests();
     };
   }, []);
 
