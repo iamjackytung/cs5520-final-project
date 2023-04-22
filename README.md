@@ -128,36 +128,54 @@ Victor:
 
 ~~Authentication~~
 
+See Iteration 1
+
 ~~Camera use~~
 
+<img src="./screenshots/iteration-3/camera_use.png" width="30%">
+
 ~~Location use~~
+~~External API use~~
+
+<img src="./screenshots/iteration-3/booking_1.jpeg" width="30%">
+<img src="./screenshots/iteration-3/booking_2.png" width="30%">
+
 
 ~~Notification~~
 
-~~External API use~~
-
-<img src="./screenshots/iteration-3/my_mentees_1.png" width="30%">
 <img src="./screenshots/iteration-3/my_mentees_2.jpeg" width="30%">
 <img src="./screenshots/iteration-3/my_mentees_3.jpeg" width="30%">
-<img src="./screenshots/iteration-3/my_mentees_4.png" width="30%">
-<img src="./screenshots/iteration-3/booking_1.jpeg" width="30%">
-<img src="./screenshots/iteration-3/booking_2.png" width="30%">
-<img src="./screenshots/iteration-3/booking_3.jpeg" width="30%">
-<img src="./screenshots/iteration-3/calendar.jpeg" width="30%">
-<img src="./screenshots/iteration-3/my_mentor_profile.jpeg" width="30%">
-<img src="./screenshots/iteration-3/my_profile.jpeg.jpeg" width="30%">
 
-#### Contributions:
+Other pages:
+
+<img src="./screenshots/iteration-3/my_mentees_1.png" width="30%">
+<img src="./screenshots/iteration-3/my_mentees_4.png" width="30%">
+<img src="./screenshots/iteration-3/calendar.png" width="30%">
+<img src="./screenshots/iteration-3/my_mentor_profile.jpeg" width="30%">
+<img src="./screenshots/iteration-3/my_profile.jpeg" width="30%">
+<img src="./screenshots/iteration-3/edit_profile.png" width="30%">
+<img src="./screenshots/iteration-3/setting_menu.png" width="30%">
+<img src="./screenshots/iteration-3/time.png" width="30%">
+<img src="./screenshots/iteration-3/date.png" width="30%">
+
+### Contributions:
 
 Guoao:
 
+- Booking screen which allows one user to book meeting with another one
+- Booking organizer and attendee will be notified by push notification
+- Getting push token and store it into context and Firebase
+- Date and time picker in the booking page for both IOS and Android
+- Several bug fixing including adding SafeAreaView for setting overlay, abnormal behavior of saving token, etc.
+
 Jacky:
 
+- Create the calendar view which shows all the bookings
 - Clicking left Avatar now redirects to Profile page
 - Tab screen no longer contains user profile
 - Improvements to design edit button on UserProfile page
 - Calendar now has title. Clicking on other people's profile now also has a back button
-- Signout feature
+- Sign out feature
 
 Victor:
 
