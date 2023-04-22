@@ -46,7 +46,7 @@ export const UserTypeItem = (props) => {
   );
 };
 
-const SignUpInfo = ({ navigation }) => {
+const SignUpInfo = ({ route, navigation }) => {
   const pickImage = async () => {
     let mediaPermStatus = await ImagePicker.getMediaLibraryPermissionsAsync();
     // console.log(mediaPermStatus);
@@ -188,7 +188,7 @@ const SignUpInfo = ({ navigation }) => {
 
   return (
     <>
-      <Header view="Submit" title="Sign Up" />
+      <Header view="Submit" title={ route.params.headerTitle? route.params.headerTitle : "Sign Up"} />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{ alignItems: "center", marginBottom: 16 }}>
           <View style={styles.formContainer}>

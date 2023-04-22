@@ -72,10 +72,13 @@ export default function App() {
         Linking.openURL(response.notification.request.content.data.url);
       });
 
-    onAuthStateChanged(auth, (user) => {
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // console.log("onAuthStateChanged: ", user);
       if (user) {
         setIsAuthenticated(true);
       } else {
+        // console.log("Not authenticated!");
         setIsAuthenticated(false);
       }
     });
@@ -83,6 +86,7 @@ export default function App() {
     return () => {
       subscription.remove();
       responseListener.remove();
+      unsubscribe();
     };
   }, []);
 
