@@ -94,7 +94,6 @@ The booking page obtains the current location, and autocomplete nearby location 
 <img src="./screenshots/iteration-2/booking.png" width="30%">
 <img src="./screenshots/iteration-2/booking_autocomplete.png" width="30%">
 
-
 Notification
 
 External API use
@@ -124,3 +123,34 @@ Victor:
 - Disconnect button: ends the connection between a mentor and a mentee
 
 <img src="./screenshots/iteration-2/mymentors.jpeg" width="30%">
+
+## Iteration 3
+
+~~Authentication~~
+
+~~Camera use~~
+
+~~Location use~~
+
+~~Notification~~
+
+~~External API use~~
+
+Guoao:
+
+Jacky:
+
+Victor:
+
+- My Mentees screen
+- Mentees now request to connect with a mentor, which have to either accept or decline the connection
+- Refactored connections to use onSnapshot for responsive rendering as users take action in the app
+- Notify:
+  - Mentor when mentee asks to connect
+  - Mentee when mentor accepts/decline connection
+  - Mentor or Mentee when the other party ends a connection
+
+<img src="./screenshots/iteration-3/my_mentees_1.png" width="30%">
+<img src="./screenshots/iteration-3/my_mentees_2.jpeg" width="30%">
+<img src="./screenshots/iteration-3/my_mentees_3.jpeg" width="30%">
+<img src="./screenshots/iteration-3/my_mentees_4.png" width="30%">
