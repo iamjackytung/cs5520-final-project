@@ -20,8 +20,7 @@ export default function Booking({ route, navigation }) {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    
-    saveUserData({ token: token });
+    // saveUserData({ token: token });
   }, []);
 
   async function onSubmit() {

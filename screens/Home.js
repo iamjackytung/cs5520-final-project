@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyMentorsScreen from "./MyMentorsScreen";
 import MyMenteesScreen from "./MyMenteesScreen";
@@ -7,20 +7,33 @@ import { StyleSheet } from "react-native";
 import CalendarDashboard from "../components/CalendarDashboard";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { userIsMentor, userIsMentee } from "../Firebase/firestoreHelper";
+import { PushTokenContext } from "../contexts/PushTokenContext";
+import { saveUserData } from "../Firebase/firestoreHelper";
 
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
+  const token = useContext(PushTokenContext);
+
   const [isMentor, setIsMentor] = useState(false);
   const [isMentee, setIsMentee] = useState(false);
   useEffect(() => {
-    userIsMentor().then((isMentor) => {
+    async function getData() {
+      const isMentor = await userIsMentor();
       setIsMentor(isMentor);
-    });
-    userIsMentee().then((isMentee) => {
+
+      const isMentee = await userIsMentee();
       setIsMentee(isMentee);
-    });
+
+      if (token) {
+        await saveUserData({ token: token });
+        console.log("Token saved to DB: ", token);
+      }
+    }
+
+    getData();
   }, []);
+
 
   return (
     <>
