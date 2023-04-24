@@ -50,7 +50,7 @@ export async function userIsMentor() {
     const docRef = doc(firestore, "users", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
-    return data.isMentor;
+    return data?.isMentor;
   } catch (err) {
     console.log(err);
   }
@@ -61,7 +61,7 @@ export async function userIsMentee() {
     const docRef = doc(firestore, "users", auth.currentUser.uid);
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
-    return data.isMentee;
+    return data?.isMentee;
   } catch (err) {
     console.log(err);
   }
