@@ -66,6 +66,7 @@ export async function userIsMentee() {
     console.log(err);
   }
 }
+
 export async function updateProfilePic(profilePicUrl) {
   console.log(profilePicUrl);
   try {
@@ -74,6 +75,20 @@ export async function updateProfilePic(profilePicUrl) {
     await updateDoc(newDoc, {
       profilePictureUrl: profilePicUrl,
     });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function updateAvatarBackground(avatarBackgroundUrl) {
+  try {
+    const newDoc = doc(firestore, "users", auth.currentUser.uid);
+
+    await updateDoc(newDoc, {
+      avatarBackground: avatarBackgroundUrl,
+    });
+    console.log("Background updated: ", avatarBackgroundUrl);
+
   } catch (err) {
     console.log(err);
   }
