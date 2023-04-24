@@ -46,7 +46,7 @@ const HeaderSettings = ({ setIsVisible, isVisible }) => {
           },
           {
             text: "Yes, Logout",
-            onPress: () => logOut(),
+            onPress: () => {setIsVisible(false); logOut();},
           },
         ]),
     },
