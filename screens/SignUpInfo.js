@@ -112,7 +112,13 @@ const SignUpInfo = ({ route, navigation }) => {
     const unsubscribe = onSnapshot(
       doc(db, "users", auth.currentUser.uid),
       (doc) => {
-        if (doc.data()) {
+        if (!doc || !doc.data()) { return; }
+        // The user is signing up for the first time, only has token field
+        // console.log("doc: ", doc);
+        // console.log("doc data: ", doc.data());
+        if (Object.keys(doc.data()).length == 1 && doc.get("token")) {
+          return;
+        } else {
           signingUp == false;
           onChangeFirstName(doc.get("firstName"));
           onChangeIsMentee(doc.get("isMentee"));
