@@ -188,7 +188,7 @@ const SignUpInfo = ({ route, navigation }) => {
 
   return (
     <>
-      <Header view="Submit" title={ route.params.headerTitle? route.params.headerTitle : "Sign Up"} />
+      <Header view="Submit" title={ route.params ? route.params.headerTitle : "Sign Up"} />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{ alignItems: "center", marginBottom: 16 }}>
           <View style={styles.formContainer}>
