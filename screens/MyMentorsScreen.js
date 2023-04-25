@@ -120,8 +120,8 @@ const MyMentorsScreen = ({ navigation }) => {
             data={newMentors}
             viewStyle={viewStyle}
             navigation={navigation}
-            renderList={({ item }) => <MentorListItem item={item} />}
-            renderGridItem={({ item }) => <MentorGridItem item={item} />}
+            renderList={({ item }) => <ListItem item={item} />}
+            renderGridItem={({ item }) => <GridItem item={item} />}
             myMentors={myMentors}
             setMyMentors={setMyMentors}
             newMentors={newMentors}
