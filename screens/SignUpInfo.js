@@ -210,12 +210,14 @@ const SignUpInfo = ({ route, navigation }) => {
     LayoutAnimation.easeInEaseOut();
     setSelectedType(value);
     if (value == "mentor") {
-      onChangeIsMentor(true);
-      onChangeIsMentee(false);
+      onChangeIsMentor(!isMentor);
+      // onChangeIsMentor(true);
+      // onChangeIsMentee(false);
     }
     if (value == "mentee") {
-      onChangeIsMentor(false);
-      onChangeIsMentee(true);
+      onChangeIsMentee(!isMentee);
+      // onChangeIsMentor(false);
+      // onChangeIsMentee(true);
     }
   };
 
@@ -228,7 +230,11 @@ const SignUpInfo = ({ route, navigation }) => {
     <>
       <Header
         view="Submit"
+<<<<<<< Updated upstream
         title={route.params ? route.params.headerTitle : "Sign Up"}
+=======
+        title={route.params.headerTitle ? route.params.headerTitle : "Sign Up"}
+>>>>>>> Stashed changes
       />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{ alignItems: "center", marginBottom: 16 }}>
@@ -241,14 +247,16 @@ const SignUpInfo = ({ route, navigation }) => {
                 labelColor="blue"
                 image={USER_MENTOR}
                 onPress={() => selectedTypeHandler("mentor")}
-                selected={selectedType === "mentor"}
+                // selected={selectedType === "mentor"}
+                selected={isMentor}
               />
               <UserTypeItem
                 label="Mentee"
                 labelColor="blue"
                 image={USER_MENTEE}
                 onPress={() => selectedTypeHandler("mentee")}
-                selected={selectedType === "mentee"}
+                // selected={selectedType === "mentee"}
+                selected={isMentee}
               />
             </View>
           </View>
