@@ -232,15 +232,14 @@ const SignUpInfo = ({ route, navigation }) => {
 
   return (
     <>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <Header
-          view="Submit"
-          title={route.params ? route.params.headerTitle : "Sign Up"}
-        />
-        <ScrollView keyboardShouldPersistTaps="handled">
+      <Header
+        view="Submit"
+        title={route.params ? route.params.headerTitle : "Sign Up"}
+      />
+      <ScrollView keyboardShouldPersistTaps="handled">
+          <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
           <View style={{ alignItems: "center", marginBottom: 16 }}>
             <View style={[styles.formContainer, styles.shadowProp]}>
               <Text>Please click which option best describes you</Text>
@@ -455,8 +454,8 @@ const SignUpInfo = ({ route, navigation }) => {
               }}
             />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+      </ScrollView>
     </>
   );
 };
