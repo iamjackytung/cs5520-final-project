@@ -8,7 +8,7 @@ import {
   LayoutAnimation,
   Dimensions,
   Platform,
-  KeyboardAvoidingView, 
+  KeyboardAvoidingView,
 } from "react-native";
 import { Header } from "../components/Header";
 import { Input, Icon, Button, Overlay } from "@rneui/themed";
@@ -232,227 +232,230 @@ const SignUpInfo = ({ route, navigation }) => {
 
   return (
     <>
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-      style={styles.container}>
-      <Header
-        view="Submit"
-        title={route.params ? route.params.headerTitle : "Sign Up"}
-      />
-      <ScrollView keyboardShouldPersistTaps="handled">
-        <View style={{ alignItems: "center", marginBottom: 16 }}>
-          <View style={styles.formContainer}>
-            <Text>Please click which option best describes you</Text>
-            <Text>{}</Text>
-            <View style={styles.userTypesContainer}>
-              <UserTypeItem
-                label="Mentor"
-                labelColor="blue"
-                image={USER_MENTOR}
-                onPress={() => selectedTypeHandler("mentor")}
-                // selected={selectedType === "mentor"}
-                selected={isMentor}
-              />
-              <UserTypeItem
-                label="Mentee"
-                labelColor="blue"
-                image={USER_MENTEE}
-                onPress={() => selectedTypeHandler("mentee")}
-                // selected={selectedType === "mentee"}
-                selected={isMentee}
-              />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <Header
+          view="Submit"
+          title={route.params ? route.params.headerTitle : "Sign Up"}
+        />
+        <ScrollView keyboardShouldPersistTaps="handled">
+          <View style={{ alignItems: "center", marginBottom: 16 }}>
+            <View style={[styles.formContainer, styles.shadowProp]}>
+              <Text>Please click which option best describes you</Text>
+              <Text>{}</Text>
+              <View style={styles.userTypesContainer}>
+                <UserTypeItem
+                  label="Mentor"
+                  labelColor="#397af8"
+                  image={USER_MENTOR}
+                  onPress={() => selectedTypeHandler("mentor")}
+                  // selected={selectedType === "mentor"}
+                  selected={isMentor}
+                  style={styles.shadowProp}
+                />
+                <UserTypeItem
+                  label="Mentee"
+                  labelColor="#397af8"
+                  image={USER_MENTEE}
+                  onPress={() => selectedTypeHandler("mentee")}
+                  // selected={selectedType === "mentee"}
+                  selected={isMentee}
+                  style={styles.shadowProp}
+                />
+              </View>
             </View>
-          </View>
-          <Input
-            containerStyle={{ width: "90%" }}
-            placeholder={initialUserData.initFirstName}
-            label="First Name"
-            labelStyle={{ marginTop: 16 }}
-            style={InputFieldsStyle}
-            onChangeText={onChangeFirstName}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            placeholder={initialUserData.initLastName}
-            label="Last Name"
-            style={InputFieldsStyle}
-            onChangeText={onChangeLastName}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            placeholder={initialUserData.initLastName}
-            label="Job Title"
-            style={InputFieldsStyle}
-            onChangeText={onChangeJobTitle}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            placeholder={initialUserData.initCity}
-            label="Your City"
-            style={InputFieldsStyle}
-            onChangeText={OnCityChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            placeholder={initialUserData.initState}
-            label="Your State/Province"
-            style={InputFieldsStyle}
-            onChangeText={OnStateChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            placeholder={initialUserData.initCountry}
-            label="Your Country"
-            style={InputFieldsStyle}
-            onChangeText={OnCountryChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            label="Your Home Number"
-            placeholder={initialUserData.initTelMobile}
-            style={InputFieldsStyle}
-            keyboardType="phone-pad"
-            onChangeText={OnTelMobileChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            placeholder={initialUserData.initTelWork}
-            label="Your Work Number"
-            style={InputFieldsStyle}
-            keyboardType="phone-pad"
-            onChangeText={OnTelWorkChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            placeholder={initialUserData.initEmailPersonal}
-            label="Your Personal Email"
-            style={InputFieldsStyle}
-            keyboardType="email-address"
-            onChangeText={OnEmailPersonalChange}
-          />
-          <Input
-            containerStyle={styles.inputContainerStyle}
-            placeholder={initialUserData.initEmailWork}
-            label="Your Work Email"
-            style={InputFieldsStyle}
-            keyboardType="email-address"
-            onChangeText={OnEmailWorkChange}
-          />
-          {signingUp && (
-            <>
-              <Button
-                title="Set up Profile Picture"
-                onPress={toggleProfileOverlay}
-                buttonStyle={styles.button}
-              />
-              <Overlay
-                isVisible={profileVisible}
-                onBackdropPress={toggleProfileOverlay}
-              >
-                {!imageProfile && (
-                  <>
-                    <Button
-                      title="Pick image from photo library"
-                      onPress={pickImage}
-                    />
-                    <Text> </Text>
-                    <Button
-                      title="Take a picture from camera roll"
-                      onPress={takePicture}
-                    />
-                  </>
-                )}
-                {imageProfile && (
-                  <>
-                    <Image
-                      source={{ uri: imageProfile }}
-                      style={{ width: 100, height: 100 }}
-                    />
-                    <Text> </Text>
-                    <Button
-                      title="Confirm Photo?"
-                      onPress={() => {
-                        onChangeprofilePictureUrl(imageProfile);
-                        toggleProfileOverlay();
-                      }}
-                    />
-                    <Text> </Text>
-                    <Button
-                      title="Choose new photo"
-                      onPress={() => setProfileImage(null)}
-                    />
-                  </>
-                )}
-              </Overlay>
-              <Button
-                title="Set up Avatar Background"
-                onPress={toggleBackgroundOverlay}
-                buttonStyle={styles.button}
-              />
-              <Overlay
-                isVisible={backgroundVisible}
-                onBackdropPress={toggleBackgroundOverlay}
-              >
-                {!imageBackground && (
-                  <>
-                    <Button
-                      title="Pick image from photo library"
-                      onPress={pickBackgroundImage}
-                    />
-                    <Text> </Text>
-                    <Button
-                      title="Take a picture from camera roll"
-                      onPress={takePicture}
-                    />
-                  </>
-                )}
-                {imageBackground && (
-                  <>
-                    <Image
-                      source={{ uri: imageBackground }}
-                      style={{ width: 100, height: 100 }}
-                    />
-                    <Text> </Text>
-                    <Button
-                      title="Confirm Photo?"
-                      onPress={() => {
-                        onChangebackgroundImageUrl(imageBackground);
-                        toggleBackgroundOverlay();
-                      }}
-                    />
-                    <Text> </Text>
-                    <Button
-                      title="Choose new photo"
-                      onPress={() => setBackgroundImage(null)}
-                    />
-                  </>
-                )}
-              </Overlay>
-            </>
-          )}
+            <Input
+              containerStyle={{ width: "90%" }}
+              placeholder={initialUserData.initFirstName}
+              label="First Name"
+              labelStyle={{ marginTop: 16 }}
+              style={InputFieldsStyle}
+              onChangeText={onChangeFirstName}
+            />
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder={initialUserData.initLastName}
+              label="Last Name"
+              style={InputFieldsStyle}
+              onChangeText={onChangeLastName}
+            />
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder={initialUserData.initLastName}
+              label="Job Title"
+              style={InputFieldsStyle}
+              onChangeText={onChangeJobTitle}
+            />
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder={initialUserData.initCity}
+              label="Your City"
+              style={InputFieldsStyle}
+              onChangeText={OnCityChange}
+            />
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder={initialUserData.initState}
+              label="Your State/Province"
+              style={InputFieldsStyle}
+              onChangeText={OnStateChange}
+            />
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder={initialUserData.initCountry}
+              label="Your Country"
+              style={InputFieldsStyle}
+              onChangeText={OnCountryChange}
+            />
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              label="Your Home Number"
+              placeholder={initialUserData.initTelMobile}
+              style={InputFieldsStyle}
+              keyboardType="phone-pad"
+              onChangeText={OnTelMobileChange}
+            />
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder={initialUserData.initTelWork}
+              label="Your Work Number"
+              style={InputFieldsStyle}
+              keyboardType="phone-pad"
+              onChangeText={OnTelWorkChange}
+            />
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder={initialUserData.initEmailPersonal}
+              label="Your Personal Email"
+              style={InputFieldsStyle}
+              keyboardType="email-address"
+              onChangeText={OnEmailPersonalChange}
+            />
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder={initialUserData.initEmailWork}
+              label="Your Work Email"
+              style={InputFieldsStyle}
+              keyboardType="email-address"
+              onChangeText={OnEmailWorkChange}
+            />
+            {signingUp && (
+              <>
+                <Button
+                  title="Set up Profile Picture"
+                  onPress={toggleProfileOverlay}
+                  buttonStyle={styles.button}
+                />
+                <Overlay
+                  isVisible={profileVisible}
+                  onBackdropPress={toggleProfileOverlay}
+                >
+                  {!imageProfile && (
+                    <>
+                      <Button
+                        title="Pick image from photo library"
+                        onPress={pickImage}
+                      />
+                      <Text> </Text>
+                      <Button
+                        title="Take a picture from camera roll"
+                        onPress={takePicture}
+                      />
+                    </>
+                  )}
+                  {imageProfile && (
+                    <>
+                      <Image
+                        source={{ uri: imageProfile }}
+                        style={{ width: 100, height: 100 }}
+                      />
+                      <Text> </Text>
+                      <Button
+                        title="Confirm Photo?"
+                        onPress={() => {
+                          onChangeprofilePictureUrl(imageProfile);
+                          toggleProfileOverlay();
+                        }}
+                      />
+                      <Text> </Text>
+                      <Button
+                        title="Choose new photo"
+                        onPress={() => setProfileImage(null)}
+                      />
+                    </>
+                  )}
+                </Overlay>
+                <Button
+                  title="Set up Avatar Background"
+                  onPress={toggleBackgroundOverlay}
+                  buttonStyle={styles.button}
+                />
+                <Overlay
+                  isVisible={backgroundVisible}
+                  onBackdropPress={toggleBackgroundOverlay}
+                >
+                  {!imageBackground && (
+                    <>
+                      <Button
+                        title="Pick image from photo library"
+                        onPress={pickBackgroundImage}
+                      />
+                      <Text> </Text>
+                      <Button
+                        title="Take a picture from camera roll"
+                        onPress={takePicture}
+                      />
+                    </>
+                  )}
+                  {imageBackground && (
+                    <>
+                      <Image
+                        source={{ uri: imageBackground }}
+                        style={{ width: 100, height: 100 }}
+                      />
+                      <Text> </Text>
+                      <Button
+                        title="Confirm Photo?"
+                        onPress={() => {
+                          onChangebackgroundImageUrl(imageBackground);
+                          toggleBackgroundOverlay();
+                        }}
+                      />
+                      <Text> </Text>
+                      <Button
+                        title="Choose new photo"
+                        onPress={() => setBackgroundImage(null)}
+                      />
+                    </>
+                  )}
+                </Overlay>
+              </>
+            )}
 
-          <Button
-            title="Submit"
-            iconContainerStyle={{ marginRight: 10 }}
-            titleStyle={{ fontWeight: "700" }}
-            buttonStyle={{
-              backgroundColor: "rgba(90, 154, 230, 1)",
-              borderColor: "transparent",
-              borderWidth: 0,
-            }}
-            radius={30}
-            containerStyle={{
-              width: 200,
-              marginHorizontal: 50,
-              marginVertical: 10,
-            }}
-            onPress={() => {
-              writeToDB(userData);
-              navigation.navigate("Home");
-            }}
-          />
-        </View>
-      </ScrollView>
+            <Button
+              title="Submit"
+              iconContainerStyle={{ marginRight: 10 }}
+              titleStyle={{ fontWeight: "700" }}
+              buttonStyle={{
+                backgroundColor: "rgba(90, 154, 230, 1)",
+                borderColor: "transparent",
+                borderWidth: 0,
+              }}
+              radius={30}
+              containerStyle={{
+                width: 200,
+                marginHorizontal: 50,
+                marginVertical: 10,
+              }}
+              onPress={() => {
+                writeToDB(userData);
+                navigation.navigate("Home");
+              }}
+            />
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </>
   );
@@ -513,5 +516,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
     fontSize: 17,
+  },
+  shadowProp: {
+    shadowOffset: { width: -2, height: 4 },
+    shadowColor: "#171717",
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
 });

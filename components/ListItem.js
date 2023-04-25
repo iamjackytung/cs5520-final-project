@@ -21,7 +21,7 @@ const ListItemComponent = ({
       }}
     >
       <ListItem bottomDivider>
-        <Avatar source={{ uri: item.profilePictureUrl }} />
+        <Avatar source={{ uri: item.profilePictureUrl }} rounded />
         <View style={styles.listItemContent}>
           <ListItem.Content>
             <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
