@@ -230,11 +230,7 @@ const SignUpInfo = ({ route, navigation }) => {
     <>
       <Header
         view="Submit"
-<<<<<<< Updated upstream
         title={route.params ? route.params.headerTitle : "Sign Up"}
-=======
-        title={route.params.headerTitle ? route.params.headerTitle : "Sign Up"}
->>>>>>> Stashed changes
       />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{ alignItems: "center", marginBottom: 16 }}>
