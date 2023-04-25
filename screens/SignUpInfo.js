@@ -108,19 +108,40 @@ const SignUpInfo = ({ route, navigation }) => {
   const [emailWork, OnEmailWorkChange] = useState(null);
   const signingUp = true;
 
+  const [initialUserData, setInitialUserData] = useState({
+    initFirstName: "",
+    initLastName: "",
+    initJobTitle: "",
+    initIsMentee: "",
+    initIsMentor: "",
+    initCity: "",
+    initState: "",
+    initCountry: "",
+    initTelMobile: "",
+    initTelWork: "",
+    initEmailPersonal: "",
+    initEmailWork: "",
+  });
+
   useEffect(() => {
     const unsubscribe = onSnapshot(
       doc(db, "users", auth.currentUser.uid),
       (doc) => {
-        if (doc.data()) {
+        if (!doc || !doc.data()) {
+          return;
+        }
+        // The user is signing up for the first time, only has token field
+        // console.log("doc: ", doc);
+        // console.log("doc data: ", doc.data());
+        if (Object.keys(doc.data()).length == 1 && doc.get("token")) {
+          return;
+        } else {
           signingUp == false;
           onChangeFirstName(doc.get("firstName"));
+          onChangeLastName(doc.get("lastName"));
+          onChangeJobTitle(doc.get("jobTitle"));
           onChangeIsMentee(doc.get("isMentee"));
           onChangeIsMentor(doc.get("isMentor"));
-          onChangeJobTitle(doc.get("jobTitle"));
-          onChangeLastName(doc.get("lastName"));
-          onChangebackgroundImageUrl(doc.get("profilePictureUrl"));
-          onChangeprofilePictureUrl(doc.get("profilePictureUrl"));
           OnCityChange(doc.get("city"));
           OnStateChange(doc.get("state"));
           OnCountryChange(doc.get("country"));
@@ -128,6 +149,23 @@ const SignUpInfo = ({ route, navigation }) => {
           OnTelWorkChange(doc.get("tels")[1]["number"]);
           OnEmailPersonalChange(doc.get("emails")[0]["email"]);
           OnEmailWorkChange(doc.get("emails")[1]["email"]);
+          onChangebackgroundImageUrl(doc.get("profilePictureUrl"));
+          onChangeprofilePictureUrl(doc.get("profilePictureUrl"));
+
+          setInitialUserData({
+            initFirstName: doc.get("firstName"),
+            initLastName: doc.get("lastName"),
+            initJobTitle: doc.get("jobTitle"),
+            initIsMentee: doc.get("isMentee"),
+            initIsMentor: doc.get("isMentor"),
+            initCity: doc.get("city"),
+            initState: doc.get("state"),
+            initCountry: doc.get("country"),
+            initTelMobile: doc.get("tels")[0]["number"],
+            initTelWork: doc.get("tels")[1]["number"],
+            initEmailPersonal: doc.get("emails")[0]["email"],
+            initEmailWork: doc.get("emails")[1]["email"],
+          });
         }
       }
     );
@@ -172,12 +210,14 @@ const SignUpInfo = ({ route, navigation }) => {
     LayoutAnimation.easeInEaseOut();
     setSelectedType(value);
     if (value == "mentor") {
-      onChangeIsMentor(true);
-      onChangeIsMentee(false);
+      onChangeIsMentor(!isMentor);
+      // onChangeIsMentor(true);
+      // onChangeIsMentee(false);
     }
     if (value == "mentee") {
-      onChangeIsMentor(false);
-      onChangeIsMentee(true);
+      onChangeIsMentee(!isMentee);
+      // onChangeIsMentor(false);
+      // onChangeIsMentee(true);
     }
   };
 
@@ -188,7 +228,10 @@ const SignUpInfo = ({ route, navigation }) => {
 
   return (
     <>
-      <Header view="Submit" title={ route.params.headerTitle? route.params.headerTitle : "Sign Up"} />
+      <Header
+        view="Submit"
+        title={route.params ? route.params.headerTitle : "Sign Up"}
+      />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={{ alignItems: "center", marginBottom: 16 }}>
           <View style={styles.formContainer}>
@@ -200,20 +243,22 @@ const SignUpInfo = ({ route, navigation }) => {
                 labelColor="blue"
                 image={USER_MENTOR}
                 onPress={() => selectedTypeHandler("mentor")}
-                selected={selectedType === "mentor"}
+                // selected={selectedType === "mentor"}
+                selected={isMentor}
               />
               <UserTypeItem
                 label="Mentee"
                 labelColor="blue"
                 image={USER_MENTEE}
                 onPress={() => selectedTypeHandler("mentee")}
-                selected={selectedType === "mentee"}
+                // selected={selectedType === "mentee"}
+                selected={isMentee}
               />
             </View>
           </View>
           <Input
             containerStyle={{ width: "90%" }}
-            placeholder={firstName}
+            placeholder={initialUserData.initFirstName}
             label="First Name"
             labelStyle={{ marginTop: 16 }}
             style={InputFieldsStyle}
@@ -221,35 +266,35 @@ const SignUpInfo = ({ route, navigation }) => {
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            placeholder={lastName}
+            placeholder={initialUserData.initLastName}
             label="Last Name"
             style={InputFieldsStyle}
             onChangeText={onChangeLastName}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            placeholder={jobTitle}
+            placeholder={initialUserData.initLastName}
             label="Job Title"
             style={InputFieldsStyle}
             onChangeText={onChangeJobTitle}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            placeholder={city}
+            placeholder={initialUserData.initCity}
             label="Your City"
             style={InputFieldsStyle}
             onChangeText={OnCityChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            placeholder={state}
+            placeholder={initialUserData.initState}
             label="Your State/Province"
             style={InputFieldsStyle}
             onChangeText={OnStateChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            placeholder={country}
+            placeholder={initialUserData.initCountry}
             label="Your Country"
             style={InputFieldsStyle}
             onChangeText={OnCountryChange}
@@ -257,27 +302,27 @@ const SignUpInfo = ({ route, navigation }) => {
           <Input
             containerStyle={styles.inputContainerStyle}
             label="Your Home Number"
-            placeholder={telMobile.toString()}
+            placeholder={initialUserData.initTelMobile}
             style={InputFieldsStyle}
             onChangeText={OnTelMobileChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            placeholder={telWork.toString()}
+            placeholder={initialUserData.initTelWork}
             label="Your Work Number"
             style={InputFieldsStyle}
             onChangeText={OnTelWorkChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            placeholder={emailPersonal}
+            placeholder={initialUserData.initEmailPersonal}
             label="Your Personal Email"
             style={InputFieldsStyle}
             onChangeText={OnEmailPersonalChange}
           />
           <Input
             containerStyle={styles.inputContainerStyle}
-            placeholder={emailWork}
+            placeholder={initialUserData.initEmailWork}
             label="Your Work Email"
             style={InputFieldsStyle}
             onChangeText={OnEmailWorkChange}
