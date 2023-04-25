@@ -195,6 +195,8 @@ const SignUpInfo = ({ route, navigation }) => {
     city: city,
     state: state,
     country: country,
+    inboundRequests: [],
+    outboundRequests: [],
     avatarBackground: backgroundImageUrl,
     tels: [
       { id: 1, name: "Mobile", number: telMobile },
@@ -304,6 +306,7 @@ const SignUpInfo = ({ route, navigation }) => {
             label="Your Home Number"
             placeholder={initialUserData.initTelMobile}
             style={InputFieldsStyle}
+            keyboardType="phone-pad"
             onChangeText={OnTelMobileChange}
           />
           <Input
@@ -311,6 +314,7 @@ const SignUpInfo = ({ route, navigation }) => {
             placeholder={initialUserData.initTelWork}
             label="Your Work Number"
             style={InputFieldsStyle}
+            keyboardType="phone-pad"
             onChangeText={OnTelWorkChange}
           />
           <Input
@@ -318,6 +322,7 @@ const SignUpInfo = ({ route, navigation }) => {
             placeholder={initialUserData.initEmailPersonal}
             label="Your Personal Email"
             style={InputFieldsStyle}
+            keyboardType="email-address"
             onChangeText={OnEmailPersonalChange}
           />
           <Input
@@ -325,6 +330,7 @@ const SignUpInfo = ({ route, navigation }) => {
             placeholder={initialUserData.initEmailWork}
             label="Your Work Email"
             style={InputFieldsStyle}
+            keyboardType="email-address"
             onChangeText={OnEmailWorkChange}
           />
           {signingUp && (
