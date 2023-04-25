@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, TextInput, Text } from "react-native";
+import { View, StyleSheet, TextInput, Text, ScrollView } from "react-native";
 import { getMyMentors, findNewMentors } from "../Firebase/firestoreHelper";
 import { Button, Icon } from "@rneui/themed";
 import { Header } from "../components/Header";
@@ -103,35 +103,37 @@ const MyMentorsScreen = ({ navigation }) => {
           style={styles.shadowProp}
         />
       </View>
-      {myMentorsFilter && (
-        <View style={styles.shadowProp}>
-          <Text style={styles.listTitle}>My current mentors</Text>
-          <MyMentorsFlatList
-            data={filteredMyMentors}
-            viewStyle={viewStyle}
-            navigation={navigation}
-            onFindNewMentorsPress={onFindNewMentorsPress}
-            myMentors={myMentors}
-            setMyMentors={setMyMentors}
-          />
-        </View>
-      )}
-      {newMentorsFilter && (
-        <View style={styles.shadowProp}>
-          <Text style={styles.listTitle}>Connect with new mentors</Text>
-          <NewMentorsFlatList
-            data={newMentors}
-            viewStyle={viewStyle}
-            navigation={navigation}
-            renderList={({ item }) => <ListItem item={item} />}
-            renderGridItem={({ item }) => <GridItem item={item} />}
-            myMentors={myMentors}
-            setMyMentors={setMyMentors}
-            newMentors={newMentors}
-            setNewMentors={setNewMentors}
-          />
-        </View>
-      )}
+      <ScrollView>
+        {myMentorsFilter && (
+          <View style={styles.shadowProp}>
+            <Text style={styles.listTitle}>My current mentors</Text>
+            <MyMentorsFlatList
+              data={filteredMyMentors}
+              viewStyle={viewStyle}
+              navigation={navigation}
+              onFindNewMentorsPress={onFindNewMentorsPress}
+              myMentors={myMentors}
+              setMyMentors={setMyMentors}
+            />
+          </View>
+        )}
+        {newMentorsFilter && (
+          <View style={styles.shadowProp}>
+            <Text style={styles.listTitle}>Connect with new mentors</Text>
+            <NewMentorsFlatList
+              data={newMentors}
+              viewStyle={viewStyle}
+              navigation={navigation}
+              renderList={({ item }) => <ListItem item={item} />}
+              renderGridItem={({ item }) => <GridItem item={item} />}
+              myMentors={myMentors}
+              setMyMentors={setMyMentors}
+              newMentors={newMentors}
+              setNewMentors={setNewMentors}
+            />
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 };

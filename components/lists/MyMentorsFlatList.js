@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ListItem from "../ListItem";
 import GridItem from "../GridItem";
 import { Button, Card, Text } from "@rneui/themed";
@@ -29,49 +29,48 @@ const MyMentorsFlatList = ({
     </Card>
   );
 
-  const renderMyMentorsListTitle = () => (
-    <View>
-      <Text style={styles.myMentorsFlatListTitlle}>My current mentors</Text>
-    </View>
+  const renderListItem = (item) => (
+    <ListItem
+      item={item}
+      navigation={navigation}
+      disconnectButton={true}
+      onDisconnect={() => {
+        disconnectWithMentor(item.uid);
+        setMyMentors(myMentors.filter((mentor) => mentor.uid !== item.uid));
+      }}
+      key={item.uid}
+    />
+  );
+
+  const renderGridItem = (item) => (
+    <GridItem
+      item={item}
+      navigation={navigation}
+      disconnectButton={true}
+      onDisconnect={() => {
+        disconnectWithMentor(item.uid);
+        setMyMentors(myMentors.filter((mentor) => mentor.uid !== item.uid));
+      }}
+      key={item.uid}
+    />
   );
 
   return (
-    <FlatList
-      data={data}
-      renderItem={
-        viewStyle === "list"
-          ? ({ item }) => (
-              <ListItem
-                item={item}
-                navigation={navigation}
-                disconnectButton={true}
-                onDisconnect={() => {
-                  disconnectWithMentor(item.uid);
-                  setMyMentors(
-                    myMentors.filter((mentor) => mentor.uid !== item.uid)
-                  );
-                }}
-              />
-            )
-          : ({ item }) => (
-              <GridItem
-                item={item}
-                navigation={navigation}
-                disconnectButton={true}
-                onDisconnect={() => {
-                  disconnectWithMentor(item.uid);
-                  setMyMentors(
-                    myMentors.filter((mentor) => mentor.uid !== item.uid)
-                  );
-                }}
-              />
-            )
-      }
-      keyExtractor={(item) => item.uid}
-      numColumns={viewStyle === "list" ? 1 : 2}
-      key={viewStyle}
-      ListEmptyComponent={renderEmptyMyMentorsList}
-    />
+    <View>
+      {data.length > 0 ? (
+        <>
+          {viewStyle === "list" ? (
+            data.map((item) => renderListItem(item))
+          ) : (
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              {data.map((item) => renderGridItem(item))}
+            </View>
+          )}
+        </>
+      ) : (
+        renderEmptyMyMentorsList()
+      )}
+    </View>
   );
 };
 
