@@ -2,7 +2,7 @@ import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import ListItem from "../ListItem";
 import GridItem from "../GridItem";
-import { Button, Card, Text } from "@rneui/themed";
+import { Card, Text } from "@rneui/themed";
 import { disconnectWithMentee } from "../../Firebase/firestoreHelper";
 
 const MyMenteesFlatList = ({
