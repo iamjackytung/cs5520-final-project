@@ -11,6 +11,7 @@ const DisconnectButton = ({ onPress }) => {
       buttonStyle={styles.buttonStyle}
       icon={<Icon name="person-remove" size={24} color="white" />}
       type="solid"
+      style={styles.shadowProp}
     />
   );
 };

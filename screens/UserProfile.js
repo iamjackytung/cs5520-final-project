@@ -22,11 +22,16 @@ const UserProfile = () => {
   const [userData, onChangeUserData] = useState("hello");
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
-      onChangeUserData(doc.data());
-    });
+    const unsubscribe = onSnapshot(
+      doc(db, "users", auth.currentUser.uid),
+      (doc) => {
+        onChangeUserData(doc.data());
+      }
+    );
 
-    return () => {unsubscribe()};
+    return () => {
+      unsubscribe();
+    };
   }, []);
   return (
     <>

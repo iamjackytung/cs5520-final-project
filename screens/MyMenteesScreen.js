@@ -64,7 +64,7 @@ const MyMenteesScreen = ({ navigation }) => {
         />
       </View>
       {myMenteesFilter && (
-        <View>
+        <View style={styles.shadowProp}>
           <Text style={styles.listTitle}>My mentees</Text>
           <MyMenteesFlatList
             data={filteredMyMentees}
@@ -159,6 +159,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 10,
     marginTop: 10,
+  },
+  shadowProp: {
+    shadowOffset: { width: -2, height: 4 },
+    shadowColor: "#171717",
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
 });
 

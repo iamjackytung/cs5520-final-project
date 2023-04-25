@@ -134,6 +134,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 60,
   },
+  shadowProp: {
+    shadowOffset: { width: -2, height: 4 },
+    shadowColor: "#171717",
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
 });
 
 const Profile = ({ userData, isUserProfile }) => {
@@ -256,7 +262,10 @@ const Profile = ({ userData, isUserProfile }) => {
           >
             <Pressable
               style={styles.pressableBackground}
-              onPress={() => { overlayType.current = "background"; toggleProfileOverlay();}}
+              onPress={() => {
+                overlayType.current = "background";
+                toggleProfileOverlay();
+              }}
             >
               <Image
                 style={styles.editBackgroundImageIcon}
@@ -272,7 +281,10 @@ const Profile = ({ userData, isUserProfile }) => {
                 <>
                   <Pressable
                     style={styles.pressableImage}
-                    onPress={() => { overlayType.current = "profile"; toggleProfileOverlay();}}
+                    onPress={() => {
+                      overlayType.current = "profile";
+                      toggleProfileOverlay();
+                    }}
                   >
                     <Image
                       style={styles.editProfileImageIcon}

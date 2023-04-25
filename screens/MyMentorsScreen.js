@@ -62,6 +62,7 @@ const MyMentorsScreen = ({ navigation }) => {
         />
         <Button
           containerStyle={styles.switchButton}
+          style={styles.shadowProp}
           onPress={() => setViewStyle(viewStyle === "list" ? "grid" : "list")}
           icon={
             <Icon
@@ -85,6 +86,7 @@ const MyMentorsScreen = ({ navigation }) => {
               ? styles.activeButtonText
               : styles.inactiveButtonText
           }
+          style={styles.shadowProp}
         />
         <Button
           title="New Mentors"
@@ -98,10 +100,11 @@ const MyMentorsScreen = ({ navigation }) => {
               ? styles.activeButtonText
               : styles.inactiveButtonText
           }
+          style={styles.shadowProp}
         />
       </View>
       {myMentorsFilter && (
-        <View>
+        <View style={styles.shadowProp}>
           <Text style={styles.listTitle}>My current mentors</Text>
           <MyMentorsFlatList
             data={filteredMyMentors}
@@ -114,7 +117,7 @@ const MyMentorsScreen = ({ navigation }) => {
         </View>
       )}
       {newMentorsFilter && (
-        <View>
+        <View style={styles.shadowProp}>
           <Text style={styles.listTitle}>Connect with new mentors</Text>
           <NewMentorsFlatList
             data={newMentors}
@@ -167,15 +170,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   activeButton: {
-    backgroundColor: "#008B8B",
-    borderColor: "#008B8B",
+    backgroundColor: "#397af8",
+    borderColor: "#397af8",
     borderRadius: 5,
     paddingHorizontal: 10,
     marginHorizontal: 5,
   },
   inactiveButton: {
     backgroundColor: "transparent",
-    borderColor: "#008B8B",
+    borderColor: "#397af8",
     borderRadius: 5,
     borderWidth: 1,
     paddingHorizontal: 10,
@@ -185,13 +188,19 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   inactiveButtonText: {
-    color: "#008B8B",
+    color: "#397af8",
   },
   listTitle: {
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 10,
     marginTop: 10,
+  },
+  shadowProp: {
+    shadowOffset: { width: -2, height: 4 },
+    shadowColor: "#171717",
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
 });
 
