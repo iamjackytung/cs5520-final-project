@@ -45,26 +45,32 @@ export async function getCurrentUserData() {
   }
 }
 
-export async function userIsMentor() {
-  try {
-    const docRef = doc(firestore, "users", auth.currentUser.uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    return data?.isMentor;
-  } catch (err) {
-    console.log(err);
-  }
+export function userIsMentor(callback) {
+  const docRef = doc(firestore, "users", auth.currentUser.uid);
+  return onSnapshot(
+    docRef,
+    (docSnap) => {
+      const data = docSnap.data();
+      callback(data?.isMentor);
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 }
 
-export async function userIsMentee() {
-  try {
-    const docRef = doc(firestore, "users", auth.currentUser.uid);
-    const docSnap = await getDoc(docRef);
-    const data = docSnap.data();
-    return data?.isMentee;
-  } catch (err) {
-    console.log(err);
-  }
+export function userIsMentee(callback) {
+  const docRef = doc(firestore, "users", auth.currentUser.uid);
+  return onSnapshot(
+    docRef,
+    (docSnap) => {
+      const data = docSnap.data();
+      callback(data?.isMentee);
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 }
 
 export async function updateProfilePic(profilePicUrl) {
@@ -88,7 +94,6 @@ export async function updateAvatarBackground(avatarBackgroundUrl) {
       avatarBackground: avatarBackgroundUrl,
     });
     console.log("Background updated: ", avatarBackgroundUrl);
-
   } catch (err) {
     console.log(err);
   }

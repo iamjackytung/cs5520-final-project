@@ -18,22 +18,20 @@ export default function Home() {
   const [isMentor, setIsMentor] = useState(false);
   const [isMentee, setIsMentee] = useState(false);
   useEffect(() => {
-    async function getData() {
-      const isMentor = await userIsMentor();
-      setIsMentor(isMentor);
+    const mentorUnsubscribe = userIsMentor(setIsMentor);
+    const menteeUnsubscribe = userIsMentee(setIsMentee);
 
-      const isMentee = await userIsMentee();
-      setIsMentee(isMentee);
-
-      if (token) {
-        await saveUserData({ token: token });
+    if (token) {
+      saveUserData({ token: token }).then(() => {
         console.log("Token saved to DB: ", token);
-      }
+      });
     }
 
-    getData();
+    return () => {
+      mentorUnsubscribe();
+      menteeUnsubscribe();
+    };
   }, []);
-
 
   return (
     <>
