@@ -11,6 +11,7 @@ import {
   UIManager,
   TouchableOpacity,
   Platform,
+  KeyboardAvoidingView, 
 } from "react-native";
 import { Input, Button, Icon, InputProps } from "@rneui/themed";
 import {
@@ -102,7 +103,7 @@ const SignUp = ({ navigation }) => {
     // console.log("user id was " + auth.currentUser.uid);
     return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        Alert.alert("Successfully Logged In");
+        // Alert.alert("Successfully Logged In");
         const user = userCredential.user;
         ////////////////////////////////////////////////////////////////////////
         // console.log("user id currently " + user.uid);
@@ -169,7 +170,9 @@ const SignUp = ({ navigation }) => {
   return (
     <>
       {/* <Header view="Home" title="My mentors" /> */}
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+      style={styles.container}>
         <ImageBackground source={BG_IMAGE} style={styles.bgImage}>
           <View>
             <View style={styles.titleContainer}>
@@ -350,7 +353,7 @@ const SignUp = ({ navigation }) => {
             </View>
           </View>
         </ImageBackground>
-      </View>
+      </KeyboardAvoidingView>
     </>
   );
 };

@@ -7,6 +7,8 @@ import {
   Image,
   LayoutAnimation,
   Dimensions,
+  Platform,
+  KeyboardAvoidingView, 
 } from "react-native";
 import { Header } from "../components/Header";
 import { Input, Icon, Button, Overlay } from "@rneui/themed";
@@ -230,6 +232,9 @@ const SignUpInfo = ({ route, navigation }) => {
 
   return (
     <>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+      style={styles.container}>
       <Header
         view="Submit"
         title={route.params ? route.params.headerTitle : "Sign Up"}
@@ -448,6 +453,7 @@ const SignUpInfo = ({ route, navigation }) => {
           />
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 };

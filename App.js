@@ -36,7 +36,6 @@ const AuthStack = (
     <Stack.Screen
       name="SignUp"
       component={SignUp}
-      options={{ gestureEnabled: false }}
     />
   </>
 );
@@ -45,7 +44,6 @@ const AppStack = (
     <Stack.Screen
       name="Home"
       component={Home}
-      options={{ gestureEnabled: false }}
     />
     <Stack.Screen name="UserProfile" component={UserProfile} />
     <Stack.Screen name="ClickedProfile" component={ClickedProfile} />
@@ -99,6 +97,7 @@ export default function App() {
               <Stack.Navigator
                 screenOptions={{
                   headerShown: false,
+                  gestureEnabled: false
                 }}
               >
                 {isAuthenticated ? AppStack : AuthStack}
