@@ -29,10 +29,10 @@ const Header = (props) => {
   }, []);
 
   const leftAvatar = () => {
+    if (route.name === "SignUpInfo") { return; }
     if (
       route.name === "UserProfile" ||
-      route.name === "ClickedProfile" ||
-      route.name == "SignUpInfo"
+      route.name === "ClickedProfile"
     ) {
       return (
         <Avatar
