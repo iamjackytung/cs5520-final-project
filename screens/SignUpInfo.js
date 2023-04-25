@@ -195,6 +195,8 @@ const SignUpInfo = ({ route, navigation }) => {
     city: city,
     state: state,
     country: country,
+    inboundRequests: [],
+    outboundRequests: [],
     avatarBackground: backgroundImageUrl,
     tels: [
       { id: 1, name: "Mobile", number: telMobile },
