@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ListItem from "../ListItem";
 import GridItem from "../GridItem";
 import { Card, Text } from "@rneui/themed";
@@ -17,45 +17,46 @@ const NewMentorsFlatList = ({ data, viewStyle, navigation }) => {
     </Card>
   );
 
-  const renderNewMentorsListTitle = () => (
-    <View>
-      <Text style={styles.renderNewMentorsListTitle}>
-        Connect with new mentors
-      </Text>
-    </View>
+  const renderListItem = (item) => (
+    <ListItem
+      item={item}
+      navigation={navigation}
+      onConnect={() => {
+        connectWithMentor(item.uid);
+      }}
+      connectButton={true}
+      key={item.uid}
+    />
+  );
+
+  const renderGridItem = (item) => (
+    <GridItem
+      item={item}
+      navigation={navigation}
+      onConnect={() => {
+        connectWithMentor(item.uid);
+      }}
+      connectButton={true}
+      key={item.uid}
+    />
   );
 
   return (
-    <FlatList
-      data={data}
-      renderItem={
-        viewStyle === "list"
-          ? ({ item }) => (
-              <ListItem
-                item={item}
-                navigation={navigation}
-                onConnect={() => {
-                  connectWithMentor(item.uid);
-                }}
-                connectButton={true}
-              />
-            )
-          : ({ item }) => (
-              <GridItem
-                item={item}
-                navigation={navigation}
-                onConnect={() => {
-                  connectWithMentor(item.uid);
-                }}
-                connectButton={true}
-              />
-            )
-      }
-      keyExtractor={(item) => item.uid}
-      numColumns={viewStyle === "list" ? 1 : 2}
-      key={viewStyle}
-      ListEmptyComponent={renderEmptyNewMentorsList}
-    />
+    <View>
+      {data.length > 0 ? (
+        <>
+          {viewStyle === "list" ? (
+            data.map((item) => renderListItem(item))
+          ) : (
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              {data.map((item) => renderGridItem(item))}
+            </View>
+          )}
+        </>
+      ) : (
+        renderEmptyNewMentorsList()
+      )}
+    </View>
   );
 };
 
