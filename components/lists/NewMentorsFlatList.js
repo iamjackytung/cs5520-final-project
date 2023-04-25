@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import MentorListItem from "../MentorListItem";
-import MentorGridItem from "../MentorGridItem";
+import ListItem from "../ListItem";
+import GridItem from "../GridItem";
 import { Card, Text } from "@rneui/themed";
 import { connectWithMentor } from "../../Firebase/firestoreHelper";
 
@@ -31,7 +31,7 @@ const NewMentorsFlatList = ({ data, viewStyle, navigation }) => {
       renderItem={
         viewStyle === "list"
           ? ({ item }) => (
-              <MentorListItem
+              <ListItem
                 item={item}
                 navigation={navigation}
                 onConnect={() => {
@@ -41,7 +41,7 @@ const NewMentorsFlatList = ({ data, viewStyle, navigation }) => {
               />
             )
           : ({ item }) => (
-              <MentorGridItem
+              <GridItem
                 item={item}
                 navigation={navigation}
                 onConnect={() => {

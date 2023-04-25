@@ -1,11 +1,14 @@
 import React from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
-import { ListItem, Avatar, Button } from "@rneui/themed";
+import { ListItem, Avatar } from "@rneui/themed";
+import ConnectButton from "./buttons/ConnectButton";
 import DisconnectButton from "./buttons/DisconnectButton";
 
-const MenteeListItem = ({
+const ListItemComponent = ({
   item,
   navigation,
+  connectButton = false,
+  onConnect = undefined,
   disconnectButton = false,
   onDisconnect = undefined,
 }) => {
@@ -22,8 +25,14 @@ const MenteeListItem = ({
         <View style={styles.listItemContent}>
           <ListItem.Content>
             <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
+            {item.outboundRequest && (
+              <ListItem.Title>(pending connection)</ListItem.Title>
+            )}
             <ListItem.Subtitle>{`${item.jobTitle}`}</ListItem.Subtitle>
           </ListItem.Content>
+          {connectButton && (
+            <ConnectButton title="Connect" onPress={onConnect} />
+          )}
           {disconnectButton && (
             <DisconnectButton title="Disconnect" onPress={onDisconnect} />
           )}
@@ -42,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MenteeListItem;
+export default ListItemComponent;
